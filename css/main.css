@@ -1,0 +1,441 @@
+/* ============================================================
+   БАЗА
+   ============================================================ */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #000;
+    color: #fff;
+    font-family: Georgia, serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+}
+
+#app {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ============================================================
+   ЗЕРНО + ВИНЬЕТКА
+   ============================================================ */
+.grain {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.15;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grain .5s steps(2) infinite;
+}
+
+@keyframes grain {
+
+    0%,
+    100% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(-2px, 1px);
+    }
+}
+
+.vignette {
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center,
+            transparent 45%, rgba(0, 0, 0, .8) 100%);
+}
+
+/* ============================================================
+   ПРЕЛОАДЕР
+   ============================================================ */
+.preloader {
+    position: fixed;
+    inset: 0;
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #000;
+    transition: background 2s ease, opacity 1.2s ease;
+}
+
+.preloader.is-flashing {
+    background: #fff;
+}
+
+.preloader.is-gone {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.preloader__word {
+    font-family: 'Special Elite', 'Neucha', 'Times New Roman', serif;
+    font-size: clamp(2.5rem, 9vw, 6rem);
+    letter-spacing: clamp(0.6em, 1.4vw, 1.4em);
+    text-indent: clamp(0.6em, 1.4vw, 1.4em);
+    color: #fff;
+    opacity: 0;
+    transition: opacity 3s ease;
+    text-shadow: 0 0 40px rgba(255, 255, 255, .4);
+}
+
+.preloader__word.is-visible {
+    opacity: .95;
+}
+
+.preloader__word.is-fading {
+    opacity: 0;
+}
+
+/* ============================================================
+   СЦЕНА
+   ============================================================ */
+.scene {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scene.is-active {
+    opacity: 1;
+}
+
+.scene--newspaper {
+    background: #000;
+    overflow: hidden;
+}
+
+/* ---------- ОГОНЬ ---------- */
+.fire-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(.8) contrast(1.1) saturate(1.05) blur(.4px);
+    z-index: 1;
+    animation: fireFlicker .6s steps(2) infinite;
+}
+
+@keyframes fireFlicker {
+
+    0%,
+    100% {
+        filter: brightness(.8) contrast(1.10) saturate(1.05) blur(.4px);
+    }
+
+    50% {
+        filter: brightness(.95) contrast(1.18) saturate(1.15) blur(.6px);
+    }
+}
+
+.fire-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background: radial-gradient(ellipse at center,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(0, 0, 0, .25) 60%,
+            rgba(0, 0, 0, .7) 100%);
+}
+
+/* ---------- ГАЗЕТА ---------- */
+.newspaper {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    perspective: 2000px;
+}
+
+.newspaper__spread {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    opacity: 0;
+    transform-origin: left center;
+    transform: rotateY(0deg);
+    transition: opacity 1s ease, transform 1.6s cubic-bezier(.4, 0, .2, 1);
+    filter: contrast(1.2) brightness(.7) sepia(.25) blur(.5px);
+    mix-blend-mode: screen;
+    backface-visibility: hidden;
+}
+
+.newspaper__spread.is-active {
+    opacity: .55;
+}
+
+.newspaper__spread.is-turning {
+    transform: rotateY(-160deg);
+    opacity: .05;
+}
+
+.newspaper__spread img {
+    width: 50%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.newspaper__spread::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(to bottom,
+            transparent 0%,
+            rgba(0, 0, 0, .7) 15%,
+            rgba(0, 0, 0, .7) 85%,
+            transparent 100%);
+}
+
+/* ============================================================
+   ТИТР
+   ============================================================ */
+.title-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 5%;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+    padding: 0 2vw;
+}
+
+.title-bar__inner {
+    position: relative;
+    width: min(94vw, 1400px);
+    height: clamp(90px, 12vh, 140px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 clamp(20px, 4vw, 60px);
+
+    background:
+        radial-gradient(ellipse at 12% 30%, rgba(70, 62, 52, .75) 0%, transparent 45%),
+        radial-gradient(ellipse at 65% 70%, rgba(40, 35, 30, .85) 0%, transparent 55%),
+        radial-gradient(ellipse at 92% 25%, rgba(80, 72, 58, .55) 0%, transparent 45%),
+        radial-gradient(ellipse at 35% 80%, rgba(20, 18, 15, .9) 0%, transparent 60%),
+        linear-gradient(180deg,
+            rgba(14, 12, 10, .82) 0%,
+            rgba(22, 20, 17, .72) 50%,
+            rgba(10, 10, 10, .85) 100%);
+
+    filter: blur(.8px);
+
+    -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 120' preserveAspectRatio='none'%3E%3Cpath d='M6,8 L70,3 L150,10 L250,4 L340,11 L450,3 L550,8 L670,2 L760,9 L860,4 L940,11 L985,5 L997,7 L998,48 L993,62 L996,95 L990,117 L905,113 L800,118 L695,112 L590,117 L480,113 L370,118 L265,112 L170,117 L80,113 L10,117 L4,92 L7,62 L2,32 Z' fill='white'/%3E%3C/svg%3E");
+    mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 120' preserveAspectRatio='none'%3E%3Cpath d='M6,8 L70,3 L150,10 L250,4 L340,11 L450,3 L550,8 L670,2 L760,9 L860,4 L940,11 L985,5 L997,7 L998,48 L993,62 L996,95 L990,117 L905,113 L800,118 L695,112 L590,117 L480,113 L370,118 L265,112 L170,117 L80,113 L10,117 L4,92 L7,62 L2,32 Z' fill='white'/%3E%3C/svg%3E");
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+}
+
+.title-bar__inner::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+    opacity: .55;
+}
+
+.title-bar__inner::before {
+    content: '';
+    position: absolute;
+    left: 4%;
+    right: 4%;
+    top: 6px;
+    height: 1px;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, .7) 8%,
+            rgba(255, 255, 255, .3) 22%,
+            transparent 32%,
+            rgba(255, 255, 255, .8) 40%,
+            rgba(255, 255, 255, .4) 55%,
+            transparent 62%,
+            rgba(255, 255, 255, .7) 74%,
+            rgba(255, 255, 255, .25) 88%,
+            transparent 100%);
+    box-shadow: 0 0 8px rgba(255, 255, 255, .2);
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    z-index: 2;
+}
+
+.title-bar__bottom-line {
+    position: absolute;
+    left: 4%;
+    right: 4%;
+    bottom: 6px;
+    height: 1px;
+    background: linear-gradient(90deg,
+            transparent 0%,
+            rgba(255, 255, 255, .6) 6%,
+            transparent 14%,
+            rgba(255, 255, 255, .85) 25%,
+            rgba(255, 255, 255, .45) 45%,
+            transparent 52%,
+            rgba(255, 255, 255, .75) 65%,
+            transparent 78%,
+            rgba(255, 255, 255, .55) 88%,
+            transparent 100%);
+    box-shadow: 0 0 8px rgba(255, 255, 255, .2);
+    opacity: 0;
+    transition: opacity 1.5s ease;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.title-bar__inner.is-visible::before,
+.title-bar__inner.is-visible .title-bar__bottom-line {
+    opacity: 1;
+}
+
+.title-bar__text {
+    font-family: 'Special Elite', 'Neucha', 'Cutive Mono', 'Courier New', monospace;
+    font-size: clamp(.95rem, 1.6vw, 1.45rem);
+    line-height: 1.5;
+    letter-spacing: .04em;
+    color: #e8e4d6;
+    text-align: center;
+    text-shadow: 0 0 12px rgba(0, 0, 0, .95), 0 0 4px rgba(0, 0, 0, 1), 0 1px 1px rgba(0, 0, 0, .85);
+    filter: blur(.35px);
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 1.6s ease, transform 1.6s ease;
+    max-width: 100%;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    position: relative;
+    z-index: 3;
+}
+
+.title-bar__text.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.title-bar__text.is-fading {
+    opacity: 0;
+    transform: translateY(-6px);
+}
+
+/* ============================================================
+   АДАПТИВ
+   ============================================================ */
+@media (max-width: 1024px) {
+    .title-bar__inner {
+        width: 94vw;
+        height: clamp(90px, 13vh, 130px);
+    }
+}
+
+@media (max-width: 700px) {
+    .newspaper__spread {
+        flex-direction: column;
+    }
+
+    .newspaper__spread img {
+        width: 100%;
+        height: 50%;
+    }
+
+    .newspaper__spread::after {
+        top: 50%;
+        left: 0;
+        width: 100%;
+        height: 2px;
+    }
+
+    .title-bar {
+        bottom: 3%;
+        padding: 0 3vw;
+    }
+
+    .title-bar__inner {
+        width: 96vw;
+        height: clamp(80px, 14vh, 120px);
+        padding: 0 16px;
+    }
+
+    .title-bar__text {
+        font-size: clamp(.85rem, 3.4vw, 1.05rem);
+        letter-spacing: .02em;
+        -webkit-line-clamp: 4;
+    }
+
+    .preloader__word {
+        font-size: clamp(2rem, 12vw, 3.5rem);
+        letter-spacing: .7em;
+        text-indent: .7em;
+    }
+}
+
+@media (max-width: 380px) {
+    .title-bar__text {
+        font-size: .82rem;
+        line-height: 1.45;
+    }
+
+    .title-bar__inner {
+        height: clamp(70px, 13vh, 110px);
+    }
+}
+
+@media (max-height: 500px) and (orientation: landscape) {
+    .title-bar {
+        bottom: 2%;
+    }
+
+    .title-bar__inner {
+        height: clamp(60px, 22vh, 90px);
+        padding: 0 20px;
+    }
+
+    .title-bar__text {
+        font-size: clamp(.8rem, 1.8vw, 1rem);
+        -webkit-line-clamp: 2;
+    }
+}
+
+@media (-webkit-min-device-pixel-ratio: 2),
+(min-resolution: 192dpi) {
+    .title-bar__inner {
+        filter: blur(.6px);
+    }
+
+    .title-bar__text {
+        filter: blur(.3px);
+    }
+}
