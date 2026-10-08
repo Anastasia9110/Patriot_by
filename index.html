@@ -589,14 +589,23 @@
       let soundOn = true;
       let timers = [];
 
+      // Переменная для хранения ссылки на звук ветра, чтобы можно было им управлять
+      let windAudio = null;
+
       function after(ms, fn) {
         const t = setTimeout(fn, ms);
         timers.push(t);
         return t;
       }
+
       function clearAll() {
         timers.forEach(clearTimeout);
         timers = [];
+        // При перезагрузке страницы останавливаем ветер, если он играет
+        if (windAudio) {
+          windAudio.pause();
+          windAudio = null;
+        }
       }
 
       /* ============================================================
@@ -627,6 +636,40 @@
         a.volume = volume;
         a.play().catch((e) => console.warn("Не удалось:", src, e));
         return a;
+      }
+
+      /* ============================================================
+   ЗВУК ВЕТРА (НОВАЯ ФУНКЦИЯ)
+   ============================================================ */
+      function startWind() {
+        if (!soundOn) return;
+        if (windAudio) return; // Если уже играет, не запускаем заново
+
+        // Убедитесь, что файл с таким именем лежит в assets/audio/
+        windAudio = new Audio("assets/audio/ветер.mp3");
+        windAudio.loop = true; // Зацикливаем
+        windAudio.volume = 0.3; // Делаем тише, чтобы не перебивал голос
+        windAudio
+          .play()
+          .catch((e) => console.warn("Ошибка воспроизведения ветра:", e));
+      }
+
+      function stopWind() {
+        if (windAudio) {
+          // Плавное затухание
+          let fadeOut = setInterval(() => {
+            if (windAudio && windAudio.volume > 0.05) {
+              windAudio.volume -= 0.05;
+            } else {
+              clearInterval(fadeOut);
+              if (windAudio) {
+                windAudio.pause();
+                windAudio.currentTime = 0;
+                windAudio = null;
+              }
+            }
+          }, 100);
+        }
       }
 
       /* ============================================================
@@ -753,6 +796,9 @@
         void el.offsetWidth;
         el.classList.add("is-active");
 
+        // ЗАПУСКАЕМ ВЕТЕР ЗДЕСЬ
+        startWind();
+
         const layer1 = el.querySelector("#roadLayer1");
         const layer2 = el.querySelector("#roadLayer2");
         const inner = el.querySelector("#roadTitleInner");
@@ -824,6 +870,9 @@
 
         // Конец сцены
         after(39000, () => {
+          // ОСТАНАВЛИВАЕМ ВЕТЕР ЗДЕСЬ
+          stopWind();
+
           el.classList.remove("is-active");
           setTimeout(() => {
             el.remove();
