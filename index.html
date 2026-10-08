@@ -588,8 +588,6 @@
 
       let soundOn = true;
       let timers = [];
-
-      // Переменная для хранения ссылки на звук ветра, чтобы можно было им управлять
       let windAudio = null;
 
       function after(ms, fn) {
@@ -597,11 +595,9 @@
         timers.push(t);
         return t;
       }
-
       function clearAll() {
         timers.forEach(clearTimeout);
         timers = [];
-        // При перезагрузке страницы останавливаем ветер, если он играет
         if (windAudio) {
           windAudio.pause();
           windAudio = null;
@@ -639,24 +635,19 @@
       }
 
       /* ============================================================
-   ЗВУК ВЕТРА (НОВАЯ ФУНКЦИЯ)
+   ЗВУК ВЕТРА
    ============================================================ */
       function startWind() {
         if (!soundOn) return;
-        if (windAudio) return; // Если уже играет, не запускаем заново
-
-        // Убедитесь, что файл с таким именем лежит в assets/audio/
+        if (windAudio) return;
         windAudio = new Audio("assets/audio/ветер.mp3");
-        windAudio.loop = true; // Зацикливаем
-        windAudio.volume = 0.3; // Делаем тише, чтобы не перебивал голос
-        windAudio
-          .play()
-          .catch((e) => console.warn("Ошибка воспроизведения ветра:", e));
+        windAudio.loop = true;
+        windAudio.volume = 0.3;
+        windAudio.play().catch((e) => console.warn("Ошибка ветра:", e));
       }
 
       function stopWind() {
         if (windAudio) {
-          // Плавное затухание
           let fadeOut = setInterval(() => {
             if (windAudio && windAudio.volume > 0.05) {
               windAudio.volume -= 0.05;
@@ -673,7 +664,7 @@
       }
 
       /* ============================================================
-   СЦЕНА 0 — ГАЗЕТА
+   СЦЕНА 0 — ГАЗЕТА (1.mp3 и 2.mp3)
    ============================================================ */
       function buildNewspaper() {
         const el = document.createElement("section");
@@ -769,7 +760,7 @@
       }
 
       /* ============================================================
-   СЦЕНА 1 — ДОРОГА (две картинки)
+   СЦЕНА 1 — ДОРОГА (00_1, 00_2 и ветер)
    ============================================================ */
       function buildRoad() {
         const el = document.createElement("section");
@@ -796,7 +787,7 @@
         void el.offsetWidth;
         el.classList.add("is-active");
 
-        // ЗАПУСКАЕМ ВЕТЕР ЗДЕСЬ
+        // Ветер играет на фоне всю сцену
         startWind();
 
         const layer1 = el.querySelector("#roadLayer1");
@@ -804,73 +795,70 @@
         const inner = el.querySelector("#roadTitleInner");
         const textEl = el.querySelector("#roadTitleText");
 
-        /* --- Картинка 1: девочка со спины --- */
-
-        // 1. Контекст — июнь 1941
+        /* --- ЧАСТЬ 1: КОНТЕКСТ (00_1.mp3) --- */
         after(2000, () => {
           textEl.textContent =
             "Июнь 1941 года. Ленинградская школьница Зина Портнова приехала на летние каникулы к бабушке в деревню Зуи, под Витебском. С ней — младшая сестра Галя.";
           inner.classList.add("is-visible");
           textEl.classList.add("is-visible");
+          playVoice("assets/audio/00_1.mp3", 1.0);
         });
 
-        after(10000, () => {
+        after(14000, () => {
           textEl.classList.remove("is-visible");
           textEl.classList.add("is-fading");
         });
-        after(11000, () => inner.classList.remove("is-visible"));
+        after(15000, () => inner.classList.remove("is-visible"));
 
-        // 2. Предчувствие войны
-        after(13000, () => {
+        /* --- ЧАСТЬ 2: НАЧАЛО ВОЙНЫ (00_2.mp3) --- */
+        after(17000, () => {
           textEl.classList.remove("is-fading");
           textEl.textContent = "Через несколько дней началась война.";
           inner.classList.add("is-visible");
           textEl.classList.add("is-visible");
+          playVoice("assets/audio/00_2.mp3", 1.0);
         });
 
-        after(18000, () => {
+        after(23000, () => {
           textEl.classList.remove("is-visible");
           textEl.classList.add("is-fading");
         });
-        after(19000, () => inner.classList.remove("is-visible"));
+        after(24000, () => inner.classList.remove("is-visible"));
 
-        /* --- Переход: девочка оборачивается --- */
-
-        // Меняем картинку 1 → картинку 2 (Галя обернулась)
-        after(19500, () => {
+        /* --- ПЕРЕХОД: ДЕВОЧКА ОБОРАЧИВАЕТСЯ --- */
+        after(25000, () => {
           layer1.classList.remove("is-active");
           layer2.classList.add("is-active");
         });
 
-        // 3. Диалог с Галей — на второй картинке
-        after(21000, () => {
+        /* --- ЧАСТЬ 3: ДИАЛОГ (БЕЗ ОЗВУЧКИ) --- */
+        after(27000, () => {
           textEl.classList.remove("is-fading");
           textEl.textContent = "— Зина, а скоро придём?";
           inner.classList.add("is-visible");
           textEl.classList.add("is-visible");
         });
 
-        after(24500, () => {
+        after(31000, () => {
           textEl.textContent = "— Скоро, Галя. Вон уже крыши видно.";
         });
 
-        after(28500, () => {
+        after(35000, () => {
           textEl.textContent = "— А бабушка нас ждёт?";
         });
 
-        after(32000, () => {
+        after(39000, () => {
           textEl.textContent = "— Ждёт. Пирожки печёт.";
         });
 
-        after(36000, () => {
+        /* --- ЗАВЕРШЕНИЕ СЦЕНЫ --- */
+        after(43000, () => {
           textEl.classList.remove("is-visible");
           textEl.classList.add("is-fading");
           inner.classList.remove("is-visible");
         });
 
-        // Конец сцены
-        after(39000, () => {
-          // ОСТАНАВЛИВАЕМ ВЕТЕР ЗДЕСЬ
+        after(46000, () => {
           stopWind();
 
           el.classList.remove("is-active");
