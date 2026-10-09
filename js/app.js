@@ -1,4 +1,4 @@
-import { after } from "./utils.js";
+import { after, startAmbient, stopAmbient } from "./utils.js";
 
 const app = document.getElementById("app");
 const pre = document.getElementById("preloader");
@@ -125,12 +125,15 @@ export function playScene0(onDone) {
 
   after(22500, () => {
     el.classList.remove("is-active");
-    setTimeout(() => { el.remove(); onDone && onDone(); }, 2000);
+    setTimeout(() => {
+      el.remove();
+      onDone && onDone();
+    }, 2000);
   });
 }
 
 /* ============================================================
-   СЦЕНА 1 — ДОРОГА
+   СЦЕНА 1 — ДОРОГА (00_1, 00_2, Galya, Galya2 и ветер)
    ============================================================ */
 function buildRoad() {
   const el = document.createElement("section");
@@ -158,11 +161,11 @@ export function playScene1(onDone) {
   el.classList.add("is-active");
 
   // Ветер играет на фоне всю сцену
-  startWind();
+  startAmbient("wind", "assets/audio/wind.mp3", 0.35);
 
   const layer1 = el.querySelector("#roadLayer1");
   const layer2 = el.querySelector("#roadLayer2");
-  const inner  = el.querySelector("#roadTitleInner");
+  const inner = el.querySelector("#roadTitleInner");
   const textEl = el.querySelector("#roadTitleText");
 
   /* --- ЧАСТЬ 1: КОНТЕКСТ (00_1.mp3) --- */
@@ -201,17 +204,32 @@ export function playScene1(onDone) {
     layer2.classList.add("is-active");
   });
 
-  /* --- ЧАСТЬ 3: ДИАЛОГ С ГАЛЕЙ (без голоса, только титры) --- */
+  /* --- ЧАСТЬ 3: ДИАЛОГ С ГАЛЕЙ --- */
+
+  // 1) «— Зина, а скоро придём?» — озвучка Galya.mp3
   after(26000, () => {
     textEl.classList.remove("is-fading");
     textEl.textContent = "— Зина, а скоро придём?";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoice("assets/audio/Galya.mp3", 1.0);
   });
 
-  after(29500, () => { textEl.textContent = "— Скоро, Галя. Вон уже крыши видно."; });
-  after(33000, () => { textEl.textContent = "— А бабушка нас ждёт?"; });
-  after(36500, () => { textEl.textContent = "— Ждёт. Пирожки печёт."; });
+  // 2) «— Скоро, Галя. Вон уже крыши видно.» — ответ Зины (без озвучки)
+  after(29500, () => {
+    textEl.textContent = "— Скоро, Галя. Вон уже крыши видно.";
+  });
+
+  // 3) «— А бабушка нас ждёт?» — озвучка Galya2.mp3
+  after(33000, () => {
+    textEl.textContent = "— А бабушка нас ждёт?";
+    playVoice("assets/audio/Galya2.mp3", 1.0);
+  });
+
+  // 4) «— Ждёт. Пирожки печёт.» — ответ Зины (без озвучки)
+  after(36500, () => {
+    textEl.textContent = "— Ждёт. Пирожки печёт.";
+  });
 
   after(40000, () => {
     textEl.classList.remove("is-visible");
@@ -221,14 +239,17 @@ export function playScene1(onDone) {
 
   /* --- Конец сцены: гасим ветер --- */
   after(43000, () => {
-    stopWind();
+    stopAmbient("wind");
     el.classList.remove("is-active");
-    setTimeout(() => { el.remove(); onDone && onDone(); }, 2000);
+    setTimeout(() => {
+      el.remove();
+      onDone && onDone();
+    }, 2000);
   });
 }
 
 /* ============================================================
-   СЦЕНА 2 — ОБОЛЬ
+   СЦЕНА 2 — ОБОЛЬ (с фоновым лаем и звуком деревни)
    ============================================================ */
 function buildObol() {
   const el = document.createElement("section");
@@ -255,9 +276,13 @@ export function playScene2(onDone) {
   void el.offsetWidth;
   el.classList.add("is-active");
 
+  /* --- ФОНОВЫЕ ЗВУКИ СЦЕНЫ 2 --- */
+  startAmbient("dog", "assets/audio/dogbarking.mp3", 0.15);
+  startAmbient("village", "assets/audio/village.mp3", 0.2);
+
   const layer1 = el.querySelector("#obolLayer1");
   const layer2 = el.querySelector("#obolLayer2");
-  const inner  = el.querySelector("#obolTitleInner");
+  const inner = el.querySelector("#obolTitleInner");
   const textEl = el.querySelector("#obolTitleText");
 
   after(2000, () => {
@@ -280,9 +305,15 @@ export function playScene2(onDone) {
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
   });
-  after(18500, () => { textEl.textContent = "— А ты? А Галя?"; });
-  after(21500, () => { textEl.textContent = "— Мы справимся."; });
-  after(24000, () => { textEl.textContent = "— Нет, бабушка. Я останусь."; });
+  after(18500, () => {
+    textEl.textContent = "— А ты? А Галя?";
+  });
+  after(21500, () => {
+    textEl.textContent = "— Мы справимся.";
+  });
+  after(24000, () => {
+    textEl.textContent = "— Нет, бабушка. Я останусь.";
+  });
 
   after(28000, () => {
     textEl.classList.remove("is-visible");
@@ -325,30 +356,15 @@ export function playScene2(onDone) {
     inner.classList.remove("is-visible");
   });
 
+  /* --- Конец сцены: гасим фоновые звуки --- */
   after(60000, () => {
+    stopAmbient("dog", 1200);
+    stopAmbient("village", 1200);
+
     el.classList.remove("is-active");
-    setTimeout(() => { el.remove(); onDone && onDone(); }, 2000);
+    setTimeout(() => {
+      el.remove();
+      onDone && onDone();
+    }, 2000);
   });
-}
-
-/* ============================================================
-   ФОНОВЫЙ ВЕТЕР
-   ============================================================ */
-let windAudio = null;
-
-function startWind(volume = 0.35) {
-  if (!soundOn) return;
-  stopWind();
-  windAudio = new Audio("assets/audio/wind.mp3");
-  windAudio.loop = true;
-  windAudio.volume = volume;
-  windAudio.play().catch((e) => console.warn("Ветер не пошёл:", e));
-}
-
-function stopWind() {
-  if (windAudio) {
-    windAudio.pause();
-    windAudio.currentTime = 0;
-    windAudio = null;
-  }
 }
