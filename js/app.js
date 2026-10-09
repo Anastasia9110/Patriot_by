@@ -324,25 +324,9 @@ export function playScene2(onDone) {
     textEl.classList.add("is-visible");
     // playVoice("assets/audio/4.mp3", 1.0);
   });
-  after(18500, () => {
-    textEl.textContent = "— А ты? А Галя?";
-  });
-  after(21500, () => {
-    textEl.textContent = "— Мы справимся.";
-  });
-  after(24000, () => {
-    textEl.textContent = "— Нет, бабушка. Я останусь.";
-  });
-
-  after(26000, () => {
-    textEl.classList.remove("is-visible");
-    textEl.classList.add("is-fading");
-    inner.classList.remove("is-visible");
-  });
-
   /* ---------- КНОПКА: ПОГОВОРИТЬ С БАБУШКОЙ ---------- */
 
-  after(28000, () => {
+  after(21000, () => {
     btn.classList.add("is-visible");
   });
 
