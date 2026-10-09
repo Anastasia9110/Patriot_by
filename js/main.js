@@ -1,11 +1,15 @@
-import { runPreloader, playScene0, playScene1, playScene2 } from "./app.js";
+import { runPreloader, playScene0, playScene1, playScene2, playScene3, playScene4, } from "./app.js";
 import { clearAll } from "./utils.js";
 
 function start() {
   runPreloader(() => {
     playScene0(() => {
       playScene1(() => {
-        playScene2();   // ← сюда позже добавим playScene3, playScene4 …
+        playScene2(() => {
+          playScene3(() => {
+            playScene4();          // ← сцена 4 «Столовая»
+          });  // ← сцена 3 «Листовки»
+        });   // ← сюда позже добавим playScene3, playScene4 …
       });
     });
   });
@@ -28,7 +32,7 @@ if (startBtn) {
 document.addEventListener("keydown", (e) => {
   if (e.code === "Space") {
     e.preventDefault();
-    clearAll();
+    clearAll(); 
     location.reload();
   }
 });

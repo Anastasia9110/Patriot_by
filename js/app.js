@@ -234,8 +234,13 @@ function buildObol() {
   const el = document.createElement("section");
   el.className = "scene scene--obol";
   el.innerHTML = `
-    <div class="obol-layer obol-layer--scene1 is-active" id="obolLayer1"></div>
-    <div class="obol-layer obol-layer--scene2"           id="obolLayer2"></div>
+    <div class="obol-layer obol-layer--scene1 is-active"    id="obolLayer1"></div>
+    <div class="obol-layer obol-layer--scene2"              id="obolLayer2"></div>
+    <div class="obol-layer obol-layer--grandma-closed"      id="obolLayer3"></div>
+    <div class="obol-layer obol-layer--grandma-talk"        id="obolLayer4"></div>
+
+    <button class="obol-btn" id="obolBtn">ПОГОВОРИТЬ С БАБУШКОЙ</button>
+
     <div class="road-grain"></div>
     <div class="road-vignette"></div>
 
@@ -257,15 +262,20 @@ export function playScene2(onDone) {
 
   const layer1 = el.querySelector("#obolLayer1");
   const layer2 = el.querySelector("#obolLayer2");
+  const layer3 = el.querySelector("#obolLayer3");  // бабушка, рот закрыт
+  const layer4 = el.querySelector("#obolLayer4");  // бабушка, говорит
+  const btn    = el.querySelector("#obolBtn");
   const inner  = el.querySelector("#obolTitleInner");
   const textEl = el.querySelector("#obolTitleText");
+
+  /* ---------- ЧАСТЬ 1: ОККУПАЦИЯ ---------- */
 
   after(2000, () => {
     textEl.textContent =
       "Оболь оккупировали. Немецкие солдаты. Патрули. Собаки. Люди шли с опущенными глазами.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
-    playVoice("assets/audio/3.mp3", 1.0);
+    // playVoice("assets/audio/3.mp3", 1.0);
   });
 
   after(12000, () => {
@@ -274,63 +284,491 @@ export function playScene2(onDone) {
   });
   after(13000, () => inner.classList.remove("is-visible"));
 
+  /* ---------- ЧАСТЬ 2: ЗИНА ОСТАЛАСЬ ---------- */
+
   after(14500, () => {
-    textEl.classList.remove("is-fading");
-    textEl.textContent = "— Зина, уезжай. Ты молодая. Тебя не тронут.";
-    inner.classList.add("is-visible");
-    textEl.classList.add("is-visible");
-  });
-  after(18500, () => { textEl.textContent = "— А ты? А Галя?"; });
-  after(21500, () => { textEl.textContent = "— Мы справимся."; });
-  after(24000, () => { textEl.textContent = "— Нет, бабушка. Я останусь."; });
-
-  after(28000, () => {
-    textEl.classList.remove("is-visible");
-    textEl.classList.add("is-fading");
-    inner.classList.remove("is-visible");
-  });
-
-  after(29500, () => {
     layer1.classList.remove("is-active");
     layer2.classList.add("is-active");
   });
 
-  after(31000, () => {
+  after(15500, () => {
     textEl.classList.remove("is-fading");
     textEl.textContent =
       "Я осталась не потому, что была смелой. Я просто не могла бросить своих.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
-    playVoice("assets/audio/4.mp3", 1.0);
+    // playVoice("assets/audio/4.mp3", 1.0);
   });
 
-  after(42000, () => {
+  after(26000, () => {
     textEl.classList.remove("is-visible");
     textEl.classList.add("is-fading");
     inner.classList.remove("is-visible");
   });
 
-  after(44000, () => {
-    textEl.classList.remove("is-fading");
-    textEl.textContent =
-      "В 1942 году в Оболи создали подпольную организацию «Юные мстители». Меня приняли в её комитет. Мне было шестнадцать.";
-    inner.classList.add("is-visible");
-    textEl.classList.add("is-visible");
-    playVoice("assets/audio/5.mp3", 1.0);
+  /* ---------- КНОПКА: ПОГОВОРИТЬ С БАБУШКОЙ ---------- */
+
+  after(28000, () => {
+    btn.classList.add("is-visible");
   });
 
-  after(58000, () => {
-    textEl.classList.remove("is-visible");
-    textEl.classList.add("is-fading");
-    inner.classList.remove("is-visible");
-  });
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
 
-  after(60000, () => {
-    el.classList.remove("is-active");
-    setTimeout(() => { el.remove(); onDone && onDone(); }, 2000);
+    // Переходим на первый кадр бабушки (рот закрыт)
+    layer2.classList.remove("is-active");
+    layer3.classList.add("is-active");
+
+    /* Диалог. На репликах бабушки переключаемся на layer4 (говорит),
+       на репликах Зины — обратно на layer3 (рот закрыт). */
+
+    // — Зина, уезжай. Ты молодая. Тебя не тронут. (бабушка)
+    after(1500, () => {
+      layer3.classList.remove("is-active");
+      layer4.classList.add("is-active");
+
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "— Зина, уезжай. Ты молодая. Тебя не тронут.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      // playVoice("assets/audio/5.mp3", 1.0);
+    });
+
+    // — А ты? А Галя? (Зина)
+    after(7500, () => {
+      layer4.classList.remove("is-active");
+      layer3.classList.add("is-active");
+      textEl.textContent = "— А ты? А Галя?";
+    });
+
+    // — Мы справимся. (бабушка)
+    after(10500, () => {
+      layer3.classList.remove("is-active");
+      layer4.classList.add("is-active");
+      textEl.textContent = "— Мы справимся.";
+    });
+
+    // — Нет, бабушка. Я останусь. (Зина)
+    after(13500, () => {
+      layer4.classList.remove("is-active");
+      layer3.classList.add("is-active");
+      textEl.textContent = "— Нет, бабушка. Я останусь.";
+    });
+
+    // Гасим титр
+    after(17500, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    // — В 1942 году создали «Юных мстителей» (монолог)
+    after(19500, () => {
+      textEl.classList.remove("is-fading");
+      textEl.textContent =
+        "В 1942 году в Оболи создали подпольную организацию «Юные мстители». Меня приняли в её комитет. Мне было шестнадцать.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      // playVoice("assets/audio/6.mp3", 1.0);
+    });
+
+    // Конец сцены
+    after(34000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+
+      el.classList.remove("is-active");
+      setTimeout(() => { el.remove(); onDone && onDone(); }, 2000);
+    });
   });
 }
+/* ============================================================
+   СЦЕНА 3 — ЛИСТОВКИ
+   ============================================================ */
+function buildLeaflet() {
+  const el = document.createElement("section");
+  el.className = "scene scene--leaflet";
+  el.innerHTML = `
+    <div class="leaflet-layer leaflet-layer--empty is-active" id="leafletLayer1"></div>
+    <div class="leaflet-layer leaflet-layer--hands"           id="leafletLayer2"></div>
+    <div class="leaflet-layer leaflet-layer--done"            id="leafletLayer3"></div>
 
+    <video class="leaflet-video" id="leafletVideo"
+           muted playsinline preload="auto">
+      <source src="assets/video/leaflet.mp4" type="video/mp4">
+    </video>
+
+    <button class="leaflet-btn" id="leafletBtn">ПОВЕСИТЬ ЛИСТОВКУ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="leafletTitleInner">
+        <p class="title-bar__text" id="leafletTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+  `;
+  return el;
+}
+
+export function playScene3(onDone) {
+  const el = buildLeaflet();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const layer1 = el.querySelector("#leafletLayer1");
+  const layer2 = el.querySelector("#leafletLayer2");
+  const layer3 = el.querySelector("#leafletLayer3");
+  const video  = el.querySelector("#leafletVideo");
+  const btn    = el.querySelector("#leafletBtn");
+  const inner  = el.querySelector("#leafletTitleInner");
+  const textEl = el.querySelector("#leafletTitleText");
+
+  /* ---------- ФОТО 1: пустой переулок ---------- */
+
+  // Монолог
+  after(2000, () => {
+    textEl.textContent =
+      "Мы расклеивали листовки. Собирали сведения о немцах. Устраивали диверсии.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/6.mp3", 1.0);
+  });
+
+  after(12000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(13000, () => inner.classList.remove("is-visible"));
+
+  /* ---------- ФОТО 2: руки клеят листовку ---------- */
+
+  after(14500, () => {
+    layer1.classList.remove("is-active");
+    layer2.classList.add("is-active");
+  });
+
+  // Диалог с подпольщиком (титры)
+  after(16000, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Зина, быстрее. Клей.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/7.mp3", 1.0);
+  });
+
+  after(20000, () => {
+    textEl.textContent = "— Я успею.";
+    playVoice("assets/audio/8.mp3", 1.0);
+  });
+
+  after(24000, () => {
+    textEl.textContent = "— Услышишь шаги — беги. Не оглядывайся.";
+    playVoice("assets/audio/9.mp3", 1.0);
+  });
+
+  after(29000, () => {
+    textEl.textContent = "— А вы?";
+    playVoice("assets/audio/10.mp3", 1.0);
+  });
+
+  after(32000, () => {
+    textEl.textContent = "— Мы тоже. Только позже.";
+    playVoice("assets/audio/11.mp3", 1.0);
+  });
+
+  after(36000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  // Кнопка появляется после диалога
+  after(38000, () => {
+    btn.classList.add("is-visible");
+  });
+
+  /* ---------- КЛИК: играем ВИДЕО ---------- */
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+
+    // Видео играет поверх картинки
+    video.classList.add("is-active");
+    video.play().catch((e) => console.warn("Видео не пошло:", e));
+
+    // Когда видео закончилось — показываем фото 3
+    video.addEventListener("ended", () => {
+      video.classList.remove("is-active");
+      video.pause();
+
+      layer2.classList.remove("is-active");
+      layer3.classList.add("is-active");
+
+      // Финальный монолог на фото 3
+      after(500, () => {
+        textEl.classList.remove("is-fading");
+        textEl.textContent =
+          "Мои руки дрожали. Но листовка держалась. Значит, и я держалась.";
+        inner.classList.add("is-visible");
+        textEl.classList.add("is-visible");
+        playVoice("assets/audio/12.mp3", 1.0);
+      });
+
+      after(11000, () => {
+        textEl.classList.remove("is-visible");
+        textEl.classList.add("is-fading");
+        inner.classList.remove("is-visible");
+      });
+
+      // Конец сцены
+      after(13000, () => {
+        el.classList.remove("is-active");
+        setTimeout(() => { el.remove(); onDone && onDone(); }, 2000);
+      });
+    }, { once: true });
+  });
+}
+/* ============================================================
+   СЦЕНА 4 — СТОЛОВАЯ
+   ============================================================ */
+function buildCanteen() {
+  const el = document.createElement("section");
+  el.className = "scene scene--canteen";
+  el.innerHTML = `
+    <div class="canteen-layer canteen-layer--work is-active" id="canteenWork"></div>
+    <div class="canteen-layer canteen-layer--officer-closed" id="canteenOfficerClosed"></div>
+    <div class="canteen-layer canteen-layer--officer-talk"   id="canteenOfficerTalk"></div>
+    <div class="canteen-layer canteen-layer--pour"           id="canteenPour"></div>
+    <div class="canteen-layer canteen-layer--carry"          id="canteenCarry"></div>
+    <div class="canteen-layer canteen-layer--eat"            id="canteenEat"></div>
+
+    <video class="canteen-video" id="canteenVideo"
+           muted playsinline preload="auto">
+      <source src="assets/video/canteen.mp4" type="video/mp4">
+    </video>
+
+    <button class="canteen-btn" id="canteenBtn">ДАЛЕЕ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="canteenTitleInner">
+        <p class="title-bar__text" id="canteenTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+  `;
+  return el;
+}
+
+export function playScene4(onDone) {
+  const el = buildCanteen();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const work          = el.querySelector("#canteenWork");
+  const officerClosed = el.querySelector("#canteenOfficerClosed");
+  const officerTalk   = el.querySelector("#canteenOfficerTalk");
+  const pour          = el.querySelector("#canteenPour");
+  const carry         = el.querySelector("#canteenCarry");
+  const eat           = el.querySelector("#canteenEat");
+  const video         = el.querySelector("#canteenVideo");
+  const btn           = el.querySelector("#canteenBtn");
+  const inner         = el.querySelector("#canteenTitleInner");
+  const textEl        = el.querySelector("#canteenTitleText");
+
+  /* ============ ШАГ 1: Зина работает в столовой ============ */
+
+  after(2000, () => {
+    textEl.textContent =
+      "По заданию подполья я устроилась работать в столовую курсов переподготовки немецких офицеров. Я носила воду. Дрова. Смотрела. Запоминала.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/13.mp3", 1.0);
+  });
+
+  after(16000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============ ШАГ 2: Офицер сидит, рот закрыт ============ */
+
+  after(17500, () => {
+    work.classList.remove("is-active");
+    officerClosed.classList.add("is-active");
+  });
+
+  /* ============ ШАГ 3: Кнопка «РАЗГОВОР С ОФИЦЕРОМ» ============ */
+
+  after(19500, () => {
+    btn.textContent = "РАЗГОВОР С ОФИЦЕРОМ";
+    btn.classList.remove("is-gone");
+    btn.classList.add("is-visible");
+  });
+
+  /* ============ КЛИК 1: офицер говорит ============ */
+
+  const onOfficerClick = () => {
+    btn.removeEventListener("click", onOfficerClick);
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+
+    officerClosed.classList.remove("is-active");
+    officerTalk.classList.add("is-active");
+
+    // «Wasser! Schnell!» — офицер с открытым ртом
+    after(500, () => {
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "— Wasser! Schnell!";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      // playVoice("assets/audio/14.mp3", 1.0);
+    });
+
+    // «Ja.» — офицер снова с ЗАКРЫТЫМ ртом
+    after(4500, () => {
+      officerTalk.classList.remove("is-active");
+      officerClosed.classList.add("is-active");
+
+      textEl.textContent = "— Ja.";
+      // playVoice("assets/audio/15.mp3", 1.0);
+    });
+
+    // Гасим титр
+    after(8000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* ============ ШАГ 4: Рука сыплет порошок ============ */
+
+    after(10000, () => {
+      officerClosed.classList.remove("is-active");
+      pour.classList.add("is-active");
+    });
+
+    // «А однажды принесла яд.»
+    after(11500, () => {
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "А однажды принесла яд.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      // playVoice("assets/audio/16.mp3", 1.0);
+    });
+
+    // Гасим титр
+    after(16000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* ============ ШАГ 5: Кнопка «ОТРАВИТЬ СУП» ============ */
+
+    after(18000, () => {
+      btn.textContent = "ОТРАВИТЬ СУП";
+      btn.classList.remove("is-gone");
+      btn.classList.add("is-visible");
+    });
+
+    /* ============ КЛИК 2: видео с кастрюлей ============ */
+
+    const onPoisonClick = () => {
+      btn.removeEventListener("click", onPoisonClick);
+      btn.classList.remove("is-visible");
+      btn.classList.add("is-gone");
+
+      pour.classList.remove("is-active");
+      video.classList.add("is-active");
+
+      video.currentTime = 0;
+      video.play().catch((e) => console.warn("Видео не пошло:", e));
+
+      // «Погибло более ста офицеров.»
+      after(1000, () => {
+        textEl.classList.remove("is-fading");
+        textEl.textContent = "Погибло более ста офицеров.";
+        inner.classList.add("is-visible");
+        textEl.classList.add("is-visible");
+        // playVoice("assets/audio/17.mp3", 1.0);
+      });
+
+      // Ждём конца видео
+      video.addEventListener("ended", () => {
+        video.classList.remove("is-active");
+        carry.classList.add("is-active");
+
+        textEl.classList.remove("is-visible");
+        textEl.classList.add("is-fading");
+        inner.classList.remove("is-visible");
+
+        /* ============ ШАГ 6: Зина несёт суп ============ */
+
+        after(1500, () => {
+          textEl.classList.remove("is-fading");
+          textEl.textContent =
+            "Меня заставили попробовать суп. Чтобы доказать, что я не причастна.";
+          inner.classList.add("is-visible");
+          textEl.classList.add("is-visible");
+        });
+
+        after(11000, () => {
+          textEl.classList.remove("is-visible");
+          textEl.classList.add("is-fading");
+          inner.classList.remove("is-visible");
+        });
+
+        /* ============ ШАГ 7: Зина ест ============ */
+
+        after(13000, () => {
+          carry.classList.remove("is-active");
+          eat.classList.add("is-active");
+        });
+
+        after(14500, () => {
+          textEl.classList.remove("is-fading");
+          textEl.textContent = "Я ела. И чудом выжила.";
+          inner.classList.add("is-visible");
+          textEl.classList.add("is-visible");
+          // playVoice("assets/audio/18.mp3", 1.0);
+        });
+
+        after(24000, () => {
+          textEl.textContent =
+            "Я не считала. Я просто хотела, чтобы это закончилось.";
+          // playVoice("assets/audio/19.mp3", 1.0);
+        });
+
+        after(33000, () => {
+          textEl.classList.remove("is-visible");
+          textEl.classList.add("is-fading");
+          inner.classList.remove("is-visible");
+        });
+
+        // Конец сцены
+        after(35000, () => {
+          el.classList.remove("is-active");
+          setTimeout(() => { el.remove(); onDone && onDone(); }, 2000);
+        });
+      }, { once: true });
+    };
+
+    btn.addEventListener("click", onPoisonClick, { once: true });
+  };
+
+  btn.addEventListener("click", onOfficerClick, { once: true });
+}
 /* ============================================================
    ФОНОВЫЙ ВЕТЕР
    ============================================================ */

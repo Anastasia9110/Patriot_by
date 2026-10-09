@@ -276,7 +276,47 @@ body {
 .obol-layer--scene2 {
   background-image: url("../assets/images/scene4-obol.jpg");
 }
+/* Дополнительные слои Оболи — бабушка */
+.obol-layer--grandma-closed {
+  background-image: url("../assets/images/scene4b-obol-grandma-closed.jpg");
+}
+.obol-layer--grandma-talk {
+  background-image: url("../assets/images/scene4c-obol-grandma-talk.jpg");
+}
 
+/* ---------- Кнопка «Поговорить с бабушкой» ---------- */
+.obol-btn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.45);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+  pointer-events: none;
+}
+.obol-btn.is-visible {
+  opacity: 0.9;
+  pointer-events: auto;
+}
+.obol-btn:hover {
+  opacity: 1;
+  background: #fff;
+  color: #000;
+}
+.obol-btn.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
 /* ============================================================
    ТИТР
    ============================================================ */
@@ -429,3 +469,133 @@ body {
     line-clamp: 2;
   }
 }
+/* ============================================================
+   СЦЕНА 3 — ЛИСТОВКИ
+   ============================================================ */
+.scene--leaflet { background: #0a0a0a; display: block; }
+
+.leaflet-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.85) contrast(1.05);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  will-change: opacity;
+}
+.leaflet-layer.is-active { opacity: 1; }
+
+.leaflet-layer--empty  { background-image: url("../assets/images/scene5-leaflet-empty.jpg"); }
+.leaflet-layer--hands  { background-image: url("../assets/images/scene6-leaflet-hands.jpg"); }
+.leaflet-layer--done   { background-image: url("../assets/images/scene7-leaflet-done.jpg"); }
+
+/* ---------- Видео поверх кадра с руками ---------- */
+.leaflet-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) brightness(0.85) contrast(1.05);
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+.leaflet-video.is-active { opacity: 1; }
+
+/* ---------- Кнопка «Повесить листовку» ---------- */
+.leaflet-btn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.45);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+  pointer-events: none;
+}
+.leaflet-btn.is-visible {
+  opacity: 0.9;
+  pointer-events: auto;
+}
+.leaflet-btn:hover {
+  opacity: 1;
+  background: #fff;
+  color: #000;
+}
+.leaflet-btn.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+/* ============================================================
+   СЦЕНА 4 — СТОЛОВАЯ
+   ============================================================ */
+.scene--canteen { background: #0a0a0a; display: block; }
+
+.canteen-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.85) contrast(1.05);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  will-change: opacity;
+}
+.canteen-layer.is-active { opacity: 1; }
+.canteen-layer--work           { background-image: url("../assets/images/scene7a-canteen-work.jpg"); }
+.canteen-layer--officer-closed { background-image: url("../assets/images/scene7b-canteen-officer-closed.jpg"); }
+.canteen-layer--officer-talk   { background-image: url("../assets/images/scene7c-canteen-officer-talk.jpg"); }
+.canteen-layer--pour           { background-image: url("../assets/images/scene8-canteen-pour.jpg"); }
+.canteen-layer--carry          { background-image: url("../assets/images/scene9-canteen-carry.jpg"); }
+.canteen-layer--eat            { background-image: url("../assets/images/scene10-canteen-eat.jpg"); }
+
+.canteen-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) brightness(0.85) contrast(1.05);
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 1s ease;
+  pointer-events: none;
+}
+.canteen-video.is-active { opacity: 1; }
+
+.canteen-btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+  pointer-events: none;
+}
+.canteen-btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.canteen-btn:hover      { opacity: 1; background: #fff; color: #000; }
+.canteen-btn.is-gone    { opacity: 0; pointer-events: none; }
