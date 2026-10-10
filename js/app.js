@@ -788,6 +788,396 @@ export function playScene4(onDone) {
   btn.addEventListener("click", onOfficerClick, { once: true });
 }
 /* ============================================================
+   СЦЕНА 5 — ЛЕС
+   ============================================================ */
+function buildForest() {
+  const el = document.createElement("section");
+  el.className = "scene scene--forest";
+  el.innerHTML = `
+    <div class="forest-layer forest-layer--camp is-active"        id="forestCamp"></div>
+    <div class="forest-layer forest-layer--commander-closed"      id="forestCommanderClosed"></div>
+    <div class="forest-layer forest-layer--commander-talk"        id="forestCommanderTalk"></div>
+    <div class="forest-layer forest-layer--shooting"              id="forestShooting"></div>
+    <div class="forest-layer forest-layer--scout"                 id="forestScout"></div>
+    <div class="forest-layer forest-layer--grown"                 id="forestGrown"></div>
+
+    <button class="forest-btn" id="forestBtn">ПОГОВОРИТЬ С КОМАНДИРОМ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="forestTitleInner">
+        <p class="title-bar__text" id="forestTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+  `;
+  return el;
+}
+
+export function playScene5(onDone) {
+  const el = buildForest();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const camp            = el.querySelector("#forestCamp");
+  const commanderClosed = el.querySelector("#forestCommanderClosed");
+  const commanderTalk   = el.querySelector("#forestCommanderTalk");
+  const shooting        = el.querySelector("#forestShooting");
+  const scout           = el.querySelector("#forestScout");
+  const grown           = el.querySelector("#forestGrown");
+  const btn             = el.querySelector("#forestBtn");
+  const inner           = el.querySelector("#forestTitleInner");
+  const textEl          = el.querySelector("#forestTitleText");
+
+  /* ============ ЧАСТЬ 1: Лагерь в лесу ============ */
+
+  after(2000, () => {
+    textEl.textContent =
+      "После этого оставаться в Оболи было опасно. Летом 1943 года меня отправили в партизанский отряд имени Ворошилова.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/20.mp3", 1.0);
+  });
+
+  after(13000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============ ЧАСТЬ 2: Командир, рот закрыт ============ */
+
+  after(14500, () => {
+    camp.classList.remove("is-active");
+    commanderClosed.classList.add("is-active");
+  });
+
+  /* ============ Кнопка «ПОГОВОРИТЬ С КОМАНДИРОМ» ============ */
+
+  after(16500, () => {
+    btn.classList.add("is-visible");
+  });
+
+  /* ============ КЛИК: диалог с командиром ============ */
+
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+
+    // — Портнова, страшно? (командир, рот открыт)
+    after(500, () => {
+      commanderClosed.classList.remove("is-active");
+      commanderTalk.classList.add("is-active");
+
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "— Портнова, страшно?";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      // playVoice("assets/audio/21.mp3", 1.0);
+    });
+
+    // — Страшно. (Зина, командир молчит)
+    after(4500, () => {
+      commanderTalk.classList.remove("is-active");
+      commanderClosed.classList.add("is-active");
+      textEl.textContent = "— Страшно.";
+      // playVoice("assets/audio/22.mp3", 1.0);
+    });
+
+    // — А почему не уходишь? (командир, рот открыт)
+    after(7500, () => {
+      commanderClosed.classList.remove("is-active");
+      commanderTalk.classList.add("is-active");
+      textEl.textContent = "— А почему не уходишь?";
+      // playVoice("assets/audio/23.mp3", 1.0);
+    });
+
+    // — Если все уйдут, кто останется? (Зина, командир молчит)
+    after(11500, () => {
+      commanderTalk.classList.remove("is-active");
+      commanderClosed.classList.add("is-active");
+      textEl.textContent = "— Если все уйдут, кто останется?";
+      // playVoice("assets/audio/24.mp3", 1.0);
+    });
+
+    // — Ты ребёнок. (командир, рот открыт)
+    after(16000, () => {
+      commanderClosed.classList.remove("is-active");
+      commanderTalk.classList.add("is-active");
+      textEl.textContent = "— Ты ребёнок.";
+      // playVoice("assets/audio/25.mp3", 1.0);
+    });
+
+    // — Уже нет. (Зина, командир молчит)
+    after(19500, () => {
+      commanderTalk.classList.remove("is-active");
+      commanderClosed.classList.add("is-active");
+      textEl.textContent = "— Уже нет.";
+      // playVoice("assets/audio/26.mp3", 1.0);
+    });
+
+    // Гасим титр
+    after(24000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* ============ ЧАСТЬ 3: Монолог «В лесу я впервые...» ============ */
+
+    after(26000, () => {
+      textEl.classList.remove("is-fading");
+      textEl.textContent =
+        "В лесу я впервые почувствовала, что я не одна. Что нас много. И что я могу быть нужной.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      // playVoice("assets/audio/27.mp3", 1.0);
+    });
+
+    after(38000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* ============ ЧАСТЬ 4: Зина учится стрелять ============ */
+
+    after(40000, () => {
+      commanderClosed.classList.remove("is-active");
+      shooting.classList.add("is-active");
+
+      textEl.classList.remove("is-fading");
+      textEl.textContent =
+        "С августа 1943 года я — разведчица. Я научилась стрелять.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      // playVoice("assets/audio/28.mp3", 1.0);
+    });
+
+    after(52000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* ============ ЧАСТЬ 5: Зина идёт на задание ============ */
+
+    after(54000, () => {
+      shooting.classList.remove("is-active");
+      scout.classList.add("is-active");
+
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "Я ходила на задания.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      // playVoice("assets/audio/29.mp3", 1.0);
+    });
+
+    after(63000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* ============ ЧАСТЬ 6: Зина выросла ============ */
+
+    after(65000, () => {
+      scout.classList.remove("is-active");
+      grown.classList.add("is-active");
+
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "Я выросла.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      // playVoice("assets/audio/30.mp3", 1.0);
+    });
+
+    after(72000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* ============ Конец сцены ============ */
+
+    after(75000, () => {
+      el.classList.remove("is-active");
+      setTimeout(() => { el.remove(); onDone && onDone(); }, 2000);
+    });
+  });
+}
+/* ============================================================
+   СЦЕНА 6 — ЗАДАНИЕ
+   ============================================================ */
+function buildMestishche() {
+  const el = document.createElement("section");
+  el.className = "scene scene--mestishche";
+  el.innerHTML = `
+    <div class="mestishche-layer mestishche-layer--empty is-active" id="mestEmpty"></div>
+    <div class="mestishche-layer mestishche-layer--walk"            id="mestWalk"></div>
+    <div class="mestishche-layer mestishche-layer--anna-closed"     id="mestAnnaClosed"></div>
+    <div class="mestishche-layer mestishche-layer--anna-talk"       id="mestAnnaTalk"></div>
+    <div class="mestishche-layer mestishche-layer--police"          id="mestPolice"></div>
+    <div class="mestishche-layer mestishche-layer--arrest"          id="mestArrest"></div>
+
+    <button class="mestishche-btn" id="mestBtn">ОКЛИКНУТЬ АННУ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="mestTitleInner">
+        <p class="title-bar__text" id="mestTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+  `;
+  return el;
+}
+
+export function playScene6(onDone) {
+  const el = buildMestishche();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const empty      = el.querySelector("#mestEmpty");
+  const walk       = el.querySelector("#mestWalk");
+  const annaClosed = el.querySelector("#mestAnnaClosed");
+  const annaTalk   = el.querySelector("#mestAnnaTalk");
+  const police     = el.querySelector("#mestPolice");
+  const arrest     = el.querySelector("#mestArrest");
+  const btn        = el.querySelector("#mestBtn");
+  const inner      = el.querySelector("#mestTitleInner");
+  const textEl     = el.querySelector("#mestTitleText");
+
+  /* ============ ЧАСТЬ 1: Деревня Мостище, пусто ============ */
+
+  after(2000, () => {
+    textEl.textContent =
+      "Декабрь 1943 года. «Юные мстители» были раскрыты. Многие арестованы. Я вызвалась установить связь с оставшимися.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/31.mp3", 1.0);
+  });
+
+  after(14000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============ ЧАСТЬ 2: Зина идёт по улице ============ */
+
+  after(15500, () => {
+    empty.classList.remove("is-active");
+    walk.classList.add("is-active");
+  });
+
+  after(16500, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent =
+      "Я возвращалась с задания. Деревня Мостище. Снег. Тишина. Слишком тихая.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/32.mp3", 1.0);
+  });
+
+  after(26000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============ ЧАСТЬ 3: Анна, рот закрыт ============ */
+
+  after(27500, () => {
+    walk.classList.remove("is-active");
+    annaClosed.classList.add("is-active");
+  });
+
+  /* ============ Кнопка «ОКЛИКНУТЬ АННУ» ============ */
+
+  after(29500, () => {
+    btn.classList.add("is-visible");
+  });
+
+  /* ============ КЛИК: Анна кричит ============ */
+
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+
+    // Анна кричит — кадр «рот открыт»
+    after(500, () => {
+      annaClosed.classList.remove("is-active");
+      annaTalk.classList.add("is-active");
+
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "— Вот она! Зина! Это она!";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      // playVoice("assets/audio/33.mp3", 1.0);
+    });
+
+    // Анна снова молчит — возврат на кадр «рот закрыт»
+    after(5500, () => {
+      annaTalk.classList.remove("is-active");
+      annaClosed.classList.add("is-active");
+    });
+
+    // Монолог про Анну
+    after(7000, () => {
+      textEl.textContent =
+        "Её звали Анна Храповицкая. Местная. Она узнала меня. И выдала.";
+      // playVoice("assets/audio/34.mp3", 1.0);
+    });
+
+    // Гасим титр
+    after(14000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* ============ ЧАСТЬ 4: Полицаи ============ */
+
+    after(16000, () => {
+      annaClosed.classList.remove("is-active");
+      police.classList.add("is-active");
+    });
+
+    /* ============ ЧАСТЬ 5: Арест ============ */
+
+    after(21000, () => {
+      police.classList.remove("is-active");
+      arrest.classList.add("is-active");
+
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "Меня схватили.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      // playVoice("assets/audio/35.mp3", 1.0);
+    });
+
+    after(28000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* ============ Конец сцены ============ */
+
+    after(31000, () => {
+      el.classList.remove("is-active");
+      setTimeout(() => { el.remove(); onDone && onDone(); }, 2000);
+    });
+  });
+}
+/* ============================================================
    ФОНОВЫЙ ВЕТЕР
    ============================================================ */
 let windAudio = null;

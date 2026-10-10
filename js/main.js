@@ -1,4 +1,4 @@
-import { runPreloader, playScene0, playScene1, playScene2, playScene3, playScene4, } from "./app.js";
+import { runPreloader, playScene0, playScene1, playScene2, playScene3, playScene4,playScene5, playScene6, } from "./app.js";
 import { clearAll } from "./utils.js";
 
 function start() {
@@ -7,7 +7,11 @@ function start() {
       playScene1(() => {
         playScene2(() => {
           playScene3(() => {
-            playScene4();          // ← сцена 4 «Столовая»
+            playScene4(() => {
+              playScene5(() => {
+                playScene6();          // ← сцена 6 «Задание»
+              });         // ← сцена 5 «Лес»
+            });         // ← сцена 4 «Столовая»
           });  // ← сцена 3 «Листовки»
         });   // ← сюда позже добавим playScene3, playScene4 …
       });

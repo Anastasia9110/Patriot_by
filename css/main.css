@@ -599,3 +599,97 @@ body {
 .canteen-btn.is-visible { opacity: 0.9; pointer-events: auto; }
 .canteen-btn:hover      { opacity: 1; background: #fff; color: #000; }
 .canteen-btn.is-gone    { opacity: 0; pointer-events: none; }
+/* ============================================================
+   СЦЕНА 5 — ЛЕС
+   ============================================================ */
+.scene--forest { background: #0a0a0a; display: block; }
+
+.forest-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.85) contrast(1.05);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  will-change: opacity;
+}
+.forest-layer.is-active { opacity: 1; }
+
+.forest-layer--camp            { background-image: url("../assets/images/scene11-forest-camp.jpg"); }
+.forest-layer--commander-closed{ background-image: url("../assets/images/scene12-forest-commander-closed.jpg"); }
+.forest-layer--commander-talk  { background-image: url("../assets/images/scene13-forest-commander-talk.jpg"); }
+.forest-layer--shooting        { background-image: url("../assets/images/scene14-forest-shooting.jpg"); }
+.forest-layer--scout           { background-image: url("../assets/images/scene15-forest-scout.jpg"); }
+.forest-layer--grown           { background-image: url("../assets/images/scene16-forest-grown.jpg"); }
+
+.forest-btn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.45);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+  pointer-events: none;
+}
+.forest-btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.forest-btn:hover      { opacity: 1; background: #fff; color: #000; }
+.forest-btn.is-gone    { opacity: 0; pointer-events: none; }
+/* ============================================================
+   СЦЕНА 6 — ЗАДАНИЕ
+   ============================================================ */
+.scene--mestishche { background: #0a0a0a; display: block; }
+
+.mestishche-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.85) contrast(1.05);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  will-change: opacity;
+}
+.mestishche-layer.is-active { opacity: 1; }
+
+.mestishche-layer--empty      { background-image: url("../assets/images/scene17-mestishche-empty.jpg"); }
+.mestishche-layer--walk       { background-image: url("../assets/images/scene18-mestishche-zina-walk.jpg"); }
+.mestishche-layer--anna-closed{ background-image: url("../assets/images/scene19-anna-closed.jpg"); }
+.mestishche-layer--anna-talk  { background-image: url("../assets/images/scene20-anna-talk.jpg"); }
+.mestishche-layer--police     { background-image: url("../assets/images/scene21-police.jpg"); }
+.mestishche-layer--arrest     { background-image: url("../assets/images/scene22-arrest.jpg"); }
+
+.mestishche-btn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.45);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+  pointer-events: none;
+}
+.mestishche-btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.mestishche-btn:hover      { opacity: 1; background: #fff; color: #000; }
+.mestishche-btn.is-gone    { opacity: 0; pointer-events: none; }
