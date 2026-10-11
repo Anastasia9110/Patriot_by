@@ -1,0 +1,376 @@
+/* ============================================================
+   ЗАСТАВКА
+   ============================================================ */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 10002;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 1.5s ease;
+}
+.intro.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.intro__bg {
+  position: absolute;
+  inset: 0;
+  background-image: url("../assets/images/menu/intro-bg.jpg");
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.35) contrast(1.2) blur(2px);
+  opacity: 0;
+  transition: opacity 3s ease;
+  z-index: 1;
+}
+.intro__bg.is-visible { opacity: 0.85; }
+
+.intro__inner {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 5vw;
+}
+
+.intro__title {
+  font-family: "Special Elite", "Neucha", serif;
+  font-size: clamp(2.5rem, 9vw, 7rem);
+  letter-spacing: 0.18em;
+  text-indent: 0.18em;
+  color: #b11226;
+  text-shadow:
+    0 0 40px rgba(177, 18, 38, 0.55),
+    0 0 12px rgba(177, 18, 38, 0.4);
+  opacity: 0;
+  transform: scale(0.96);
+  transition: opacity 3s ease, transform 3s ease;
+  margin-bottom: 2vh;
+  white-space: nowrap;
+}
+.intro__title.is-visible { opacity: 1; transform: scale(1); }
+
+.intro__subtitle {
+  font-family: "Special Elite", "Neucha", serif;
+  font-size: clamp(0.9rem, 1.3vw, 1.2rem);
+  letter-spacing: 0.35em;
+  text-indent: 0.35em;
+  color: #e8e4d6;
+  opacity: 0;
+  transition: opacity 3s ease 1s;
+  margin-bottom: 8vh;
+}
+.intro__subtitle.is-visible { opacity: 0.85; }
+
+.intro__btn {
+  padding: 18px 60px;
+  border: 1px solid rgba(232, 228, 214, 0.55);
+  background: none;
+  color: #e8e4d6;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.9rem, 1.4vw, 1.15rem);
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity 2s ease 2s,
+    background 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+.intro__btn.is-visible { opacity: 0.85; pointer-events: auto; }
+.intro__btn:hover {
+  opacity: 1;
+  background: #b11226;
+  border-color: #b11226;
+  color: #fff;
+}
+
+/* ============================================================
+   БЕЛАЯ ВСПЫШКА — плавная
+   ============================================================ */
+.flash {
+  position: fixed;
+  inset: 0;
+  z-index: 10005;
+  background: radial-gradient(
+    ellipse at center,
+    #ffffff 0%,
+    #f4f4f4 40%,
+    #e8e8e8 100%
+  );
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 1.4s cubic-bezier(0.45, 0, 0.55, 1);
+  will-change: opacity;
+}
+.flash.is-active {
+  opacity: 1;
+}
+
+/* ============================================================
+   МЕНЮ
+   ============================================================ */
+.menu {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transition: opacity 1.8s ease;
+  pointer-events: none;
+}
+.menu.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.menu__header {
+  padding: 4vh 5vw 0;
+  display: flex;
+  justify-content: flex-start;
+}
+.menu__brand {
+  font-family: "Special Elite", "Neucha", serif;
+  color: #b11226;
+  font-size: clamp(1rem, 1.6vw, 1.4rem);
+  letter-spacing: 0.25em;
+  text-indent: 0.25em;
+  text-shadow: 0 0 20px rgba(177, 18, 38, 0.4);
+}
+
+.menu__grid {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(3vw, 6vw, 8vw);
+  padding: 0 5vw;
+  flex-wrap: wrap;
+}
+
+.card {
+  position: relative;
+  width: clamp(220px, 22vw, 320px);
+  background: none;
+  border: none;
+  padding: 0;
+  color: #e8e4d6;
+  font-family: "Special Elite", "Neucha", serif;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.6s ease;
+}
+.card:hover { transform: translateY(-6px); }
+
+.card__photo {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.7) contrast(1.15);
+  transition: filter 0.6s ease, transform 0.6s ease;
+  border: 1px solid rgba(232, 228, 214, 0.15);
+}
+.card:hover .card__photo {
+  filter: grayscale(1) brightness(0.95) contrast(1.2);
+}
+
+.card__line {
+  width: 40%;
+  height: 2px;
+  background: #b11226;
+  margin: 16px 0 12px;
+  transition: width 0.6s ease, box-shadow 0.6s ease;
+}
+.card:hover .card__line {
+  width: 70%;
+  box-shadow: 0 0 16px rgba(177, 18, 38, 0.9);
+}
+
+.card__name {
+  font-size: clamp(0.95rem, 1.3vw, 1.15rem);
+  letter-spacing: 0.2em;
+  text-indent: 0.2em;
+  text-align: center;
+}
+.card__years {
+  font-size: clamp(0.75rem, 1vw, 0.9rem);
+  letter-spacing: 0.25em;
+  text-indent: 0.25em;
+  opacity: 0.6;
+  margin-top: 8px;
+}
+
+.card.is-soon { cursor: not-allowed; opacity: 0.5; }
+.card.is-soon .card__photo {
+  filter: grayscale(1) brightness(0.4) contrast(1.1);
+}
+.card.is-soon:hover { transform: none; }
+.card.is-soon .card__line { width: 40%; box-shadow: none; }
+
+.card__badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  padding: 6px 14px;
+  border: 1px solid #b11226;
+  color: #b11226;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.3em;
+  text-indent: 0.3em;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.menu__footer {
+  padding: 3vh 5vw 4vh;
+  text-align: center;
+  font-family: "Special Elite", "Neucha", serif;
+  color: #e8e4d6;
+  font-size: clamp(0.75rem, 1vw, 0.9rem);
+  letter-spacing: 0.35em;
+  text-indent: 0.35em;
+  opacity: 0.5;
+}
+
+/* ============================================================
+   КНОПКА ВЫХОДА
+   ============================================================ */
+.exit-btn {
+  position: fixed;
+  top: 3vh;
+  right: 3vw;
+  z-index: 9000;
+  padding: 10px 20px;
+  border: 1px solid rgba(232, 228, 214, 0.4);
+  background: rgba(0, 0, 0, 0.55);
+  color: #e8e4d6;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.7rem, 1vw, 0.85rem);
+  letter-spacing: 0.35em;
+  text-indent: 0.35em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease, background 0.3s ease, color 0.3s ease,
+              border-color 0.3s ease;
+}
+.exit-btn.is-visible { opacity: 0.75; pointer-events: auto; }
+.exit-btn:hover {
+  opacity: 1;
+  background: #b11226;
+  border-color: #b11226;
+  color: #fff;
+}
+
+/* ============================================================
+   СТАРТОВЫЙ ЭКРАН ИСТОРИИ
+   ============================================================ */
+.story-start {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  opacity: 0;                 /* ← 0, а не 1 */
+  pointer-events: none;       /* ← выключен, пока не активен */
+  transition: opacity 1.5s ease;
+}
+.story-start.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.story-start.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.story-start__word {
+  font-family: "Special Elite", "Neucha", serif;
+  font-size: clamp(2.5rem, 9vw, 6rem);
+  letter-spacing: clamp(0.6em, 1.4vw, 1.4em);
+  text-indent: clamp(0.6em, 1.4vw, 1.4em);
+  color: #fff;
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
+  white-space: nowrap;
+  text-align: center;
+  transition: opacity 1.6s ease, transform 1.6s ease;
+}
+
+.story-start__btn {
+  margin-top: 8vh;
+  padding: 18px 60px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: none;
+  color: #fff;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.9rem, 1.4vw, 1.15rem);
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  cursor: pointer;
+  opacity: 0.85;
+  transition: opacity 1.2s ease, background 0.3s ease, color 0.3s ease;
+}
+.story-start__btn:hover {
+  opacity: 1;
+  background: #fff;
+  color: #000;
+}
+
+/* ============================================================
+   ПРЕЛОАДЕР — скрыт по умолчанию
+   ============================================================ */
+.preloader {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: #000;
+  transition: background 2s ease, opacity 1.2s ease;
+}
+.preloader.is-active,
+.preloader.is-visible {
+  display: block;
+}
+.preloader.is-flashing { background: #fff; }
+.preloader.is-gone { opacity: 0; pointer-events: none; }
+
+/* ============================================================
+   АДАПТИВ
+   ============================================================ */
+@media (max-width: 700px) {
+  .menu__grid {
+    flex-direction: column;
+    gap: 4vh;
+    padding: 4vh 8vw;
+    overflow-y: auto;
+  }
+  .card { width: min(70vw, 320px); }
+  .intro__title { white-space: normal; }
+  .story-start__word {
+    font-size: clamp(2rem, 12vw, 3.5rem);
+    letter-spacing: 0.7em;
+    text-indent: 0.7em;
+  }
+  .story-start__btn { padding: 14px 40px; margin-top: 6vh; }
+  .exit-btn {
+    top: 2vh;
+    right: 4vw;
+    padding: 8px 16px;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-indent: 0.25em;
+  }
+}

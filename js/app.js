@@ -26,16 +26,35 @@ export function runPreloader(onDone) {
 }
 
 /* ============================================================
-   ГОЛОС
+   ГОЛОСА — все активные реплики в одном месте,
+   чтобы можно было остановить их разом
    ============================================================ */
+const activeVoices = new Set();
+
 function playVoice(src, volume = 1.0) {
   if (!soundOn) return null;
   const a = new Audio(src);
   a.volume = volume;
+
+  activeVoices.add(a);
+
+  const cleanUp = () => activeVoices.delete(a);
+  a.addEventListener("ended", cleanUp, { once: true });
+  a.addEventListener("error", cleanUp, { once: true });
+
   a.play().catch((e) => console.warn("Не удалось:", src, e));
   return a;
 }
 
+export function stopAllVoices() {
+  activeVoices.forEach((a) => {
+    try {
+      a.pause();
+      a.currentTime = 0;
+    } catch (e) { /* ignore */ }
+  });
+  activeVoices.clear();
+}
 /* ============================================================
    СЦЕНА 0 — ГАЗЕТА
    ============================================================ */
