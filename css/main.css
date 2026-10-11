@@ -693,3 +693,303 @@ body {
 .mestishche-btn.is-visible { opacity: 0.9; pointer-events: auto; }
 .mestishche-btn:hover      { opacity: 1; background: #fff; color: #000; }
 .mestishche-btn.is-gone    { opacity: 0; pointer-events: none; }
+/* ============================================================
+   СЦЕНА 7 — ДОПРОС
+   ============================================================ */
+.scene--interrog { background: #0a0a0a; display: block; }
+
+.interrog-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.82) contrast(1.08);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  will-change: opacity;
+}
+.interrog-layer.is-active { opacity: 1; }
+
+.interrog-layer--empty         { background-image: url("../assets/images/scene23-interrog-empty.jpg"); }
+.interrog-layer--officer-closed{ background-image: url("../assets/images/scene24-officer-closed.jpg"); }
+.interrog-layer--officer-talk  { background-image: url("../assets/images/scene25-officer-talk.jpg"); }
+.interrog-layer--zina-table    { background-image: url("../assets/images/scene26-zina-table.jpg"); }
+.interrog-layer--zina-talk     { background-image: url("../assets/images/scene26b-zina-talk.jpg"); }
+.interrog-layer--hand-gun      { background-image: url("../assets/images/scene27-hand-gun.jpg"); }
+.interrog-layer--run           { background-image: url("../assets/images/scene29-run.jpg"); }
+
+/* ---------- Вспышка выстрела ---------- */
+.interrog-flash {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.interrog-flash.is-active { opacity: 1; }
+
+/* ---------- Кнопка ---------- */
+.interrog-btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+  pointer-events: none;
+}
+.interrog-btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.interrog-btn:hover      { opacity: 1; background: #fff; color: #000; }
+.interrog-btn.is-gone    { opacity: 0; pointer-events: none; }
+/* ============================================================
+   СЦЕНА 8 — РЕКА
+   ============================================================ */
+.scene--river { background: #0a0a0a; display: block; }
+
+.river-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.8) contrast(1.1);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  will-change: opacity;
+}
+.river-layer.is-active { opacity: 1; }
+
+.river-layer--run      { background-image: url("../assets/images/scene30-river-run.jpg"); }
+.river-layer--bank     { background-image: url("../assets/images/scene31-river-bank.jpg"); }
+.river-layer--zina     { background-image: url("../assets/images/scene32-river-zina-water.jpg"); }
+.river-layer--pursuers { background-image: url("../assets/images/scene33-river-pursuers.jpg"); }
+.river-layer--swim     { background-image: url("../assets/images/scene34-river-swim.jpg"); }
+.river-layer--grab     { background-image: url("../assets/images/scene35-river-grab.jpg"); }
+.river-layer--caught   { background-image: url("../assets/images/scene36-river-caught.jpg"); }
+
+.river-btn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.45);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+  pointer-events: none;
+}
+.river-btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.river-btn:hover      { opacity: 1; background: #fff; color: #000; }
+.river-btn.is-gone    { opacity: 0; pointer-events: none; }
+/* ============================================================
+   СЦЕНА 9 — ТЮРЬМА
+   ============================================================ */
+.scene--prison { background: #050505; display: block; }
+
+.prison-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.7) contrast(1.15);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.8s ease;
+  will-change: opacity;
+}
+.prison-layer.is-active { opacity: 1; }
+
+.prison-layer--cell            { background-image: url("../assets/images/scene37-prison-cell.jpg"); }
+.prison-layer--officer-closed  { background-image: url("../assets/images/scene38-prison-officer-closed.jpg"); }
+.prison-layer--officer-talk    { background-image: url("../assets/images/scene39-prison-officer-talk.jpg"); }
+.prison-layer--zina            { background-image: url("../assets/images/scene40-prison-zina.jpg"); }
+.prison-layer--zina-talk       { background-image: url("../assets/images/scene41-prison-zina-talk.jpg"); }
+.prison-layer--final           { background-image: url("../assets/images/scene42-prison-final.jpg"); }
+
+.prison-btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(0, 0, 0, 0.6);
+  color: #e8e4d6;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+  pointer-events: none;
+}
+.prison-btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.prison-btn:hover      { opacity: 1; background: #fff; color: #000; }
+.prison-btn.is-gone    { opacity: 0; pointer-events: none; }
+/* ============================================================
+   СЦЕНА 10 — УТРО (финал)
+   ============================================================ */
+.scene--morning { background: #000; display: block; }
+
+.morning-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.85) contrast(1.05);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 2.5s ease;
+  will-change: opacity;
+}
+.morning-layer.is-active { opacity: 1; }
+
+.morning-layer--dawn    { background-image: url("../assets/images/scene43-morning-dawn.jpg"); }
+.morning-layer--walk    { background-image: url("../assets/images/scene44-morning-walk.jpg"); }
+.morning-layer--convoy  { background-image: url("../assets/images/scene45-morning-convoy.jpg"); }
+.morning-layer--feet    { background-image: url("../assets/images/scene46-morning-feet.jpg"); }
+.morning-layer--face    { background-image: url("../assets/images/scene47-morning-face.jpg"); }
+
+/* ---------- Белый финальный экран ---------- */
+.morning-white {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: #fff;
+  opacity: 0;
+  transition: opacity 2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 5vh 5vw;
+  text-align: center;
+  pointer-events: none;
+}
+.morning-white.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ---------- Текст по буквам ---------- */
+.morning-credits {
+  font-family: "Special Elite", "Neucha", "Cutive Mono", monospace;
+  color: #111;
+  font-size: clamp(1rem, 1.6vw, 1.5rem);
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  max-width: 700px;
+  min-height: 4em;
+  margin-bottom: 6vh;
+  white-space: pre-wrap;
+}
+.morning-credits .cursor {
+  display: inline-block;
+  width: 2px;
+  background: #111;
+  animation: blink 0.8s steps(2) infinite;
+  margin-left: 2px;
+  vertical-align: bottom;
+  height: 1.1em;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0; }
+}
+
+/* ---------- Строки после «Ей было семнадцать» ---------- */
+.morning-whisper {
+  font-family: "Special Elite", "Neucha", serif;
+  color: #333;
+  font-size: clamp(1rem, 1.3vw, 1.3rem);
+  line-height: 1.7;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transition: opacity 2s ease;
+  margin-bottom: 5vh;
+  text-align: center;
+  max-width: 700px;
+}
+.morning-whisper.is-visible { opacity: 0.85; }
+
+/* ---------- Кнопка «ПОМНИТЬ» ---------- */
+.morning-btn {
+  padding: 18px 60px;
+  border: 1px solid rgba(0, 0, 0, 0.65);
+  background: none;
+  color: #111;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.9rem, 1.4vw, 1.15rem);
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 1.5s ease, background 0.3s ease, color 0.3s ease;
+  pointer-events: none;
+}
+.morning-btn.is-visible {
+  opacity: 0.85;
+  pointer-events: auto;
+}
+.morning-btn:hover {
+  opacity: 1;
+  background: #111;
+  color: #fff;
+}
+
+/* ---------- Финальный монолог ---------- */
+.morning-final {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  background: #fff;
+  color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5vh 6vw;
+  text-align: center;
+  font-family: "Special Elite", "Neucha", serif;
+  font-size: clamp(1rem, 1.35vw, 1.35rem);
+  line-height: 1.75;
+  letter-spacing: 0.03em;
+  opacity: 0;
+  transition: opacity 2.5s ease;
+  pointer-events: none;
+}
+.morning-final.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.morning-final__inner {
+  max-width: 800px;
+}
+.morning-final__p {
+  opacity: 0;
+  transition: opacity 2s ease;
+  margin-bottom: 2vh;
+}
+.morning-final__p.is-visible { opacity: 1; }

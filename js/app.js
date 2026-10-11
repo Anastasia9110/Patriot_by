@@ -1178,6 +1178,818 @@ export function playScene6(onDone) {
   });
 }
 /* ============================================================
+   СЦЕНА 7 — ДОПРОС
+   ============================================================ */
+function buildInterrog() {
+  const el = document.createElement("section");
+  el.className = "scene scene--interrog";
+  el.innerHTML = `
+    <div class="interrog-layer interrog-layer--empty is-active"  id="intEmpty"></div>
+    <div class="interrog-layer interrog-layer--officer-closed"   id="intOfficerClosed"></div>
+    <div class="interrog-layer interrog-layer--officer-talk"     id="intOfficerTalk"></div>
+    <div class="interrog-layer interrog-layer--zina-table"       id="intZinaTable"></div>
+    <div class="interrog-layer interrog-layer--zina-talk"        id="intZinaTalk"></div>
+    <div class="interrog-layer interrog-layer--hand-gun"         id="intHandGun"></div>
+    <div class="interrog-layer interrog-layer--run"              id="intRun"></div>
+
+    <div class="interrog-flash" id="intFlash"></div>
+
+    <button class="interrog-btn" id="intBtn">ДАЛЕЕ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="intTitleInner">
+        <p class="title-bar__text" id="intTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+  `;
+  return el;
+}
+
+export function playScene7(onDone) {
+  const el = buildInterrog();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const empty         = el.querySelector("#intEmpty");
+  const officerClosed = el.querySelector("#intOfficerClosed");
+  const officerTalk   = el.querySelector("#intOfficerTalk");
+  const zinaTable     = el.querySelector("#intZinaTable");
+  const zinaTalk      = el.querySelector("#intZinaTalk");
+  const handGun       = el.querySelector("#intHandGun");
+  const run           = el.querySelector("#intRun");
+  const flash         = el.querySelector("#intFlash");
+  const btn           = el.querySelector("#intBtn");
+  const inner         = el.querySelector("#intTitleInner");
+  const textEl        = el.querySelector("#intTitleText");
+
+  /* ---------- ЧАСТЬ 1: Пустая комната ---------- */
+
+  after(2000, () => {
+    textEl.textContent = "Меня допрашивали. Долго. Я молчала.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+  });
+
+  after(9000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ---------- ЧАСТЬ 2: Следователь, рот закрыт ---------- */
+
+  after(10500, () => {
+    empty.classList.remove("is-active");
+    officerClosed.classList.add("is-active");
+  });
+
+  /* ---------- Кнопка 1: «ОТВЕТИТЬ СЛЕДОВАТЕЛЮ» ---------- */
+
+  after(12500, () => {
+    btn.textContent = "ОТВЕТИТЬ СЛЕДОВАТЕЛЮ";
+    btn.classList.remove("is-gone");
+    btn.classList.add("is-visible");
+  });
+
+  const onAnswerClick = () => {
+    btn.removeEventListener("click", onAnswerClick);
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+
+    // Следователь кричит
+    officerClosed.classList.remove("is-active");
+    officerTalk.classList.add("is-active");
+
+    // — Кто ещё? Где отряд? Говори!
+    after(500, () => {
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "— Кто ещё? Где отряд? Говори!";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+    });
+
+    // — … (Зина молчит) → кадр «Зина за столом»
+    after(5500, () => {
+      officerTalk.classList.remove("is-active");
+      zinaTable.classList.add("is-active");
+      textEl.textContent = "— …";
+    });
+
+    // — Ты пожалеешь. (следователь)
+    after(9000, () => {
+      zinaTable.classList.remove("is-active");
+      officerTalk.classList.add("is-active");
+      textEl.textContent = "— Ты пожалеешь.";
+    });
+
+    // — Я уже жалею. Что не успела больше. (Зина, рот ОТКРЫТ)
+    after(13000, () => {
+      officerTalk.classList.remove("is-active");
+      zinaTalk.classList.add("is-active");
+      textEl.textContent = "— Я уже жалею. Что не успела больше.";
+    });
+
+    // Зина закончила — рот ЗАКРЫТ
+    after(17500, () => {
+      zinaTalk.classList.remove("is-active");
+      zinaTable.classList.add("is-active");
+    });
+
+    // Гасим титр
+    after(19000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* ---------- ЧАСТЬ 3: Рука тянется к пистолету ---------- */
+
+    after(21000, () => {
+      zinaTable.classList.remove("is-active");
+      zinaTalk.classList.remove("is-active");
+      handGun.classList.add("is-active");
+
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "Только не дрожи. Только не дрожи.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+    });
+
+    after(27000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* ---------- Кнопка 2: «ВЫХВАТИТЬ ПИСТОЛЕТ» ---------- */
+
+    after(29000, () => {
+      btn.textContent = "ВЫХВАТИТЬ ПИСТОЛЕТ";
+      btn.classList.remove("is-gone");
+      btn.classList.add("is-visible");
+    });
+
+    const onShootClick = () => {
+      btn.removeEventListener("click", onShootClick);
+      btn.classList.remove("is-visible");
+      btn.classList.add("is-gone");
+
+      // Вспышка
+      flash.classList.add("is-active");
+      setTimeout(() => { flash.classList.remove("is-active"); }, 400);
+
+      // Переход на кадр «Зина бежит»
+      after(600, () => {
+        handGun.classList.remove("is-active");
+        run.classList.add("is-active");
+
+        textEl.classList.remove("is-fading");
+        textEl.textContent = "Я выстрелила. И побежала.";
+        inner.classList.add("is-visible");
+        textEl.classList.add("is-visible");
+      });
+
+      after(9000, () => {
+        textEl.classList.remove("is-visible");
+        textEl.classList.add("is-fading");
+        inner.classList.remove("is-visible");
+      });
+
+      after(12000, () => {
+        el.classList.remove("is-active");
+        setTimeout(() => { el.remove(); onDone && onDone(); }, 2000);
+      });
+    };
+
+    btn.addEventListener("click", onShootClick, { once: true });
+  };
+
+  btn.addEventListener("click", onAnswerClick, { once: true });
+}
+/* ============================================================
+   СЦЕНА 8 — РЕКА
+   ============================================================ */
+function buildRiver() {
+  const el = document.createElement("section");
+  el.className = "scene scene--river";
+  el.innerHTML = `
+    <div class="river-layer river-layer--run is-active" id="rivRun"></div>
+    <div class="river-layer river-layer--bank"          id="rivBank"></div>
+    <div class="river-layer river-layer--zina"          id="rivZina"></div>
+    <div class="river-layer river-layer--pursuers"      id="rivPursuers"></div>
+    <div class="river-layer river-layer--swim"          id="rivSwim"></div>
+    <div class="river-layer river-layer--grab"          id="rivGrab"></div>
+    <div class="river-layer river-layer--caught"        id="rivCaught"></div>
+
+    <button class="river-btn" id="riverBtn">БЕЖАТЬ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="riverTitleInner">
+        <p class="title-bar__text" id="riverTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+  `;
+  return el;
+}
+
+export function playScene8(onDone) {
+  const el = buildRiver();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const run       = el.querySelector("#rivRun");
+  const bank      = el.querySelector("#rivBank");
+  const zina      = el.querySelector("#rivZina");
+  const pursuers  = el.querySelector("#rivPursuers");
+  const swim      = el.querySelector("#rivSwim");
+  const grab      = el.querySelector("#rivGrab");
+  const caught    = el.querySelector("#rivCaught");
+  const btn       = el.querySelector("#riverBtn");
+  const inner     = el.querySelector("#riverTitleInner");
+  const textEl    = el.querySelector("#riverTitleText");
+
+  /* ============ ЧАСТЬ 1: Зина бежит через лес ============ */
+
+  after(2000, () => {
+    textEl.textContent = "Я бежала. Не помню сколько. Ноги несли сами.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/42.mp3", 1.0);
+  });
+
+  after(10000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============ ЧАСТЬ 2: Река ============ */
+
+  after(11500, () => {
+    run.classList.remove("is-active");
+    bank.classList.add("is-active");
+  });
+
+  after(12500, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "Река. За ней — лес. Если переплыву — уйду.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/43.mp3", 1.0);
+  });
+
+  after(22000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============ ЧАСТЬ 3: Зина у воды ============ */
+
+  after(23500, () => {
+    bank.classList.remove("is-active");
+    zina.classList.add("is-active");
+  });
+
+  /* ============ Кнопка «БЕЖАТЬ» ============ */
+
+  after(25500, () => {
+    btn.classList.add("is-visible");
+  });
+
+  /* ============ КЛИК: погоня ============ */
+
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+
+    /* ---------- Преследователи ---------- */
+
+    after(500, () => {
+      zina.classList.remove("is-active");
+      pursuers.classList.add("is-active");
+
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "Они уже были рядом.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      // playVoice("assets/audio/44.mp3", 1.0);
+    });
+
+    after(5000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* ---------- Зина в воде ---------- */
+
+    after(6500, () => {
+      pursuers.classList.remove("is-active");
+      swim.classList.add("is-active");
+
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "Вода обжигала.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      // playVoice("assets/audio/45.mp3", 1.0);
+    });
+
+    after(13000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* ---------- Руки хватают ---------- */
+
+    after(14500, () => {
+      swim.classList.remove("is-active");
+      grab.classList.add("is-active");
+    });
+
+    /* ---------- Зина на снегу ---------- */
+
+    after(19000, () => {
+      grab.classList.remove("is-active");
+      caught.classList.add("is-active");
+
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "Они вытащили меня. Я не сопротивлялась. Сил не было.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      // playVoice("assets/audio/46.mp3", 1.0);
+    });
+
+    after(29000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* ============ Конец сцены ============ */
+
+    after(32000, () => {
+      el.classList.remove("is-active");
+      setTimeout(() => { el.remove(); onDone && onDone(); }, 2000);
+    });
+  });
+}
+/* ============================================================
+   СЦЕНА 9 — ТЮРЬМА
+   ============================================================ */
+function buildPrison() {
+  const el = document.createElement("section");
+  el.className = "scene scene--prison";
+  el.innerHTML = `
+    <div class="prison-layer prison-layer--cell is-active"   id="priCell"></div>
+    <div class="prison-layer prison-layer--officer-closed"   id="priOfficerClosed"></div>
+    <div class="prison-layer prison-layer--officer-talk"     id="priOfficerTalk"></div>
+    <div class="prison-layer prison-layer--zina"             id="priZina"></div>
+    <div class="prison-layer prison-layer--zina-talk"        id="priZinaTalk"></div>
+    <div class="prison-layer prison-layer--final"            id="priFinal"></div>
+
+    <button class="prison-btn" id="priBtn">ОТВЕЧАТЬ СЛЕДОВАТЕЛЮ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="priTitleInner">
+        <p class="title-bar__text" id="priTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+  `;
+  return el;
+}
+
+export function playScene9(onDone) {
+  const el = buildPrison();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const cell          = el.querySelector("#priCell");
+  const officerClosed = el.querySelector("#priOfficerClosed");
+  const officerTalk   = el.querySelector("#priOfficerTalk");
+  const zina          = el.querySelector("#priZina");
+  const zinaTalk      = el.querySelector("#priZinaTalk");
+  const final         = el.querySelector("#priFinal");
+  const btn           = el.querySelector("#priBtn");
+  const inner         = el.querySelector("#priTitleInner");
+  const textEl        = el.querySelector("#priTitleText");
+
+  /* ============ ЧАСТЬ 1: Тёмная камера ============ */
+
+  after(2000, () => {
+    textEl.textContent = "Меня пытали. Больше месяца. Я поседела. Мне было семнадцать.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/47.mp3", 1.0);
+  });
+
+  after(12000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============ ЧАСТЬ 2: Следователь, рот закрыт ============ */
+
+  after(13500, () => {
+    cell.classList.remove("is-active");
+    officerClosed.classList.add("is-active");
+  });
+
+  /* ============ Кнопка «ОТВЕЧАТЬ СЛЕДОВАТЕЛЮ» ============ */
+
+  after(15500, () => {
+    btn.classList.add("is-visible");
+  });
+
+  /* ============ КЛИК: диалог ============ */
+
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+
+    /* ---------- — Ты скажешь имена. (следователь) ---------- */
+
+    after(500, () => {
+      officerClosed.classList.remove("is-active");
+      officerTalk.classList.add("is-active");
+
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "— Ты скажешь имена.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      // playVoice("assets/audio/48.mp3", 1.0);
+    });
+
+    /* ---------- — Нет. (Зина, рот открыт) ---------- */
+
+    after(4500, () => {
+      officerTalk.classList.remove("is-active");
+      zinaTalk.classList.add("is-active");
+
+      textEl.textContent = "— Нет.";
+      // playVoice("assets/audio/49.mp3", 1.0);
+    });
+
+    /* ---------- — Ты пожалеешь. (следователь) ---------- */
+
+    after(7500, () => {
+      zinaTalk.classList.remove("is-active");
+      officerTalk.classList.add("is-active");
+
+      textEl.textContent = "— Ты пожалеешь.";
+      // playVoice("assets/audio/50.mp3", 1.0);
+    });
+
+    /* ---------- — Я не скажу. (Зина, рот открыт) ---------- */
+
+    after(11000, () => {
+      officerTalk.classList.remove("is-active");
+      zinaTalk.classList.add("is-active");
+
+      textEl.textContent = "— Я не скажу.";
+      // playVoice("assets/audio/51.mp3", 1.0);
+    });
+
+    /* ---------- Пауза. Долгая. ---------- */
+
+    after(15000, () => {
+      zinaTalk.classList.remove("is-active");
+      zina.classList.add("is-active");
+
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* ---------- Монолог «Я не сказала ничего...» ---------- */
+
+    after(18000, () => {
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "Я не сказала ничего.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      // playVoice("assets/audio/52.mp3", 1.0);
+    });
+
+    after(23000, () => {
+      textEl.textContent = "Не потому что герой.";
+    });
+
+    after(27000, () => {
+      textEl.textContent = "Потому что имена — это люди.";
+    });
+
+    after(32000, () => {
+      textEl.textContent = "А людей я не отдам.";
+    });
+
+    /* ---------- Финальный кадр: Зина у стены, свет ---------- */
+
+    after(40000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+
+      zina.classList.remove("is-active");
+      final.classList.add("is-active");
+    });
+
+    /* ---------- Пауза 8 секунд — просто кадр, тишина ---------- */
+
+    after(48000, () => {
+      el.classList.remove("is-active");
+      setTimeout(() => { el.remove(); onDone && onDone(); }, 2000);
+    });
+  });
+}
+/* ============================================================
+   СЦЕНА 10 — УТРО (финал)
+   ============================================================ */
+function buildMorning() {
+  const el = document.createElement("section");
+  el.className = "scene scene--morning";
+  el.innerHTML = `
+    <div class="morning-layer morning-layer--dawn is-active" id="morDawn"></div>
+    <div class="morning-layer morning-layer--walk"           id="morWalk"></div>
+    <div class="morning-layer morning-layer--convoy"         id="morConvoy"></div>
+    <div class="morning-layer morning-layer--feet"           id="morFeet"></div>
+    <div class="morning-layer morning-layer--face"           id="morFace"></div>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="morTitleInner">
+        <p class="title-bar__text" id="morTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+
+    <div class="morning-white" id="morWhite">
+      <p class="morning-credits" id="morCredits"></p>
+      <p class="morning-whisper" id="morWhisper"></p>
+      <button class="morning-btn" id="morBtn">ПОМНИТЬ</button>
+    </div>
+
+    <div class="morning-final" id="morFinal">
+      <div class="morning-final__inner">
+        <p class="morning-final__p" id="morP1"></p>
+        <p class="morning-final__p" id="morP2"></p>
+        <p class="morning-final__p" id="morP3"></p>
+      </div>
+    </div>
+  `;
+  return el;
+}
+
+export function playScene10(onDone) {
+  const el = buildMorning();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const dawn    = el.querySelector("#morDawn");
+  const walk    = el.querySelector("#morWalk");
+  const convoy  = el.querySelector("#morConvoy");
+  const feet    = el.querySelector("#morFeet");
+  const face    = el.querySelector("#morFace");
+  const white   = el.querySelector("#morWhite");
+  const credits = el.querySelector("#morCredits");
+  const whisper = el.querySelector("#morWhisper");
+  const btn     = el.querySelector("#morBtn");
+  const finalBox = el.querySelector("#morFinal");
+  const p1      = el.querySelector("#morP1");
+  const p2      = el.querySelector("#morP2");
+  const p3      = el.querySelector("#morP3");
+  const inner   = el.querySelector("#morTitleInner");
+  const textEl  = el.querySelector("#morTitleText");
+
+  /* ============ ЧАСТЬ 1: Рассвет ============ */
+
+  after(2000, () => {
+    textEl.textContent = "Утром 13 января 1944 года меня вывели на расстрел.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/53.mp3", 1.0);
+  });
+
+  after(12000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============ ЧАСТЬ 2: Зина идёт ============ */
+
+  after(14000, () => {
+    dawn.classList.remove("is-active");
+    walk.classList.add("is-active");
+  });
+
+  after(15000, () => {
+    // Бабушка (в памяти)
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Зина, ты вернёшься?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/54.mp3", 1.0);
+  });
+
+  after(20000, () => {
+    textEl.textContent = "— Я вернусь, бабушка. Только не вся.";
+    // playVoice("assets/audio/55.mp3", 1.0);
+  });
+
+  after(25000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============ ЧАСТЬ 3: Конвой ============ */
+
+  after(26500, () => {
+    walk.classList.remove("is-active");
+    convoy.classList.add("is-active");
+  });
+
+  after(27500, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "Я шла босая. По снегу. Слепая. Седая.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/56.mp3", 1.0);
+  });
+
+  after(34000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  // Пауза + «Но прямая.»
+  after(36000, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "Но прямая.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/57.mp3", 1.0);
+  });
+
+  after(41000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============ ЧАСТЬ 4: Босые ноги ============ */
+
+  after(42500, () => {
+    convoy.classList.remove("is-active");
+    feet.classList.add("is-active");
+  });
+
+  /* ============ ЧАСТЬ 5: Лицо Зины ============ */
+
+  after(47000, () => {
+    feet.classList.remove("is-active");
+    face.classList.add("is-active");
+
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "Я не просила. Я не плакала. Я просто шла.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/58.mp3", 1.0);
+  });
+
+  after(56000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============ ЧАСТЬ 6: Белый экран ============ */
+
+  after(58000, () => {
+    white.classList.add("is-active");
+    // playVoice("assets/audio/59.mp3", 1.0);  // «Я не жалею.»
+  });
+
+  after(62000, () => {
+    // playVoice("assets/audio/60.mp3", 1.0);  // «Я была счастлива.»
+  });
+
+  after(66000, () => {
+    // playVoice("assets/audio/61.mp3", 1.0);  // «Потому что успела...»
+  });
+
+  /* ============ Печатаем текст по буквам ============ */
+  after(70000, () => {
+    typeText(
+      credits,
+      "Зинаида Мартыновна Портнова.\n1926–1944.\nГерой Советского Союза.\nПосмертно.",
+      55,
+      () => {
+        // После печати — шёпот
+        after(1500, () => {
+          whisper.textContent = "Ей было семнадцать.";
+          whisper.classList.add("is-visible");
+          // playVoice("assets/audio/62.mp3", 1.0);
+        });
+
+        after(6000, () => {
+          whisper.textContent = "Ей было семнадцать.\nМне было семнадцать.";
+          // playVoice("assets/audio/63.mp3", 1.0);
+        });
+
+        // Кнопка «ПОМНИТЬ»
+        after(11000, () => {
+          btn.classList.add("is-visible");
+        });
+      }
+    );
+  });
+
+  /* ============ КЛИК «ПОМНИТЬ» ============ */
+
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+    white.classList.remove("is-active");
+
+    finalBox.classList.add("is-visible");
+
+    // playVoice("assets/audio/64.mp3", 1.0);
+
+    after(500, () => {
+      p1.textContent = "История Зины Портновой — это не только про меня. Это про Галю. Про бабушку. Про тех, кто не вернулся. Про всех детей, у которых война украла детство.";
+      p1.classList.add("is-visible");
+    });
+
+    after(12000, () => {
+      p2.textContent = "Я — Зина. Зинаида Мартыновна Портнова. Герой Советского Союза. Посмертно.";
+      p2.classList.add("is-visible");
+    });
+
+    after(21000, () => {
+      p3.textContent = "Но тогда я просто хотела, чтобы закончилась война.";
+      p3.classList.add("is-visible");
+    });
+
+    /* ============ Тишина и затухание ============ */
+
+    after(30000, () => {
+      finalBox.style.transition = "opacity 4s ease";
+      finalBox.style.opacity = "0";
+    });
+
+    after(35000, () => {
+      el.classList.remove("is-active");
+      setTimeout(() => { el.remove(); onDone && onDone(); }, 2000);
+    });
+  });
+}
+
+/* ============================================================
+   ПЕЧАТАЮЩИЙ ТЕКСТ
+   ============================================================ */
+function typeText(node, fullText, speed, onDone) {
+  node.textContent = "";
+  let i = 0;
+
+  const cursor = document.createElement("span");
+  cursor.className = "cursor";
+  node.appendChild(cursor);
+
+  const timer = setInterval(() => {
+    if (i >= fullText.length) {
+      clearInterval(timer);
+      cursor.remove();
+      onDone && onDone();
+      return;
+    }
+    cursor.insertAdjacentText("beforebegin", fullText[i]);
+    i++;
+  }, speed);
+}
+/* ============================================================
    ФОНОВЫЙ ВЕТЕР
    ============================================================ */
 let windAudio = null;
