@@ -1099,7 +1099,7 @@ export function playScene6(onDone) {
   after(16500, () => {
     textEl.classList.remove("is-fading");
     textEl.textContent =
-      "Я возвращалась с задания. Деревня Мостище. Снег. Тишина. Слишком тихая.";
+      "Я возвращалась с задания. Деревня Мостище. Снег. Тишина. Слишком тихо.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
     // playVoice("assets/audio/32.mp3", 1.0);
@@ -1866,7 +1866,7 @@ export function playScene10(onDone) {
   // Пауза + «Но прямая.»
   after(36000, () => {
     textEl.classList.remove("is-fading");
-    textEl.textContent = "Но прямая.";
+    textEl.textContent = "Не сломленная.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
     // playVoice("assets/audio/57.mp3", 1.0);
