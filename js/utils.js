@@ -13,7 +13,7 @@ export function clearAll() {
 }
 
 /* ============================================================
-   РАЗБЛОКИРОВКА АУДИО (важно для Chrome / Safari)
+   РАЗБЛОКИРОВКА АУДИО
    ============================================================ */
 let audioUnlocked = false;
 
@@ -23,7 +23,6 @@ export function unlockAudio() {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
     if (ctx.state === "suspended") ctx.resume();
 
-    // Тихий "пустой" звук для разблокировки
     const a = new Audio();
     a.volume = 0;
     a.play().catch(() => {});
@@ -35,10 +34,10 @@ export function unlockAudio() {
 }
 
 /* ============================================================
-   ФОНОВЫЕ ЗВУКИ
+   ФОНОВЫЕ ЗВУКИ (циклично)
    ============================================================ */
 let soundOn = true;
-const ambientSounds = {}; // Держим ссылки, чтобы не удалялись GC
+const ambientSounds = {};
 
 export function startAmbient(key, src, volume = 0.3) {
   if (!soundOn) return;
@@ -51,7 +50,6 @@ export function startAmbient(key, src, volume = 0.3) {
   a.volume = volume;
   a.preload = "auto";
 
-  // Важно: сохраняем в объект, чтобы ссылка не потерялась
   ambientSounds[key] = a;
 
   a.addEventListener("error", () => {
@@ -61,6 +59,22 @@ export function startAmbient(key, src, volume = 0.3) {
   a.play()
     .then(() => console.log(`✅ Фон [${key}] играет`))
     .catch((e) => console.warn(`⚠️ Фон [${key}] не запустился:`, e));
+}
+
+/* ============================================================
+   ОДНОРАЗОВЫЙ ЗВУК
+   ============================================================ */
+export function playOnce(key, src, volume = 0.3) {
+  if (!soundOn) return;
+  const a = new Audio(src);
+  a.volume = volume;
+  a.preload = "auto";
+  a.addEventListener("error", () => {
+    console.error(`❌ Ошибка [${key}]:`, src, a.error);
+  });
+  a.play()
+    .then(() => console.log(`✅ Разовый звук [${key}] играет`))
+    .catch((e) => console.warn(`⚠️ [${key}] не запустился:`, e));
 }
 
 export function stopAmbient(key, fadeMs = 800) {

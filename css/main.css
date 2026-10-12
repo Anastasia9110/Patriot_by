@@ -41,8 +41,15 @@ body {
 }
 
 @keyframes grain {
-  0%, 100% { transform: translate(0, 0); }
-  50%      { transform: translate(-2px, 1px); }
+
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+
+  50% {
+    transform: translate(-2px, 1px);
+  }
 }
 
 .vignette {
@@ -51,7 +58,7 @@ body {
   z-index: 9998;
   pointer-events: none;
   background: radial-gradient(ellipse at center,
-    transparent 45%, rgba(0, 0, 0, 0.8) 100%);
+      transparent 45%, rgba(0, 0, 0, 0.8) 100%);
 }
 
 /* ============================================================
@@ -79,13 +86,16 @@ body {
   background: #000;
   transition: opacity 1.5s ease;
 }
+
 .start-screen.is-gone {
   opacity: 0;
   pointer-events: none;
 }
+
 .start-screen .zina-word {
   text-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
 }
+
 .start-screen__btn {
   position: absolute;
   top: calc(50% + clamp(90px, 14vh, 160px));
@@ -103,28 +113,85 @@ body {
   opacity: 0.85;
   transition: opacity 0.3s ease, background 0.3s ease, color 0.3s ease;
 }
+
 .start-screen__btn:hover {
   opacity: 1;
   background: #fff;
   color: #000;
 }
 
+/* ============================================================
+   СТАРТОВЫЙ ЭКРАН ИСТОРИИ (.story-start) — БЕЗ КНОПКИ
+   ============================================================ */
+.story-start {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2vh, 30px);
+  transition: opacity 3s ease;
+  pointer-events: none;
+}
+
+.story-start.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.story-start.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.story-start .story-start__word {
+  font-family: "Special Elite", "Neucha", serif;
+  font-size: clamp(2.5rem, 9vw, 6rem);
+  letter-spacing: clamp(0.5em, 1.2vw, 1.2em);
+  text-indent: clamp(0.5em, 1.2vw, 1.2em);
+  color: #fff;
+  white-space: nowrap;
+  text-align: center;
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
+  line-height: 1.1;
+}
+
+/* ============================================================
+   ПРЕЛОАДЕР
+   ============================================================ */
 .preloader {
   position: fixed;
   inset: 0;
   z-index: 10000;
   background: #000;
-  transition: background 2s ease, opacity 1.2s ease;
+  transition: background 0.8s ease, opacity 0.6s ease;
 }
-.preloader.is-flashing { background: #fff; }
-.preloader.is-gone     { opacity: 0; pointer-events: none; }
+
+.preloader.is-flashing {
+  background: #fff;
+}
+
+.preloader.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .preloader .zina-word {
   opacity: 0;
-  transition: opacity 3s ease;
+  transition: opacity 1s ease;
   text-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
 }
-.preloader .zina-word.is-visible { opacity: 0.95; }
-.preloader .zina-word.is-fading  { opacity: 0; }
+
+.preloader .zina-word.is-visible {
+  opacity: 0.95;
+}
+
+.preloader .zina-word.is-fading {
+  opacity: 0;
+}
 
 /* ============================================================
    СЦЕНЫ — ОБЩЕЕ
@@ -139,12 +206,17 @@ body {
   justify-content: center;
   overflow: hidden;
 }
-.scene.is-active { opacity: 1; }
+
+.scene.is-active {
+  opacity: 1;
+}
 
 /* ============================================================
    СЦЕНА 0 — ГАЗЕТА
    ============================================================ */
-.scene--newspaper { background: #000; }
+.scene--newspaper {
+  background: #000;
+}
 
 .fire-bg {
   position: absolute;
@@ -156,18 +228,28 @@ body {
   z-index: 1;
   animation: fireFlicker 0.6s steps(2) infinite;
 }
+
 @keyframes fireFlicker {
-  0%, 100% { filter: brightness(0.8) contrast(1.1) saturate(1.05) blur(0.4px); }
-  50%      { filter: brightness(0.95) contrast(1.18) saturate(1.15) blur(0.6px); }
+
+  0%,
+  100% {
+    filter: brightness(0.8) contrast(1.1) saturate(1.05) blur(0.4px);
+  }
+
+  50% {
+    filter: brightness(0.95) contrast(1.18) saturate(1.15) blur(0.6px);
+  }
 }
+
 .fire-overlay {
   position: absolute;
   inset: 0;
   z-index: 2;
   pointer-events: none;
   background: radial-gradient(ellipse at center,
-    rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.25) 60%, rgba(0, 0, 0, 0.7) 100%);
+      rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.25) 60%, rgba(0, 0, 0, 0.7) 100%);
 }
+
 .newspaper {
   position: absolute;
   inset: 0;
@@ -176,6 +258,7 @@ body {
   z-index: 3;
   perspective: 2000px;
 }
+
 .newspaper__spread {
   position: absolute;
   inset: 0;
@@ -188,9 +271,22 @@ body {
   mix-blend-mode: screen;
   backface-visibility: hidden;
 }
-.newspaper__spread.is-active  { opacity: 0.55; }
-.newspaper__spread.is-turning { transform: rotateY(-160deg); opacity: 0.05; }
-.newspaper__spread img        { width: 50%; height: 100%; object-fit: cover; }
+
+.newspaper__spread.is-active {
+  opacity: 0.55;
+}
+
+.newspaper__spread.is-turning {
+  transform: rotateY(-160deg);
+  opacity: 0.05;
+}
+
+.newspaper__spread img {
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .newspaper__spread::after {
   content: "";
   position: absolute;
@@ -200,13 +296,16 @@ body {
   height: 100%;
   pointer-events: none;
   background: linear-gradient(to bottom,
-    transparent 0%, rgba(0,0,0,0.7) 15%, rgba(0,0,0,0.7) 85%, transparent 100%);
+      transparent 0%, rgba(0, 0, 0, 0.7) 15%, rgba(0, 0, 0, 0.7) 85%, transparent 100%);
 }
 
 /* ============================================================
    СЦЕНА 1 — ДОРОГА
    ============================================================ */
-.scene--road { background: #0a0a0a; display: block; }
+.scene--road {
+  background: #0a0a0a;
+  display: block;
+}
 
 .road-layer {
   position: absolute;
@@ -219,28 +318,43 @@ body {
   transition: opacity 2.5s ease;
   will-change: opacity;
 }
-.road-layer.is-active { opacity: 1; }
+
+.road-layer.is-active {
+  opacity: 1;
+}
+
 .road-layer--scene1 {
   background-image: url("../assets/images/scene1-road.jpg");
   animation: roadBreath 20s ease-in-out infinite;
 }
+
 .road-layer--scene2 {
   background-image: url("../assets/images/scene2-road.jpg");
 }
+
 @keyframes roadBreath {
-  0%, 100% { transform: scale(1); }
-  50%      { transform: scale(1.05); }
+
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
 }
+
 .road-vignette {
   position: absolute;
   inset: 0;
   z-index: 2;
   pointer-events: none;
   background:
-    radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.85) 100%),
+    radial-gradient(ellipse at center, transparent 35%, rgba(0, 0, 0, 0.85) 100%),
     linear-gradient(180deg,
-      rgba(0,0,0,0.4) 0%, transparent 20%, transparent 75%, rgba(0,0,0,0.6) 100%);
+      rgba(0, 0, 0, 0.4) 0%, transparent 20%, transparent 75%, rgba(0, 0, 0, 0.6) 100%);
 }
+
 .road-grain {
   position: absolute;
   inset: 0;
@@ -255,7 +369,10 @@ body {
 /* ============================================================
    СЦЕНА 2 — ОБОЛЬ
    ============================================================ */
-.scene--obol { background: #0a0a0a; display: block; }
+.scene--obol {
+  background: #0a0a0a;
+  display: block;
+}
 
 .obol-layer {
   position: absolute;
@@ -268,23 +385,28 @@ body {
   transition: opacity 2.5s ease;
   will-change: opacity;
 }
-.obol-layer.is-active { opacity: 1; }
+
+.obol-layer.is-active {
+  opacity: 1;
+}
+
 .obol-layer--scene1 {
   background-image: url("../assets/images/scene3-obol.jpg");
   animation: roadBreath 22s ease-in-out infinite;
 }
+
 .obol-layer--scene2 {
   background-image: url("../assets/images/scene4-obol.jpg");
 }
-/* Дополнительные слои Оболи — бабушка */
+
 .obol-layer--grandma-closed {
   background-image: url("../assets/images/scene4b-obol-grandma-closed.jpg");
 }
+
 .obol-layer--grandma-talk {
   background-image: url("../assets/images/scene4c-obol-grandma-talk.jpg");
 }
 
-/* ---------- Кнопка «Поговорить с бабушкой» ---------- */
 .obol-btn {
   position: absolute;
   left: 50%;
@@ -304,19 +426,23 @@ body {
   transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
   pointer-events: none;
 }
+
 .obol-btn.is-visible {
   opacity: 0.9;
   pointer-events: auto;
 }
+
 .obol-btn:hover {
   opacity: 1;
   background: #fff;
   color: #000;
 }
+
 .obol-btn.is-gone {
   opacity: 0;
   pointer-events: none;
 }
+
 /* ============================================================
    ТИТР
    ============================================================ */
@@ -331,6 +457,7 @@ body {
   pointer-events: none;
   padding: 0 2vw;
 }
+
 .title-bar__inner {
   position: relative;
   width: min(94vw, 1400px);
@@ -340,20 +467,21 @@ body {
   justify-content: center;
   padding: 0 clamp(20px, 4vw, 60px);
   background:
-    radial-gradient(ellipse at 12% 30%, rgba(70,62,52,0.75) 0%, transparent 45%),
-    radial-gradient(ellipse at 65% 70%, rgba(40,35,30,0.85) 0%, transparent 55%),
-    radial-gradient(ellipse at 92% 25%, rgba(80,72,58,0.55) 0%, transparent 45%),
-    radial-gradient(ellipse at 35% 80%, rgba(20,18,15,0.9)  0%, transparent 60%),
+    radial-gradient(ellipse at 12% 30%, rgba(70, 62, 52, 0.75) 0%, transparent 45%),
+    radial-gradient(ellipse at 65% 70%, rgba(40, 35, 30, 0.85) 0%, transparent 55%),
+    radial-gradient(ellipse at 92% 25%, rgba(80, 72, 58, 0.55) 0%, transparent 45%),
+    radial-gradient(ellipse at 35% 80%, rgba(20, 18, 15, 0.9) 0%, transparent 60%),
     linear-gradient(180deg,
-      rgba(14,12,10,0.82) 0%, rgba(22,20,17,0.72) 50%, rgba(10,10,10,0.85) 100%);
+      rgba(14, 12, 10, 0.82) 0%, rgba(22, 20, 17, 0.72) 50%, rgba(10, 10, 10, 0.85) 100%);
   filter: blur(0.8px);
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 120' preserveAspectRatio='none'%3E%3Cpath d='M6,8 L70,3 L150,10 L250,4 L340,11 L450,3 L550,8 L670,2 L760,9 L860,4 L940,11 L985,5 L997,7 L998,48 L993,62 L996,95 L990,117 L905,113 L800,118 L695,112 L590,117 L480,113 L370,118 L265,112 L170,117 L80,113 L10,117 L4,92 L7,62 L2,32 Z' fill='white'/%3E%3C/svg%3E");
-          mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 120' preserveAspectRatio='none'%3E%3Cpath d='M6,8 L70,3 L150,10 L250,4 L340,11 L450,3 L550,8 L670,2 L760,9 L860,4 L940,11 L985,5 L997,7 L998,48 L993,62 L996,95 L990,117 L905,113 L800,118 L695,112 L590,117 L480,113 L370,118 L265,112 L170,117 L80,113 L10,117 L4,92 L7,62 L2,32 Z' fill='white'/%3E%3C/svg%3E");
+  mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 120' preserveAspectRatio='none'%3E%3Cpath d='M6,8 L70,3 L150,10 L250,4 L340,11 L450,3 L550,8 L670,2 L760,9 L860,4 L940,11 L985,5 L997,7 L998,48 L993,62 L996,95 L990,117 L905,113 L800,118 L695,112 L590,117 L480,113 L370,118 L265,112 L170,117 L80,113 L10,117 L4,92 L7,62 L2,32 Z' fill='white'/%3E%3C/svg%3E");
   -webkit-mask-size: 100% 100%;
-          mask-size: 100% 100%;
+  mask-size: 100% 100%;
   -webkit-mask-repeat: no-repeat;
-          mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
 }
+
 .title-bar__inner::after {
   content: "";
   position: absolute;
@@ -363,6 +491,7 @@ body {
   mix-blend-mode: overlay;
   opacity: 0.55;
 }
+
 .title-bar__inner::before {
   content: "";
   position: absolute;
@@ -371,15 +500,16 @@ body {
   top: 6px;
   height: 1px;
   background: linear-gradient(90deg,
-    transparent 0%, rgba(255,255,255,0.7) 8%, rgba(255,255,255,0.3) 22%,
-    transparent 32%, rgba(255,255,255,0.8) 40%, rgba(255,255,255,0.4) 55%,
-    transparent 62%, rgba(255,255,255,0.7) 74%, rgba(255,255,255,0.25) 88%,
-    transparent 100%);
-  box-shadow: 0 0 8px rgba(255,255,255,0.2);
+      transparent 0%, rgba(255, 255, 255, 0.7) 8%, rgba(255, 255, 255, 0.3) 22%,
+      transparent 32%, rgba(255, 255, 255, 0.8) 40%, rgba(255, 255, 255, 0.4) 55%,
+      transparent 62%, rgba(255, 255, 255, 0.7) 74%, rgba(255, 255, 255, 0.25) 88%,
+      transparent 100%);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
   opacity: 0;
   transition: opacity 1.5s ease;
   z-index: 2;
 }
+
 .title-bar__bottom-line {
   position: absolute;
   left: 4%;
@@ -387,18 +517,21 @@ body {
   bottom: 6px;
   height: 1px;
   background: linear-gradient(90deg,
-    transparent 0%, rgba(255,255,255,0.6) 6%, transparent 14%,
-    rgba(255,255,255,0.85) 25%, rgba(255,255,255,0.45) 45%,
-    transparent 52%, rgba(255,255,255,0.75) 65%, transparent 78%,
-    rgba(255,255,255,0.55) 88%, transparent 100%);
-  box-shadow: 0 0 8px rgba(255,255,255,0.2);
+      transparent 0%, rgba(255, 255, 255, 0.6) 6%, transparent 14%,
+      rgba(255, 255, 255, 0.85) 25%, rgba(255, 255, 255, 0.45) 45%,
+      transparent 52%, rgba(255, 255, 255, 0.75) 65%, transparent 78%,
+      rgba(255, 255, 255, 0.55) 88%, transparent 100%);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
   opacity: 0;
   transition: opacity 1.5s ease;
   z-index: 2;
   pointer-events: none;
 }
+
 .title-bar__inner.is-visible::before,
-.title-bar__inner.is-visible .title-bar__bottom-line { opacity: 1; }
+.title-bar__inner.is-visible .title-bar__bottom-line {
+  opacity: 1;
+}
 
 .title-bar__text {
   font-family: "Special Elite", "Neucha", "Cutive Mono", "Courier New", monospace;
@@ -408,9 +541,9 @@ body {
   color: #e8e4d6;
   text-align: center;
   text-shadow:
-    0 0 12px rgba(0,0,0,0.95),
-    0 0 4px  rgba(0,0,0,1),
-    0 1px 1px rgba(0,0,0,0.85);
+    0 0 12px rgba(0, 0, 0, 0.95),
+    0 0 4px rgba(0, 0, 0, 1),
+    0 1px 1px rgba(0, 0, 0, 0.85);
   filter: blur(0.35px);
   opacity: 0;
   transform: translateY(6px);
@@ -424,55 +557,110 @@ body {
   position: relative;
   z-index: 3;
 }
-.title-bar__text.is-visible { opacity: 1; transform: translateY(0); }
-.title-bar__text.is-fading  { opacity: 0; transform: translateY(-6px); }
+
+.title-bar__text.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.title-bar__text.is-fading {
+  opacity: 0;
+  transform: translateY(-6px);
+}
 
 /* ============================================================
    АДАПТИВ
    ============================================================ */
 @media (max-width: 1024px) {
-  .title-bar__inner { width: 94vw; height: clamp(90px, 13vh, 130px); }
-}
-@media (max-width: 700px) {
-  .newspaper__spread { flex-direction: column; }
-  .newspaper__spread img { width: 100%; height: 50%; }
-  .newspaper__spread::after {
-    top: 50%; left: 0; width: 100%; height: 2px;
-  }
-  .title-bar { bottom: 3%; padding: 0 3vw; }
   .title-bar__inner {
-    width: 96vw; height: clamp(80px, 14vh, 120px); padding: 0 16px;
+    width: 94vw;
+    height: clamp(90px, 13vh, 130px);
   }
+}
+
+@media (max-width: 700px) {
+  .newspaper__spread {
+    flex-direction: column;
+  }
+
+  .newspaper__spread img {
+    width: 100%;
+    height: 50%;
+  }
+
+  .newspaper__spread::after {
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+  }
+
+  .title-bar {
+    bottom: 3%;
+    padding: 0 3vw;
+  }
+
+  .title-bar__inner {
+    width: 96vw;
+    height: clamp(80px, 14vh, 120px);
+    padding: 0 16px;
+  }
+
   .title-bar__text {
     font-size: clamp(0.85rem, 3.4vw, 1.05rem);
     letter-spacing: 0.02em;
     -webkit-line-clamp: 4;
     line-clamp: 4;
   }
+
   .zina-word {
     font-size: clamp(2rem, 12vw, 3.5rem);
     letter-spacing: 0.7em;
     text-indent: 0.7em;
   }
-  .start-screen__btn { top: calc(50% + 80px); padding: 14px 40px; }
+
+  .story-start .story-start__word {
+    font-size: clamp(2rem, 12vw, 3.5rem);
+    letter-spacing: 0.7em;
+    text-indent: 0.7em;
+  }
 }
+
 @media (max-width: 380px) {
-  .title-bar__text { font-size: 0.82rem; line-height: 1.45; }
-  .title-bar__inner { height: clamp(70px, 13vh, 110px); }
+  .title-bar__text {
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  .title-bar__inner {
+    height: clamp(70px, 13vh, 110px);
+  }
 }
+
 @media (max-height: 500px) and (orientation: landscape) {
-  .title-bar { bottom: 2%; }
-  .title-bar__inner { height: clamp(60px, 22vh, 90px); padding: 0 20px; }
+  .title-bar {
+    bottom: 2%;
+  }
+
+  .title-bar__inner {
+    height: clamp(60px, 22vh, 90px);
+    padding: 0 20px;
+  }
+
   .title-bar__text {
     font-size: clamp(0.8rem, 1.8vw, 1rem);
     -webkit-line-clamp: 2;
     line-clamp: 2;
   }
 }
+
 /* ============================================================
    СЦЕНА 3 — ЛИСТОВКИ
    ============================================================ */
-.scene--leaflet { background: #0a0a0a; display: block; }
+.scene--leaflet {
+  background: #0a0a0a;
+  display: block;
+}
 
 .leaflet-layer {
   position: absolute;
@@ -485,13 +673,23 @@ body {
   transition: opacity 1.5s ease;
   will-change: opacity;
 }
-.leaflet-layer.is-active { opacity: 1; }
 
-.leaflet-layer--empty  { background-image: url("../assets/images/scene5-leaflet-empty.jpg"); }
-.leaflet-layer--hands  { background-image: url("../assets/images/scene6-leaflet-hands.jpg"); }
-.leaflet-layer--done   { background-image: url("../assets/images/scene7-leaflet-done.jpg"); }
+.leaflet-layer.is-active {
+  opacity: 1;
+}
 
-/* ---------- Видео поверх кадра с руками ---------- */
+.leaflet-layer--empty {
+  background-image: url("../assets/images/scene5-leaflet-empty.jpg");
+}
+
+.leaflet-layer--hands {
+  background-image: url("../assets/images/scene6-leaflet-hands.jpg");
+}
+
+.leaflet-layer--done {
+  background-image: url("../assets/images/scene7-leaflet-done.jpg");
+}
+
 .leaflet-video {
   position: absolute;
   inset: 0;
@@ -504,9 +702,11 @@ body {
   transition: opacity 0.8s ease;
   pointer-events: none;
 }
-.leaflet-video.is-active { opacity: 1; }
 
-/* ---------- Кнопка «Повесить листовку» ---------- */
+.leaflet-video.is-active {
+  opacity: 1;
+}
+
 .leaflet-btn {
   position: absolute;
   left: 50%;
@@ -526,23 +726,30 @@ body {
   transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
   pointer-events: none;
 }
+
 .leaflet-btn.is-visible {
   opacity: 0.9;
   pointer-events: auto;
 }
+
 .leaflet-btn:hover {
   opacity: 1;
   background: #fff;
   color: #000;
 }
+
 .leaflet-btn.is-gone {
   opacity: 0;
   pointer-events: none;
 }
+
 /* ============================================================
    СЦЕНА 4 — СТОЛОВАЯ
    ============================================================ */
-.scene--canteen { background: #0a0a0a; display: block; }
+.scene--canteen {
+  background: #0a0a0a;
+  display: block;
+}
 
 .canteen-layer {
   position: absolute;
@@ -555,13 +762,34 @@ body {
   transition: opacity 1.5s ease;
   will-change: opacity;
 }
-.canteen-layer.is-active { opacity: 1; }
-.canteen-layer--work           { background-image: url("../assets/images/scene7a-canteen-work.jpg"); }
-.canteen-layer--officer-closed { background-image: url("../assets/images/scene7b-canteen-officer-closed.jpg"); }
-.canteen-layer--officer-talk   { background-image: url("../assets/images/scene7c-canteen-officer-talk.jpg"); }
-.canteen-layer--pour           { background-image: url("../assets/images/scene8-canteen-pour.jpg"); }
-.canteen-layer--carry          { background-image: url("../assets/images/scene9-canteen-carry.jpg"); }
-.canteen-layer--eat            { background-image: url("../assets/images/scene10-canteen-eat.jpg"); }
+
+.canteen-layer.is-active {
+  opacity: 1;
+}
+
+.canteen-layer--work {
+  background-image: url("../assets/images/scene7a-canteen-work.jpg");
+}
+
+.canteen-layer--officer-closed {
+  background-image: url("../assets/images/scene7b-canteen-officer-closed.jpg");
+}
+
+.canteen-layer--officer-talk {
+  background-image: url("../assets/images/scene7c-canteen-officer-talk.jpg");
+}
+
+.canteen-layer--pour {
+  background-image: url("../assets/images/scene8-canteen-pour.jpg");
+}
+
+.canteen-layer--carry {
+  background-image: url("../assets/images/scene9-canteen-carry.jpg");
+}
+
+.canteen-layer--eat {
+  background-image: url("../assets/images/scene10-canteen-eat.jpg");
+}
 
 .canteen-video {
   position: absolute;
@@ -575,7 +803,10 @@ body {
   transition: opacity 1s ease;
   pointer-events: none;
 }
-.canteen-video.is-active { opacity: 1; }
+
+.canteen-video.is-active {
+  opacity: 1;
+}
 
 .canteen-btn {
   position: absolute;
@@ -596,13 +827,30 @@ body {
   transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
   pointer-events: none;
 }
-.canteen-btn.is-visible { opacity: 0.9; pointer-events: auto; }
-.canteen-btn:hover      { opacity: 1; background: #fff; color: #000; }
-.canteen-btn.is-gone    { opacity: 0; pointer-events: none; }
+
+.canteen-btn.is-visible {
+  opacity: 0.9;
+  pointer-events: auto;
+}
+
+.canteen-btn:hover {
+  opacity: 1;
+  background: #fff;
+  color: #000;
+}
+
+.canteen-btn.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* ============================================================
    СЦЕНА 5 — ЛЕС
    ============================================================ */
-.scene--forest { background: #0a0a0a; display: block; }
+.scene--forest {
+  background: #0a0a0a;
+  display: block;
+}
 
 .forest-layer {
   position: absolute;
@@ -615,14 +863,34 @@ body {
   transition: opacity 1.5s ease;
   will-change: opacity;
 }
-.forest-layer.is-active { opacity: 1; }
 
-.forest-layer--camp            { background-image: url("../assets/images/scene11-forest-camp.jpg"); }
-.forest-layer--commander-closed{ background-image: url("../assets/images/scene12-forest-commander-closed.jpg"); }
-.forest-layer--commander-talk  { background-image: url("../assets/images/scene13-forest-commander-talk.jpg"); }
-.forest-layer--shooting        { background-image: url("../assets/images/scene14-forest-shooting.jpg"); }
-.forest-layer--scout           { background-image: url("../assets/images/scene15-forest-scout.jpg"); }
-.forest-layer--grown           { background-image: url("../assets/images/scene16-forest-grown.jpg"); }
+.forest-layer.is-active {
+  opacity: 1;
+}
+
+.forest-layer--camp {
+  background-image: url("../assets/images/scene11-forest-camp.jpg");
+}
+
+.forest-layer--commander-closed {
+  background-image: url("../assets/images/scene12-forest-commander-closed.jpg");
+}
+
+.forest-layer--commander-talk {
+  background-image: url("../assets/images/scene13-forest-commander-talk.jpg");
+}
+
+.forest-layer--shooting {
+  background-image: url("../assets/images/scene14-forest-shooting.jpg");
+}
+
+.forest-layer--scout {
+  background-image: url("../assets/images/scene15-forest-scout.jpg");
+}
+
+.forest-layer--grown {
+  background-image: url("../assets/images/scene16-forest-grown.jpg");
+}
 
 .forest-btn {
   position: absolute;
@@ -643,13 +911,30 @@ body {
   transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
   pointer-events: none;
 }
-.forest-btn.is-visible { opacity: 0.9; pointer-events: auto; }
-.forest-btn:hover      { opacity: 1; background: #fff; color: #000; }
-.forest-btn.is-gone    { opacity: 0; pointer-events: none; }
+
+.forest-btn.is-visible {
+  opacity: 0.9;
+  pointer-events: auto;
+}
+
+.forest-btn:hover {
+  opacity: 1;
+  background: #fff;
+  color: #000;
+}
+
+.forest-btn.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* ============================================================
    СЦЕНА 6 — ЗАДАНИЕ
    ============================================================ */
-.scene--mestishche { background: #0a0a0a; display: block; }
+.scene--mestishche {
+  background: #0a0a0a;
+  display: block;
+}
 
 .mestishche-layer {
   position: absolute;
@@ -662,14 +947,34 @@ body {
   transition: opacity 1.5s ease;
   will-change: opacity;
 }
-.mestishche-layer.is-active { opacity: 1; }
 
-.mestishche-layer--empty      { background-image: url("../assets/images/scene17-mestishche-empty.jpg"); }
-.mestishche-layer--walk       { background-image: url("../assets/images/scene18-mestishche-zina-walk.jpg"); }
-.mestishche-layer--anna-closed{ background-image: url("../assets/images/scene19-anna-closed.jpg"); }
-.mestishche-layer--anna-talk  { background-image: url("../assets/images/scene20-anna-talk.jpg"); }
-.mestishche-layer--police     { background-image: url("../assets/images/scene21-police.jpg"); }
-.mestishche-layer--arrest     { background-image: url("../assets/images/scene22-arrest.jpg"); }
+.mestishche-layer.is-active {
+  opacity: 1;
+}
+
+.mestishche-layer--empty {
+  background-image: url("../assets/images/scene17-mestishche-empty.jpg");
+}
+
+.mestishche-layer--walk {
+  background-image: url("../assets/images/scene18-mestishche-zina-walk.jpg");
+}
+
+.mestishche-layer--anna-closed {
+  background-image: url("../assets/images/scene19-anna-closed.jpg");
+}
+
+.mestishche-layer--anna-talk {
+  background-image: url("../assets/images/scene20-anna-talk.jpg");
+}
+
+.mestishche-layer--police {
+  background-image: url("../assets/images/scene21-police.jpg");
+}
+
+.mestishche-layer--arrest {
+  background-image: url("../assets/images/scene22-arrest.jpg");
+}
 
 .mestishche-btn {
   position: absolute;
@@ -690,13 +995,30 @@ body {
   transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
   pointer-events: none;
 }
-.mestishche-btn.is-visible { opacity: 0.9; pointer-events: auto; }
-.mestishche-btn:hover      { opacity: 1; background: #fff; color: #000; }
-.mestishche-btn.is-gone    { opacity: 0; pointer-events: none; }
+
+.mestishche-btn.is-visible {
+  opacity: 0.9;
+  pointer-events: auto;
+}
+
+.mestishche-btn:hover {
+  opacity: 1;
+  background: #fff;
+  color: #000;
+}
+
+.mestishche-btn.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* ============================================================
    СЦЕНА 7 — ДОПРОС
    ============================================================ */
-.scene--interrog { background: #0a0a0a; display: block; }
+.scene--interrog {
+  background: #0a0a0a;
+  display: block;
+}
 
 .interrog-layer {
   position: absolute;
@@ -709,17 +1031,39 @@ body {
   transition: opacity 1.5s ease;
   will-change: opacity;
 }
-.interrog-layer.is-active { opacity: 1; }
 
-.interrog-layer--empty         { background-image: url("../assets/images/scene23-interrog-empty.jpg"); }
-.interrog-layer--officer-closed{ background-image: url("../assets/images/scene24-officer-closed.jpg"); }
-.interrog-layer--officer-talk  { background-image: url("../assets/images/scene25-officer-talk.jpg"); }
-.interrog-layer--zina-table    { background-image: url("../assets/images/scene26-zina-table.jpg"); }
-.interrog-layer--zina-talk     { background-image: url("../assets/images/scene26b-zina-talk.jpg"); }
-.interrog-layer--hand-gun      { background-image: url("../assets/images/scene27-hand-gun.jpg"); }
-.interrog-layer--run           { background-image: url("../assets/images/scene29-run.jpg"); }
+.interrog-layer.is-active {
+  opacity: 1;
+}
 
-/* ---------- Вспышка выстрела ---------- */
+.interrog-layer--empty {
+  background-image: url("../assets/images/scene23-interrog-empty.jpg");
+}
+
+.interrog-layer--officer-closed {
+  background-image: url("../assets/images/scene24-officer-closed.jpg");
+}
+
+.interrog-layer--officer-talk {
+  background-image: url("../assets/images/scene25-officer-talk.jpg");
+}
+
+.interrog-layer--zina-table {
+  background-image: url("../assets/images/scene26-zina-table.jpg");
+}
+
+.interrog-layer--zina-talk {
+  background-image: url("../assets/images/scene26b-zina-talk.jpg");
+}
+
+.interrog-layer--hand-gun {
+  background-image: url("../assets/images/scene27-hand-gun.jpg");
+}
+
+.interrog-layer--run {
+  background-image: url("../assets/images/scene29-run.jpg");
+}
+
 .interrog-flash {
   position: absolute;
   inset: 0;
@@ -729,9 +1073,11 @@ body {
   pointer-events: none;
   transition: opacity 0.15s ease;
 }
-.interrog-flash.is-active { opacity: 1; }
 
-/* ---------- Кнопка ---------- */
+.interrog-flash.is-active {
+  opacity: 1;
+}
+
 .interrog-btn {
   position: absolute;
   left: 50%;
@@ -751,13 +1097,30 @@ body {
   transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
   pointer-events: none;
 }
-.interrog-btn.is-visible { opacity: 0.9; pointer-events: auto; }
-.interrog-btn:hover      { opacity: 1; background: #fff; color: #000; }
-.interrog-btn.is-gone    { opacity: 0; pointer-events: none; }
+
+.interrog-btn.is-visible {
+  opacity: 0.9;
+  pointer-events: auto;
+}
+
+.interrog-btn:hover {
+  opacity: 1;
+  background: #fff;
+  color: #000;
+}
+
+.interrog-btn.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* ============================================================
    СЦЕНА 8 — РЕКА
    ============================================================ */
-.scene--river { background: #0a0a0a; display: block; }
+.scene--river {
+  background: #0a0a0a;
+  display: block;
+}
 
 .river-layer {
   position: absolute;
@@ -770,15 +1133,38 @@ body {
   transition: opacity 1.5s ease;
   will-change: opacity;
 }
-.river-layer.is-active { opacity: 1; }
 
-.river-layer--run      { background-image: url("../assets/images/scene30-river-run.jpg"); }
-.river-layer--bank     { background-image: url("../assets/images/scene31-river-bank.jpg"); }
-.river-layer--zina     { background-image: url("../assets/images/scene32-river-zina-water.jpg"); }
-.river-layer--pursuers { background-image: url("../assets/images/scene33-river-pursuers.jpg"); }
-.river-layer--swim     { background-image: url("../assets/images/scene34-river-swim.jpg"); }
-.river-layer--grab     { background-image: url("../assets/images/scene35-river-grab.jpg"); }
-.river-layer--caught   { background-image: url("../assets/images/scene36-river-caught.jpg"); }
+.river-layer.is-active {
+  opacity: 1;
+}
+
+.river-layer--run {
+  background-image: url("../assets/images/scene30-river-run.jpg");
+}
+
+.river-layer--bank {
+  background-image: url("../assets/images/scene31-river-bank.jpg");
+}
+
+.river-layer--zina {
+  background-image: url("../assets/images/scene32-river-zina-water.jpg");
+}
+
+.river-layer--pursuers {
+  background-image: url("../assets/images/scene33-river-pursuers.jpg");
+}
+
+.river-layer--swim {
+  background-image: url("../assets/images/scene34-river-swim.jpg");
+}
+
+.river-layer--grab {
+  background-image: url("../assets/images/scene35-river-grab.jpg");
+}
+
+.river-layer--caught {
+  background-image: url("../assets/images/scene36-river-caught.jpg");
+}
 
 .river-btn {
   position: absolute;
@@ -799,13 +1185,30 @@ body {
   transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
   pointer-events: none;
 }
-.river-btn.is-visible { opacity: 0.9; pointer-events: auto; }
-.river-btn:hover      { opacity: 1; background: #fff; color: #000; }
-.river-btn.is-gone    { opacity: 0; pointer-events: none; }
+
+.river-btn.is-visible {
+  opacity: 0.9;
+  pointer-events: auto;
+}
+
+.river-btn:hover {
+  opacity: 1;
+  background: #fff;
+  color: #000;
+}
+
+.river-btn.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* ============================================================
    СЦЕНА 9 — ТЮРЬМА
    ============================================================ */
-.scene--prison { background: #050505; display: block; }
+.scene--prison {
+  background: #050505;
+  display: block;
+}
 
 .prison-layer {
   position: absolute;
@@ -818,14 +1221,34 @@ body {
   transition: opacity 1.8s ease;
   will-change: opacity;
 }
-.prison-layer.is-active { opacity: 1; }
 
-.prison-layer--cell            { background-image: url("../assets/images/scene37-prison-cell.jpg"); }
-.prison-layer--officer-closed  { background-image: url("../assets/images/scene38-prison-officer-closed.jpg"); }
-.prison-layer--officer-talk    { background-image: url("../assets/images/scene39-prison-officer-talk.jpg"); }
-.prison-layer--zina            { background-image: url("../assets/images/scene40-prison-zina.jpg"); }
-.prison-layer--zina-talk       { background-image: url("../assets/images/scene41-prison-zina-talk.jpg"); }
-.prison-layer--final           { background-image: url("../assets/images/scene42-prison-final.jpg"); }
+.prison-layer.is-active {
+  opacity: 1;
+}
+
+.prison-layer--cell {
+  background-image: url("../assets/images/scene37-prison-cell.jpg");
+}
+
+.prison-layer--officer-closed {
+  background-image: url("../assets/images/scene38-prison-officer-closed.jpg");
+}
+
+.prison-layer--officer-talk {
+  background-image: url("../assets/images/scene39-prison-officer-talk.jpg");
+}
+
+.prison-layer--zina {
+  background-image: url("../assets/images/scene40-prison-zina.jpg");
+}
+
+.prison-layer--zina-talk {
+  background-image: url("../assets/images/scene41-prison-zina-talk.jpg");
+}
+
+.prison-layer--final {
+  background-image: url("../assets/images/scene42-prison-final.jpg");
+}
 
 .prison-btn {
   position: absolute;
@@ -846,13 +1269,30 @@ body {
   transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
   pointer-events: none;
 }
-.prison-btn.is-visible { opacity: 0.9; pointer-events: auto; }
-.prison-btn:hover      { opacity: 1; background: #fff; color: #000; }
-.prison-btn.is-gone    { opacity: 0; pointer-events: none; }
+
+.prison-btn.is-visible {
+  opacity: 0.9;
+  pointer-events: auto;
+}
+
+.prison-btn:hover {
+  opacity: 1;
+  background: #fff;
+  color: #000;
+}
+
+.prison-btn.is-gone {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* ============================================================
    СЦЕНА 10 — УТРО (финал)
    ============================================================ */
-.scene--morning { background: #000; display: block; }
+.scene--morning {
+  background: #000;
+  display: block;
+}
 
 .morning-layer {
   position: absolute;
@@ -865,15 +1305,31 @@ body {
   transition: opacity 2.5s ease;
   will-change: opacity;
 }
-.morning-layer.is-active { opacity: 1; }
 
-.morning-layer--dawn    { background-image: url("../assets/images/scene43-morning-dawn.jpg"); }
-.morning-layer--walk    { background-image: url("../assets/images/scene44-morning-walk.jpg"); }
-.morning-layer--convoy  { background-image: url("../assets/images/scene45-morning-convoy.jpg"); }
-.morning-layer--feet    { background-image: url("../assets/images/scene46-morning-feet.jpg"); }
-.morning-layer--face    { background-image: url("../assets/images/scene47-morning-face.jpg"); }
+.morning-layer.is-active {
+  opacity: 1;
+}
 
-/* ---------- Белый финальный экран ---------- */
+.morning-layer--dawn {
+  background-image: url("../assets/images/scene43-morning-dawn.jpg");
+}
+
+.morning-layer--walk {
+  background-image: url("../assets/images/scene44-morning-walk.jpg");
+}
+
+.morning-layer--convoy {
+  background-image: url("../assets/images/scene45-morning-convoy.jpg");
+}
+
+.morning-layer--feet {
+  background-image: url("../assets/images/scene46-morning-feet.jpg");
+}
+
+.morning-layer--face {
+  background-image: url("../assets/images/scene47-morning-face.jpg");
+}
+
 .morning-white {
   position: absolute;
   inset: 0;
@@ -889,12 +1345,12 @@ body {
   text-align: center;
   pointer-events: none;
 }
+
 .morning-white.is-active {
   opacity: 1;
   pointer-events: auto;
 }
 
-/* ---------- Текст по буквам ---------- */
 .morning-credits {
   font-family: "Special Elite", "Neucha", "Cutive Mono", monospace;
   color: #111;
@@ -906,6 +1362,7 @@ body {
   margin-bottom: 6vh;
   white-space: pre-wrap;
 }
+
 .morning-credits .cursor {
   display: inline-block;
   width: 2px;
@@ -915,12 +1372,19 @@ body {
   vertical-align: bottom;
   height: 1.1em;
 }
+
 @keyframes blink {
-  0%, 100% { opacity: 1; }
-  50%      { opacity: 0; }
+
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
 }
 
-/* ---------- Строки после «Ей было семнадцать» ---------- */
 .morning-whisper {
   font-family: "Special Elite", "Neucha", serif;
   color: #333;
@@ -933,9 +1397,11 @@ body {
   text-align: center;
   max-width: 700px;
 }
-.morning-whisper.is-visible { opacity: 0.85; }
 
-/* ---------- Кнопка «ПОМНИТЬ» ---------- */
+.morning-whisper.is-visible {
+  opacity: 0.85;
+}
+
 .morning-btn {
   padding: 18px 60px;
   border: 1px solid rgba(0, 0, 0, 0.65);
@@ -950,17 +1416,18 @@ body {
   transition: opacity 1.5s ease, background 0.3s ease, color 0.3s ease;
   pointer-events: none;
 }
+
 .morning-btn.is-visible {
   opacity: 0.85;
   pointer-events: auto;
 }
+
 .morning-btn:hover {
   opacity: 1;
   background: #111;
   color: #fff;
 }
 
-/* ---------- Финальный монолог ---------- */
 .morning-final {
   position: absolute;
   inset: 0;
@@ -980,16 +1447,22 @@ body {
   transition: opacity 2.5s ease;
   pointer-events: none;
 }
+
 .morning-final.is-visible {
   opacity: 1;
   pointer-events: auto;
 }
+
 .morning-final__inner {
   max-width: 800px;
 }
+
 .morning-final__p {
   opacity: 0;
   transition: opacity 2s ease;
   margin-bottom: 2vh;
 }
-.morning-final__p.is-visible { opacity: 1; }
+
+.morning-final__p.is-visible {
+  opacity: 1;
+}
