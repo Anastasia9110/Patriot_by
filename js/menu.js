@@ -1,5 +1,5 @@
 /* ============================================================
-   ЗАСТАВКА + МЕНЮ + СТАРТОВЫЙ ЭКРАН ИСТОРИИ + КНОПКА ВЫХОДА
+   ЗАСТАВКА + МЕНЮ + ТИТУЛ ИСТОРИИ + КНОПКА ВЫХОДА
    ============================================================ */
 let menuEl = null;
 let exitBtn = null;
@@ -8,22 +8,24 @@ let onStoryStart = null;
 export function initMenu(onStorySelected) {
   onStoryStart = onStorySelected;
 
-  const intro = document.getElementById("intro");
-  const introBg = intro.querySelector(".intro__bg");
-  const title = intro.querySelector(".intro__title");
+  const intro    = document.getElementById("intro");
+  const introBg  = intro.querySelector(".intro__bg");
+  const title    = intro.querySelector(".intro__title");
   const subtitle = intro.querySelector(".intro__subtitle");
   const introBtn = document.getElementById("introBtn");
 
   const flash = document.getElementById("flash");
-  menuEl = document.getElementById("menu");
+  menuEl  = document.getElementById("menu");
   exitBtn = document.getElementById("exitBtn");
 
   const cardZina = document.getElementById("cardZina");
   const cardLida = document.getElementById("cardLida");
 
   const storyStart = document.getElementById("storyStart");
+  const storyLine1 = document.getElementById("storyStartLine1");
+  const storyLine2 = document.getElementById("storyStartLine2");
 
-  /* --- 1. Появление заставки (ускорено) --- */
+  /* --- 1. Появление заставки сайта --- */
   setTimeout(() => introBg.classList.add("is-visible"), 100);
   setTimeout(() => title.classList.add("is-visible"), 400);
   setTimeout(() => subtitle.classList.add("is-visible"), 900);
@@ -39,9 +41,10 @@ export function initMenu(onStorySelected) {
     setTimeout(() => intro.remove(), 2500);
   });
 
-  /* --- 3. Клик по карточке Зины: меню уходит → стартовый экран «ЗИНА» --- */
-  cardZina.addEventListener("click", () => {
-    if (cardZina.classList.contains("is-soon")) return;
+  /* --- 3. Универсальная функция: показать титул истории --- */
+  function showStoryTitle(line1, line2, storyKey) {
+    // защита от двойного клика
+    if (menuEl.style.display === "none") return;
 
     flash.classList.add("is-active");
     setTimeout(() => menuEl.classList.remove("is-active"), 400);
@@ -49,6 +52,11 @@ export function initMenu(onStorySelected) {
 
     setTimeout(() => {
       menuEl.style.display = "none";
+
+      // подставляем имена
+      storyLine1.textContent = line1;
+      storyLine2.textContent = line2;
+
       storyStart.classList.add("is-active");
 
       /* --- 4. Автозапуск истории через 2 секунды (без кнопки) --- */
@@ -56,20 +64,40 @@ export function initMenu(onStorySelected) {
         storyStart.classList.add("is-gone");
 
         setTimeout(() => {
+          storyStart.classList.remove("is-active", "is-gone");
           storyStart.style.display = "none";
           exitBtn.classList.add("is-visible");
-          onStoryStart && onStoryStart("zina");
-        }, 1000); // пауза, чтобы экран «ЗИНА» плавно погас
-      }, 2000); // показываем «ЗИНА ПОРТНОВА» 2 секунды
+          onStoryStart && onStoryStart(storyKey);
+        }, 1000); // пауза, чтобы титул плавно погас
+      }, 2000); // титул виден 2 секунды
+    }, 1400);
+  }
+
+  /* --- 5. Клик по карточке Зины --- */
+  cardZina.addEventListener("click", () => {
+    if (cardZina.classList.contains("is-soon")) return;
+    showStoryTitle("ЗИНА", "ПОРТНОВА", "zina");
+  });
+  /* --- 6. Клик по карточке Лиды: без титула — сразу в прелоадер --- */
+  cardLida.addEventListener("click", () => {
+    if (cardLida.classList.contains("is-soon")) return;
+    if (menuEl.style.display === "none") return;
+
+    flash.classList.add("is-active");
+    setTimeout(() => menuEl.classList.remove("is-active"), 400);
+    setTimeout(() => flash.classList.remove("is-active"), 1200);
+
+    setTimeout(() => {
+      menuEl.style.display = "none";
+      exitBtn.classList.add("is-visible");
+      onStoryStart && onStoryStart("lida");
     }, 1400);
   });
 
-  cardLida.addEventListener("click", (e) => e.preventDefault());
-
-  /* --- 5. Кнопка «МЕНЮ» в углу --- */
+  /* --- 7. Кнопка «МЕНЮ» в углу --- */
   exitBtn.addEventListener("click", backToMenu);
 
-  /* --- 6. Esc — возврат в меню --- */
+  /* --- 8. Esc — возврат в меню --- */
   document.addEventListener("keydown", (e) => {
     if (e.code === "Escape") {
       e.preventDefault();
@@ -86,6 +114,7 @@ export function backToMenu() {
   import("./app.js")
     .then(({ stopAllVoices }) => stopAllVoices())
     .catch(() => {});
+
   document.querySelectorAll("video, audio").forEach((media) => {
     try {
       media.pause();
@@ -103,7 +132,7 @@ export function backToMenu() {
 
   const storyStart = document.getElementById("storyStart");
   if (storyStart) {
-    storyStart.classList.remove("is-active");
+    storyStart.classList.remove("is-active", "is-gone");
     storyStart.style.display = "none";
   }
 

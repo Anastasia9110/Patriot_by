@@ -1466,3 +1466,103 @@ body {
 .morning-final__p.is-visible {
   opacity: 1;
 }
+/* ============================================================
+   ЛИДА — СЦЕНА 0. ЧЁРНЫЙ. ТИШИНА.
+   ============================================================ */
+.scene--lida-intro { background: #000; }
+
+/* Слой 1: контур сумки */
+.lida-intro__bag {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.98);
+  width: clamp(280px, 32vw, 520px);
+  height: auto;
+  opacity: 0;
+  filter: brightness(0.6) contrast(1.2);
+  z-index: 2;
+  transition: opacity 4s ease, transform 4s ease;
+  pointer-events: none;
+}
+.lida-intro__bag.is-visible {
+  opacity: 0.55;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Слой 2: слово ЛИДА по буквам */
+.lida-intro__word {
+  position: absolute;
+  left: 50%;
+  bottom: 12vh;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.35em;
+  z-index: 3;
+  pointer-events: none;
+}
+.lida-intro__word span {
+  font-family: "Special Elite", "Neucha", serif;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  letter-spacing: 0.2em;
+  color: #fff;
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+.lida-intro__word span.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Слой 3: финальное затухание в белое */
+.lida-intro__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.lida-intro__fade.is-active {
+  opacity: 1;
+}
+/* ============================================================
+   ЛИДА — СЦЕНА 1. ГОРОД
+   ============================================================ */
+.scene--lida-city { background: #0a0a0a; display: block; }
+
+.lida-city__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.85) contrast(1.05);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 2.5s ease;
+  will-change: opacity;
+}
+.lida-city__layer.is-active { opacity: 1; }
+
+.lida-city__layer--city {
+  background-image: url("../assets/images/lida/scene01-city.jpg");
+  animation: roadBreath 22s ease-in-out infinite;
+}
+.lida-city__layer--sky {
+  background-image: url("../assets/images/lida/scene02-sky.jpg");
+}
+
+/* Затемнение в конце сцены */
+.lida-city__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.lida-city__fade.is-active { opacity: 1; }

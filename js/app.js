@@ -1816,3 +1816,249 @@ function typeText(node, fullText, speed, onDone) {
     i++;
   }, speed);
 }
+/* ============================================================
+   ЛИДА — СЦЕНА 0. ЧЁРНЫЙ. ТИШИНА.
+   ============================================================ */
+function buildLidaIntro() {
+  const el = document.createElement("section");
+  el.className = "scene scene--lida-intro";
+  el.innerHTML = `
+    <img class="lida-intro__bag" id="lidaIntroBag"
+         src="assets/images/lida/scene00-bag.png" alt="">
+
+    <div class="lida-intro__word" id="lidaIntroWord">
+      <span>Л</span>
+      <span>И</span>
+      <span>Д</span>
+      <span>А</span>
+    </div>
+
+    <div class="lida-intro__fade" id="lidaIntroFade"></div>
+  `;
+  return el;
+}
+
+export function playLidaScene0(onDone) {
+  const el = buildLidaIntro();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const bag      = el.querySelector("#lidaIntroBag");
+  const letters  = el.querySelectorAll("#lidaIntroWord span");
+  const fade     = el.querySelector("#lidaIntroFade");
+
+  /* --- 1. Контур сумки проявляется --- */
+  after(300, () => {
+    bag.classList.add("is-visible");
+  });
+
+  /* --- 2. Голос за кадром: «Я помню её вес...» --- */
+  after(800, () => {
+    playVoice("assets/audio/lida/00_1.mp3", 1.0);
+  });
+
+  /* --- 3. Слово «ЛИДА» по буквам (0.35 сек между буквами) --- */
+  letters.forEach((letter, i) => {
+    after(1200 + i * 350, () => {
+      letter.classList.add("is-visible");
+    });
+  });
+
+  /* --- 4. «Я не знала, донесу ли.» --- */
+  after(4500, () => {
+    playVoice("assets/audio/lida/00_2.mp3", 1.0);
+  });
+
+  /* --- 5. «Но я донесла.» --- */
+  after(6500, () => {
+    playVoice("assets/audio/lida/00_3.mp3", 1.0);
+  });
+
+  /* --- 6. Всё растворяется --- */
+  after(8000, () => {
+    bag.classList.remove("is-visible");
+    letters.forEach((l) => l.classList.remove("is-visible"));
+  });
+
+  /* --- 7. Экран заполняется белым --- */
+  after(8500, () => {
+    fade.classList.add("is-active");
+  });
+
+  /* --- 8. Конец сцены → сцена 1 --- */
+  after(10000, () => {
+    el.classList.remove("is-active");
+    setTimeout(() => {
+      el.remove();
+      onDone && onDone();
+    }, 1500);
+  });
+}
+/* ============================================================
+   ЛИДА — СЦЕНА 1. ГОРОД
+   ============================================================ */
+function buildLidaCity() {
+  const el = document.createElement("section");
+  el.className = "scene scene--lida-city";
+  el.innerHTML = `
+    <div class="lida-city__layer lida-city__layer--city is-active" id="lidaCityBg"></div>
+    <div class="lida-city__layer lida-city__layer--sky"            id="lidaCitySky"></div>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="lidaCityTitleInner">
+        <p class="title-bar__text" id="lidaCityTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+
+    <div class="lida-city__fade" id="lidaCityFade"></div>
+  `;
+  return el;
+}
+export function playLidaScene1(onDone) {
+  const el = buildLidaCity();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const city = el.querySelector("#lidaCityBg");
+  const sky  = el.querySelector("#lidaCitySky");
+  const fade = el.querySelector("#lidaCityFade");
+  const inner = el.querySelector("#lidaCityTitleInner");
+  const textEl = el.querySelector("#lidaCityTitleText");
+
+  /* ============================================================
+     ФОН: только город (самолёты добавим позже — при смене кадра)
+     ============================================================ */
+  startAmbient("city", "assets/audio/lida/city.mp3", 0.30);
+
+  /* ============================================================
+     КАЖДЫЙ ТИТР — РОВНО 4 СЕКУНДЫ
+     ============================================================ */
+
+  /* --- Титр 1: «Гродно. Июнь 1941 года…» --- */
+  after(1000, () => {
+    textEl.textContent =
+      "Гродно. Июнь 1941 года. Город на Немане — красивый, старинный, живой. Здесь жила Лида Вашкевич. Ей было девять.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/01_1.mp3", 1.0);
+  });
+
+  after(5000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(6000, () => inner.classList.remove("is-visible"));
+
+  /* --- Титр 2: «22 июня всё закончилось.» --- */
+  after(6500, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "22 июня всё закончилось.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/01_2.mp3", 1.0);
+  });
+
+  after(10500, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(11500, () => inner.classList.remove("is-visible"));
+
+  /* ============================================================
+     ПЕРЕХОД: город → небо. ВКЛЮЧАЮТСЯ САМОЛЁТЫ.
+     ============================================================ */
+  after(12000, () => {
+    city.classList.remove("is-active");
+    sky.classList.add("is-active");
+
+    // самолёты начинают звучать с этого момента
+    startAmbient("planes", "assets/audio/lida/planes.mp3", 0.35);
+  });
+
+  /* --- Титр 3: подруга «— Лида! Пойдём на реку!» --- */
+  after(13500, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Лида! Пойдём на реку! Сегодня жарко!";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/01_friend1.mp3", 1.0);
+  });
+
+  after(17500, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(18500, () => inner.classList.remove("is-visible"));
+
+  /* --- Титр 4: Лида «— Не могу. Мама сказала…» --- */
+  after(19000, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Не могу. Мама сказала — дома помочь.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/01_lida1.mp3", 1.0);
+  });
+
+  after(23000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(24000, () => inner.classList.remove("is-visible"));
+
+  /* --- Титр 5: подруга «— Ну и ладно. Завтра пойдём?» --- */
+  after(24500, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Ну и ладно. Завтра пойдём?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/01_friend2.mp3", 1.0);
+  });
+
+  after(28500, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(29500, () => inner.classList.remove("is-visible"));
+
+  /* --- Титр 6: Лида «— Завтра… посмотрим.» --- */
+  after(30000, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Завтра… посмотрим.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/01_lida2.mp3", 1.0);
+  });
+
+  after(34000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(35000, () => inner.classList.remove("is-visible"));
+
+  /* ============================================================
+     ЭКРАН ТЕМНЕЕТ (самолёты продолжают гудеть)
+     ============================================================ */
+  after(36000, () => {
+    fade.classList.add("is-active");
+  });
+
+  /* ============================================================
+     КОНЕЦ СЦЕНЫ — гасим оба звука
+     ============================================================ */
+  after(39000, () => {
+    stopAmbient("city",   800);
+    stopAmbient("planes", 800);
+
+    el.classList.remove("is-active");
+    setTimeout(() => {
+      el.remove();
+      onDone && onDone();
+    }, 2000);
+  });
+}
