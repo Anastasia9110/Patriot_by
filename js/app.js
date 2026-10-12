@@ -13,7 +13,14 @@ const preWord = document.getElementById("preloaderWord");
 let soundOn = true;
 
 /* ============================================================
-   ПРЕЛОАДЕР (короткий)
+   ГРОМКОСТЬ
+   ============================================================ */
+const V_ZINA = 0.55;
+const V_OTHER = 0.85;
+const V_MONO = 0.55;
+
+/* ============================================================
+   ПРЕЛОАДЕР
    ============================================================ */
 export function runPreloader(onDone) {
   after(150, () => preWord.classList.add("is-visible"));
@@ -36,6 +43,45 @@ export function runPreloader(onDone) {
    ============================================================ */
 const activeVoices = new Set();
 
+function playVoiceSmart(baseName, volume = 1.0) {
+  if (!soundOn) return null;
+
+  const formats = [".m4a", ".mp3"];
+  let idx = 0;
+
+  function tryNext() {
+    if (idx >= formats.length) {
+      console.warn("❌ Не найден ни .m4a, ни .mp3:", baseName);
+      return;
+    }
+    const src = `assets/audio/${baseName}${formats[idx]}`;
+    idx++;
+
+    const a = new Audio(src);
+    a.volume = volume;
+
+    const cleanUp = () => activeVoices.delete(a);
+    a.addEventListener("ended", cleanUp, { once: true });
+    a.addEventListener(
+      "error",
+      () => {
+        cleanUp();
+        tryNext();
+      },
+      { once: true },
+    );
+
+    activeVoices.add(a);
+    a.play().catch(() => {
+      cleanUp();
+      tryNext();
+    });
+  }
+
+  tryNext();
+  return null;
+}
+
 function playVoice(src, volume = 1.0) {
   if (!soundOn) return null;
   const a = new Audio(src);
@@ -56,9 +102,7 @@ export function stopAllVoices() {
     try {
       a.pause();
       a.currentTime = 0;
-    } catch (e) {
-      /* ignore */
-    }
+    } catch (e) {}
   });
   activeVoices.clear();
 }
@@ -121,7 +165,7 @@ export function playScene0(onDone) {
       "Мне было пятнадцать. Я приехала на каникулы к бабушке. Я не знала, что не вернусь.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
-    playVoice("assets/audio/1.mp3", 1.0);
+    playVoiceSmart("s0_01", V_MONO);
   });
 
   after(11000, () => {
@@ -135,7 +179,7 @@ export function playScene0(onDone) {
     textEl.textContent = "Но я не жалею.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
-    playVoice("assets/audio/2.mp3", 1.0);
+    playVoiceSmart("s0_02", V_MONO);
   });
 
   after(16000, () => {
@@ -199,7 +243,7 @@ export function playScene1(onDone) {
       "Июнь 1941 года. Ленинградская школьница Зина Портнова приехала на летние каникулы к бабушке в деревню Зуи, под Витебском. С ней — младшая сестра Галя.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
-    playVoice("assets/audio/00_1.mp3", 1.0);
+    playVoiceSmart("s1_01", V_MONO);
   });
 
   after(14000, () => {
@@ -213,7 +257,7 @@ export function playScene1(onDone) {
     textEl.textContent = "Через несколько дней началась война.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
-    playVoice("assets/audio/00_2.mp3", 1.0);
+    playVoiceSmart("s1_02", V_MONO);
   });
 
   after(23000, () => {
@@ -232,29 +276,31 @@ export function playScene1(onDone) {
     textEl.textContent = "— Зина, а скоро придём?";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
-    playVoice("assets/audio/Galya.mp3", 1.0);
+    playVoiceSmart("s1_03", V_OTHER);
   });
 
-  after(29500, () => {
+  after(30000, () => {
     textEl.textContent = "— Скоро, Галя. Вон уже крыши видно.";
+    playVoiceSmart("s1_04", V_MONO);
   });
 
-  after(33000, () => {
+  after(34000, () => {
     textEl.textContent = "— А бабушка нас ждёт?";
-    playVoice("assets/audio/Galya2.mp3", 1.0);
+    playVoiceSmart("s1_05", V_OTHER);
   });
 
-  after(36500, () => {
+  after(38000, () => {
     textEl.textContent = "— Ждёт. Пирожки печёт.";
+    playVoiceSmart("s1_06", V_MONO);
   });
 
-  after(40000, () => {
+  after(42000, () => {
     textEl.classList.remove("is-visible");
     textEl.classList.add("is-fading");
     inner.classList.remove("is-visible");
   });
 
-  after(43000, () => {
+  after(45000, () => {
     stopAmbient("wind");
     el.classList.remove("is-active");
     setTimeout(() => {
@@ -265,7 +311,7 @@ export function playScene1(onDone) {
 }
 
 /* ============================================================
-   СЦЕНА 2 — ОБОЛЬ (собака гавкает ОДИН РАЗ)
+   СЦЕНА 2 — ОБОЛЬ
    ============================================================ */
 function buildObol() {
   const el = document.createElement("section");
@@ -313,6 +359,7 @@ export function playScene2(onDone) {
       "Оболь оккупировали. Немецкие солдаты. Патрули. Собаки. Люди шли с опущенными глазами.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s2_01", V_MONO);
   });
 
   after(12000, () => {
@@ -332,6 +379,7 @@ export function playScene2(onDone) {
       "Я осталась не потому, что была смелой. Я просто не могла бросить своих.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s2_02", V_MONO);
   });
 
   after(21000, () => {
@@ -353,24 +401,28 @@ export function playScene2(onDone) {
       textEl.textContent = "— Зина, уезжай. Ты молодая. Тебя не тронут.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s2_03", V_OTHER);
     });
 
     after(7500, () => {
       layer4.classList.remove("is-active");
       layer3.classList.add("is-active");
       textEl.textContent = "— А ты? А Галя?";
+      playVoiceSmart("s2_04", V_MONO);
     });
 
     after(10500, () => {
       layer3.classList.remove("is-active");
       layer4.classList.add("is-active");
       textEl.textContent = "— Мы справимся.";
+      playVoiceSmart("s2_05", V_OTHER);
     });
 
     after(13500, () => {
       layer4.classList.remove("is-active");
       layer3.classList.add("is-active");
       textEl.textContent = "— Нет, бабушка. Я останусь.";
+      playVoiceSmart("s2_06", V_MONO);
     });
 
     after(17500, () => {
@@ -385,6 +437,7 @@ export function playScene2(onDone) {
         "В 1942 году в Оболи создали подпольную организацию «Юные мстители». Меня приняли в её комитет. Мне было шестнадцать.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s2_07", V_MONO);
     });
 
     after(34000, () => {
@@ -405,6 +458,9 @@ export function playScene2(onDone) {
 
 /* ============================================================
    СЦЕНА 3 — ЛИСТОВКИ
+   🎵 night3 + run начинаются вместе на кадре «done» (после видео)
+   🎵 и вместе заканчиваются в конце сцены
+   🎵 paper — только после клика по кнопке и на время видео
    ============================================================ */
 function buildLeaflet() {
   const el = document.createElement("section");
@@ -450,12 +506,13 @@ export function playScene3(onDone) {
   const inner = el.querySelector("#leafletTitleInner");
   const textEl = el.querySelector("#leafletTitleText");
 
+  /* ====== ДО КНОПКИ: только голос Зины ====== */
   after(2000, () => {
     textEl.textContent =
       "Мы расклеивали листовки. Собирали сведения о немцах. Устраивали диверсии.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
-    playVoice("assets/audio/6.mp3", 1.0);
+    playVoiceSmart("s3_01", V_MONO);
   });
 
   after(12000, () => {
@@ -474,27 +531,27 @@ export function playScene3(onDone) {
     textEl.textContent = "— Зина, быстрее. Клей.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
-    playVoice("assets/audio/7.mp3", 1.0);
+    playVoiceSmart("s3_02", V_OTHER);
   });
 
   after(20000, () => {
     textEl.textContent = "— Я успею.";
-    playVoice("assets/audio/8.mp3", 1.0);
+    playVoiceSmart("s3_03", V_MONO);
   });
 
   after(24000, () => {
     textEl.textContent = "— Услышишь шаги — беги. Не оглядывайся.";
-    playVoice("assets/audio/9.mp3", 1.0);
+    playVoiceSmart("s3_04", V_OTHER);
   });
 
   after(29000, () => {
     textEl.textContent = "— А вы?";
-    playVoice("assets/audio/10.mp3", 1.0);
+    playVoiceSmart("s3_05", V_MONO);
   });
 
   after(32000, () => {
     textEl.textContent = "— Мы тоже. Только позже.";
-    playVoice("assets/audio/11.mp3", 1.0);
+    playVoiceSmart("s3_06", V_OTHER);
   });
 
   after(36000, () => {
@@ -511,6 +568,9 @@ export function playScene3(onDone) {
     btn.classList.remove("is-visible");
     btn.classList.add("is-gone");
 
+    /* 📄 ТОЛЬКО ЗДЕСЬ включаем paper */
+    startAmbient("paper", "assets/audio/paper.mp3", 0.5);
+
     video.classList.add("is-active");
     video.play().catch((e) => console.warn("Видео не пошло:", e));
 
@@ -520,8 +580,17 @@ export function playScene3(onDone) {
         video.classList.remove("is-active");
         video.pause();
 
+        /* 📄 ВЫКЛЮЧАЕМ paper — клеить закончили */
+        stopAmbient("paper", 300);
+
         layer2.classList.remove("is-active");
         layer3.classList.add("is-active");
+
+        /* 🎵 ВКЛЮЧАЕМ night3 — играет до конца сцены, громко */
+        startAmbient("night3", "assets/audio/night3.mp3", 0.55);
+
+        /* 🏃 ШАГИ — ровно 3 секунды и всё */
+        playOnce("run", "assets/audio/run.mp3", 0.7);
 
         after(500, () => {
           textEl.classList.remove("is-fading");
@@ -529,7 +598,7 @@ export function playScene3(onDone) {
             "Мои руки дрожали. Но листовка держалась. Значит, и я держалась.";
           inner.classList.add("is-visible");
           textEl.classList.add("is-visible");
-          playVoice("assets/audio/12.mp3", 1.0);
+          playVoiceSmart("s3_07", V_MONO);
         });
 
         after(11000, () => {
@@ -539,6 +608,9 @@ export function playScene3(onDone) {
         });
 
         after(13000, () => {
+          /* 🎵 Глушим только ночь — шаги уже давно отзвучали */
+          stopAmbient("night3", 800);
+
           el.classList.remove("is-active");
           setTimeout(() => {
             el.remove();
@@ -607,6 +679,7 @@ export function playScene4(onDone) {
       "По заданию подполья я устроилась работать в столовую курсов переподготовки немецких офицеров. Я носила воду. Дрова. Смотрела. Запоминала.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s4_01", V_MONO);
   });
 
   after(16000, () => {
@@ -639,12 +712,14 @@ export function playScene4(onDone) {
       textEl.textContent = "— Wasser! Schnell!";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s4_02", V_OTHER);
     });
 
     after(4500, () => {
       officerTalk.classList.remove("is-active");
       officerClosed.classList.add("is-active");
       textEl.textContent = "— Ja.";
+      playVoiceSmart("s4_03", V_OTHER);
     });
 
     after(8000, () => {
@@ -663,6 +738,7 @@ export function playScene4(onDone) {
       textEl.textContent = "А однажды принесла яд.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s4_04", V_MONO);
     });
 
     after(16000, () => {
@@ -693,6 +769,7 @@ export function playScene4(onDone) {
         textEl.textContent = "Погибло более ста офицеров.";
         inner.classList.add("is-visible");
         textEl.classList.add("is-visible");
+        playVoiceSmart("s4_05", V_MONO);
       });
 
       video.addEventListener(
@@ -711,6 +788,7 @@ export function playScene4(onDone) {
               "Меня заставили попробовать суп. Чтобы доказать, что я не причастна.";
             inner.classList.add("is-visible");
             textEl.classList.add("is-visible");
+            playVoiceSmart("s4_06", V_MONO);
           });
 
           after(11000, () => {
@@ -729,11 +807,13 @@ export function playScene4(onDone) {
             textEl.textContent = "Я ела. И чудом выжила.";
             inner.classList.add("is-visible");
             textEl.classList.add("is-visible");
+            playVoiceSmart("s4_07", V_MONO);
           });
 
           after(24000, () => {
             textEl.textContent =
               "Я не считала. Я просто хотела, чтобы это закончилось.";
+            playVoiceSmart("s4_08", V_MONO);
           });
 
           after(33000, () => {
@@ -810,6 +890,7 @@ export function playScene5(onDone) {
       "После этого оставаться в Оболи было опасно. Летом 1943 года меня отправили в партизанский отряд имени Ворошилова.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s5_01", V_MONO);
   });
 
   after(13000, () => {
@@ -839,36 +920,42 @@ export function playScene5(onDone) {
       textEl.textContent = "— Портнова, страшно?";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s5_02", V_OTHER);
     });
 
     after(4500, () => {
       commanderTalk.classList.remove("is-active");
       commanderClosed.classList.add("is-active");
       textEl.textContent = "— Страшно.";
+      playVoiceSmart("s5_03", V_MONO);
     });
 
     after(7500, () => {
       commanderClosed.classList.remove("is-active");
       commanderTalk.classList.add("is-active");
       textEl.textContent = "— А почему не уходишь?";
+      playVoiceSmart("s5_04", V_OTHER);
     });
 
     after(11500, () => {
       commanderTalk.classList.remove("is-active");
       commanderClosed.classList.add("is-active");
       textEl.textContent = "— Если все уйдут, кто останется?";
+      playVoiceSmart("s5_05", V_MONO);
     });
 
     after(16000, () => {
       commanderClosed.classList.remove("is-active");
       commanderTalk.classList.add("is-active");
       textEl.textContent = "— Ты ребёнок.";
+      playVoiceSmart("s5_06", V_OTHER);
     });
 
     after(19500, () => {
       commanderTalk.classList.remove("is-active");
       commanderClosed.classList.add("is-active");
       textEl.textContent = "— Уже нет.";
+      playVoiceSmart("s5_07", V_MONO);
     });
 
     after(24000, () => {
@@ -883,6 +970,7 @@ export function playScene5(onDone) {
         "В лесу я впервые почувствовала, что я не одна. Что нас много. И что я могу быть нужной.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s5_08", V_MONO);
     });
 
     after(38000, () => {
@@ -900,6 +988,7 @@ export function playScene5(onDone) {
         "С августа 1943 года я — разведчица. Я научилась стрелять.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s5_09", V_MONO);
     });
 
     after(52000, () => {
@@ -916,6 +1005,7 @@ export function playScene5(onDone) {
       textEl.textContent = "Я ходила на задания.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s5_10", V_MONO);
     });
 
     after(63000, () => {
@@ -932,6 +1022,7 @@ export function playScene5(onDone) {
       textEl.textContent = "Я выросла.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s5_11", V_MONO);
     });
 
     after(72000, () => {
@@ -1000,6 +1091,7 @@ export function playScene6(onDone) {
       "Декабрь 1943 года. «Юные мстители» были раскрыты. Многие арестованы. Я вызвалась установить связь с оставшимися.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s6_01", V_MONO);
   });
 
   after(14000, () => {
@@ -1019,6 +1111,7 @@ export function playScene6(onDone) {
       "Я возвращалась с задания. Деревня Мостище. Снег. Тишина. Слишком тихо.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s6_02", V_MONO);
   });
 
   after(26000, () => {
@@ -1048,6 +1141,7 @@ export function playScene6(onDone) {
       textEl.textContent = "— Вот она! Зина! Это она!";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s6_03", V_OTHER);
     });
 
     after(5500, () => {
@@ -1058,6 +1152,7 @@ export function playScene6(onDone) {
     after(7000, () => {
       textEl.textContent =
         "Её звали Анна Храповицкая. Местная. Она узнала меня. И выдала.";
+      playVoiceSmart("s6_04", V_MONO);
     });
 
     after(14000, () => {
@@ -1079,6 +1174,7 @@ export function playScene6(onDone) {
       textEl.textContent = "Меня схватили.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s6_05", V_MONO);
     });
 
     after(28000, () => {
@@ -1151,6 +1247,7 @@ export function playScene7(onDone) {
     textEl.textContent = "Меня допрашивали. Долго. Я молчала.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s7_01", V_MONO);
   });
 
   after(9000, () => {
@@ -1183,6 +1280,7 @@ export function playScene7(onDone) {
       textEl.textContent = "— Кто ещё? Где отряд? Говори!";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s7_02", V_OTHER);
     });
 
     after(5500, () => {
@@ -1195,12 +1293,14 @@ export function playScene7(onDone) {
       zinaTable.classList.remove("is-active");
       officerTalk.classList.add("is-active");
       textEl.textContent = "— Ты пожалеешь.";
+      playVoiceSmart("s7_02b", V_OTHER);
     });
 
     after(13000, () => {
       officerTalk.classList.remove("is-active");
       zinaTalk.classList.add("is-active");
       textEl.textContent = "— Я уже жалею. Что не успела больше.";
+      playVoiceSmart("s7_03", V_MONO);
     });
 
     after(17500, () => {
@@ -1223,6 +1323,7 @@ export function playScene7(onDone) {
       textEl.textContent = "Только не дрожи. Только не дрожи.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s7_04", V_MONO);
     });
 
     after(27000, () => {
@@ -1255,6 +1356,7 @@ export function playScene7(onDone) {
         textEl.textContent = "Я выстрелила. И побежала.";
         inner.classList.add("is-visible");
         textEl.classList.add("is-visible");
+        playVoiceSmart("s7_05", V_MONO);
       });
 
       after(9000, () => {
@@ -1329,6 +1431,7 @@ export function playScene8(onDone) {
     textEl.textContent = "Я бежала. Не помню сколько. Ноги несли сами.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s8_01", V_MONO);
   });
 
   after(10000, () => {
@@ -1347,6 +1450,7 @@ export function playScene8(onDone) {
     textEl.textContent = "Река. За ней — лес. Если переплыву — уйду.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s8_02", V_MONO);
   });
 
   after(22000, () => {
@@ -1376,6 +1480,7 @@ export function playScene8(onDone) {
       textEl.textContent = "Они уже были рядом.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s8_03", V_MONO);
     });
 
     after(5000, () => {
@@ -1392,6 +1497,7 @@ export function playScene8(onDone) {
       textEl.textContent = "Вода обжигала.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s8_04", V_MONO);
     });
 
     after(13000, () => {
@@ -1414,6 +1520,7 @@ export function playScene8(onDone) {
         "Они вытащили меня. Я не сопротивлялась. Сил не было.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s8_05", V_MONO);
     });
 
     after(29000, () => {
@@ -1482,6 +1589,7 @@ export function playScene9(onDone) {
       "Меня пытали. Больше месяца. Я поседела. Мне было семнадцать.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s9_01", V_MONO);
   });
 
   after(12000, () => {
@@ -1511,6 +1619,7 @@ export function playScene9(onDone) {
       textEl.textContent = "— Ты скажешь имена.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s9_02", V_OTHER);
     });
 
     after(4500, () => {
@@ -1518,6 +1627,7 @@ export function playScene9(onDone) {
       zinaTalk.classList.add("is-active");
 
       textEl.textContent = "— Нет.";
+      playVoiceSmart("s9_03", V_MONO);
     });
 
     after(7500, () => {
@@ -1525,6 +1635,7 @@ export function playScene9(onDone) {
       officerTalk.classList.add("is-active");
 
       textEl.textContent = "— Ты пожалеешь.";
+      playVoiceSmart("s9_04", V_OTHER);
     });
 
     after(11000, () => {
@@ -1532,6 +1643,7 @@ export function playScene9(onDone) {
       zinaTalk.classList.add("is-active");
 
       textEl.textContent = "— Я не скажу.";
+      playVoiceSmart("s9_05", V_MONO);
     });
 
     after(15000, () => {
@@ -1548,18 +1660,22 @@ export function playScene9(onDone) {
       textEl.textContent = "Я не сказала ничего.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s9_06", V_MONO);
     });
 
     after(23000, () => {
       textEl.textContent = "Не потому что герой.";
+      playVoiceSmart("s9_07", V_MONO);
     });
 
     after(27000, () => {
       textEl.textContent = "Потому что имена — это люди.";
+      playVoiceSmart("s9_08", V_MONO);
     });
 
     after(32000, () => {
       textEl.textContent = "А людей я не отдам.";
+      playVoiceSmart("s9_09", V_MONO);
     });
 
     after(40000, () => {
@@ -1647,6 +1763,7 @@ export function playScene10(onDone) {
     textEl.textContent = "Утром 13 января 1944 года меня вывели на расстрел.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s10_01", V_MONO);
   });
 
   after(12000, () => {
@@ -1665,10 +1782,12 @@ export function playScene10(onDone) {
     textEl.textContent = "— Зина, ты вернёшься?";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s10_02", V_OTHER);
   });
 
   after(20000, () => {
     textEl.textContent = "— Я вернусь, бабушка. Только не вся.";
+    playVoiceSmart("s10_03", V_MONO);
   });
 
   after(25000, () => {
@@ -1687,6 +1806,7 @@ export function playScene10(onDone) {
     textEl.textContent = "Я шла босая. По снегу. Слепая. Седая.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s10_04", V_MONO);
   });
 
   after(34000, () => {
@@ -1700,6 +1820,7 @@ export function playScene10(onDone) {
     textEl.textContent = "Не сломленная.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s10_05", V_MONO);
   });
 
   after(41000, () => {
@@ -1721,6 +1842,7 @@ export function playScene10(onDone) {
     textEl.textContent = "Я не просила. Я не плакала. Я просто шла.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s10_06", V_MONO);
   });
 
   after(56000, () => {
@@ -1733,6 +1855,14 @@ export function playScene10(onDone) {
     white.classList.add("is-active");
   });
 
+  after(60000, () => {
+    playVoiceSmart("s10_07", V_MONO);
+  });
+
+  after(65000, () => {
+    playVoiceSmart("s10_07", V_MONO);
+  });
+
   after(70000, () => {
     typeText(
       credits,
@@ -1742,10 +1872,12 @@ export function playScene10(onDone) {
         after(1500, () => {
           whisper.textContent = "Ей было семнадцать.";
           whisper.classList.add("is-visible");
+          playVoiceSmart("s10_09", V_OTHER);
         });
 
         after(6000, () => {
           whisper.textContent = "Ей было семнадцать.\nМне было семнадцать.";
+          playVoiceSmart("s10_10", V_MONO);
         });
 
         after(11000, () => {
@@ -1766,17 +1898,20 @@ export function playScene10(onDone) {
       p1.textContent =
         "История Зины Портновой — это не только про меня. Это про Галю. Про бабушку. Про тех, кто не вернулся. Про всех детей, у которых война украла детство.";
       p1.classList.add("is-visible");
+      playVoiceSmart("s10_11", V_MONO);
     });
 
     after(12000, () => {
       p2.textContent =
         "Я — Зина. Зинаида Мартыновна Портнова. Герой Советского Союза. Посмертно.";
       p2.classList.add("is-visible");
+      playVoiceSmart("s10_12", V_MONO);
     });
 
     after(21000, () => {
       p3.textContent = "Но тогда я просто хотела, чтобы закончилась война.";
       p3.classList.add("is-visible");
+      playVoiceSmart("s10_13", V_MONO);
     });
 
     after(30000, () => {
