@@ -1,7 +1,17 @@
-import { runPreloader, playScene0, playScene1, playScene2, playScene3,
-         playScene4, playScene5, playScene6, playScene7, playScene8,
-         playScene9, playScene10 } from "./app.js";
-import { clearAll } from "./utils.js";
+import {
+  runPreloader,
+  playScene0,
+  playScene1,
+  playScene2,
+  playScene3,
+  playScene4,
+  playScene5,
+  playScene6,
+  playScene7,
+  playScene8,
+  playScene9,
+  playScene10,
+} from "./app.js";
 import { initMenu, backToMenu } from "./menu.js";
 
 /* ============================================================
@@ -20,7 +30,6 @@ function startZinaStory() {
                     playScene8(() => {
                       playScene9(() => {
                         playScene10(() => {
-                          // Конец истории → возврат в меню
                           backToMenu();
                         });
                       });
@@ -41,15 +50,4 @@ function startZinaStory() {
    ============================================================ */
 initMenu((story) => {
   if (story === "zina") startZinaStory();
-});
-
-/* ============================================================
-   SPACE — перезапуск сайта
-   ============================================================ */
-document.addEventListener("keydown", (e) => {
-  if (e.code === "Space") {
-    e.preventDefault();
-    clearAll();
-    location.reload();
-  }
 });

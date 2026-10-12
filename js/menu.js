@@ -8,29 +8,28 @@ let onStoryStart = null;
 export function initMenu(onStorySelected) {
   onStoryStart = onStorySelected;
 
-  const intro    = document.getElementById("intro");
-  const introBg  = intro.querySelector(".intro__bg");
-  const title    = intro.querySelector(".intro__title");
+  const intro = document.getElementById("intro");
+  const introBg = intro.querySelector(".intro__bg");
+  const title = intro.querySelector(".intro__title");
   const subtitle = intro.querySelector(".intro__subtitle");
   const introBtn = document.getElementById("introBtn");
 
   const flash = document.getElementById("flash");
-  menuEl  = document.getElementById("menu");
+  menuEl = document.getElementById("menu");
   exitBtn = document.getElementById("exitBtn");
 
   const cardZina = document.getElementById("cardZina");
   const cardLida = document.getElementById("cardLida");
 
-  const storyStart    = document.getElementById("storyStart");
-  const storyStartBtn = document.getElementById("storyStartBtn");
+  const storyStart = document.getElementById("storyStart");
 
   /* --- 1. Появление заставки --- */
-  setTimeout(() => introBg.classList.add("is-visible"), 200);
-  setTimeout(() => title.classList.add("is-visible"), 900);
-  setTimeout(() => subtitle.classList.add("is-visible"), 2200);
-  setTimeout(() => introBtn.classList.add("is-visible"), 3600);
+  setTimeout(() => introBg.classList.add("is-visible"), 100);
+  setTimeout(() => title.classList.add("is-visible"), 400);
+  setTimeout(() => subtitle.classList.add("is-visible"), 900);
+  setTimeout(() => introBtn.classList.add("is-visible"), 1500);
 
-  /* --- 2. Клик «ВОЙТИ»: вспышка → меню --- */
+  /* --- 2. Клик «ВОЙТИ» --- */
   introBtn.addEventListener("click", () => {
     flash.classList.add("is-active");
 
@@ -40,7 +39,7 @@ export function initMenu(onStorySelected) {
     setTimeout(() => intro.remove(), 2500);
   });
 
-  /* --- 3. Клик по карточке Зины: меню уходит → стартовый экран «ЗИНА» --- */
+  /* --- 3. Клик по карточке Зины --- */
   cardZina.addEventListener("click", () => {
     if (cardZina.classList.contains("is-soon")) return;
 
@@ -51,26 +50,23 @@ export function initMenu(onStorySelected) {
     setTimeout(() => {
       menuEl.style.display = "none";
       storyStart.classList.add("is-active");
+
+      /* --- 4. Автозапуск истории через 2 секунды (без кнопки) --- */
+      setTimeout(() => {
+        storyStart.classList.add("is-gone");
+
+        setTimeout(() => {
+          storyStart.style.display = "none";
+          exitBtn.classList.add("is-visible");
+          onStoryStart && onStoryStart("zina");
+        }, 1000);
+      }, 2000);
     }, 1400);
   });
 
-  /* --- 4. Клик «НАЧАТЬ» на стартовом экране истории --- */
-storyStartBtn.addEventListener("click", () => {
-  // Плавно гасим экран — CSS сделает всё сам:
-  // кнопка гаснет за 0.8с, буква «ЗИНА» гаснет за 3с
-  storyStart.classList.add("is-gone");
-
-  // Через 3 секунды — окончательно скрыть и запустить игру
-  setTimeout(() => {
-    storyStart.style.display = "none";
-    exitBtn.classList.add("is-visible");
-    onStoryStart && onStoryStart("zina");
-  }, 3000);
-});
-
   cardLida.addEventListener("click", (e) => e.preventDefault());
 
-  /* --- 5. Кнопка «МЕНЮ» в углу --- */
+  /* --- 5. Кнопка «МЕНЮ» --- */
   exitBtn.addEventListener("click", backToMenu);
 
   /* --- 6. Esc --- */
@@ -83,11 +79,13 @@ storyStartBtn.addEventListener("click", () => {
 }
 
 /* ============================================================
-   ВОЗВРАТ В МЕНЮ ИЗ ИГРЫ
+   ВОЗВРАТ В МЕНЮ
    ============================================================ */
 export function backToMenu() {
   import("./utils.js").then(({ clearAll }) => clearAll());
-  import("./app.js").then(({ stopAllVoices }) => stopAllVoices()).catch(() => {});
+  import("./app.js")
+    .then(({ stopAllVoices }) => stopAllVoices())
+    .catch(() => {});
   document.querySelectorAll("video, audio").forEach((media) => {
     try {
       media.pause();

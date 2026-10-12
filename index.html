@@ -1,82 +1,93 @@
 <!doctype html>
 <html lang="ru">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Дети-войны</title>
-  <link rel="icon" href="data:,">
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Neucha&family=Cutive+Mono&display=swap"
-    rel="stylesheet"
-  />
-  <link rel="stylesheet" href="css/main.css" />
-  <link rel="stylesheet" href="css/menu.css" />
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <title>Дети-войны</title>
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Neucha&family=Cutive+Mono&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/main.css" />
+    <link rel="stylesheet" href="css/menu.css" />
+  </head>
+  <body>
+    <div class="grain"></div>
+    <div class="vignette"></div>
 
-  <div class="grain"></div>
-  <div class="vignette"></div>
+    <!-- ЗАСТАВКА -->
+    <section class="intro" id="intro">
+      <div class="intro__bg"></div>
+      <div class="intro__inner">
+        <h1 class="intro__title">ДЕТИ-ВОЙНЫ</h1>
+        <p class="intro__subtitle">Истории, которые нельзя забыть</p>
+        <button class="intro__btn" id="introBtn">ВОЙТИ</button>
+      </div>
+    </section>
 
-  <!-- ЗАСТАВКА -->
-  <section class="intro" id="intro">
-    <div class="intro__bg"></div>
-    <div class="intro__inner">
-      <h1 class="intro__title">ДЕТИ-ВОЙНЫ</h1>
-      <p class="intro__subtitle">Истории, которые нельзя забыть</p>
-      <button class="intro__btn" id="introBtn">ВОЙТИ</button>
+    <!-- БЕЛАЯ ВСПЫШКА -->
+    <div class="flash" id="flash"></div>
+
+    <!-- МЕНЮ ВЫБОРА ИСТОРИЙ -->
+    <section class="menu" id="menu">
+      <header class="menu__header">
+        <div class="menu__brand">ДЕТИ-ВОЙНЫ</div>
+      </header>
+
+      <div class="menu__grid">
+        <button class="card is-available" id="cardZina" data-story="zina">
+          <div
+            class="card__photo"
+            style="
+              background-image: url(&quot;assets/images/menu/card-zina.jpg&quot;);
+            "
+          ></div>
+          <div class="card__line"></div>
+          <div class="card__name">ЗИНА ПОРТНОВА</div>
+          <div class="card__years">1926–1944</div>
+        </button>
+
+        <button class="card is-soon" id="cardLida" data-story="lida" disabled>
+          <div
+            class="card__photo"
+            style="
+              background-image: url(&quot;assets/images/menu/card-lida.jpg&quot;);
+            "
+          ></div>
+          <div class="card__line"></div>
+          <div class="card__name">ЛИДА ВАШКЕВИЧ</div>
+          <div class="card__years">1927–1943</div>
+          <div class="card__badge">СКОРО</div>
+        </button>
+      </div>
+
+      <footer class="menu__footer">
+        <p>Сохраним память вместе</p>
+      </footer>
+    </section>
+
+    <!-- СТАРТОВЫЙ ЭКРАН ИСТОРИИ (без кнопки) -->
+    <section class="story-start" id="storyStart">
+      <div class="story-start__word">ЗИНА</div>
+      <div class="story-start__word">ПОРТНОВА</div>
+    </section>
+
+    <!-- ПРЕЛОАДЕР ИГРЫ -->
+    <div class="preloader" id="preloader">
+      <div class="zina-word" id="preloaderWord">ЗИНА</div>
     </div>
-  </section>
 
-  <!-- БЕЛАЯ ВСПЫШКА -->
-  <div class="flash" id="flash"></div>
+    <!-- СЦЕНЫ -->
+    <main id="app"></main>
 
-  <!-- МЕНЮ ВЫБОРА ИСТОРИЙ -->
-  <section class="menu" id="menu">
-    <header class="menu__header">
-      <div class="menu__brand">ДЕТИ-ВОЙНЫ</div>
-    </header>
-
-    <div class="menu__grid">
-      <button class="card is-available" id="cardZina" data-story="zina">
-        <div class="card__photo" style="background-image: url('assets/images/menu/card-zina.jpg')"></div>
-        <div class="card__line"></div>
-        <div class="card__name">ЗИНА ПОРТНОВА</div>
-        <div class="card__years">1926–1944</div>
-      </button>
-
-      <button class="card is-soon" id="cardLida" data-story="lida" disabled>
-        <div class="card__photo" style="background-image: url('assets/images/menu/card-lida.jpg')"></div>
-        <div class="card__line"></div>
-        <div class="card__name">ЛИДА ВАШКЕВИЧ</div>
-        <div class="card__years">1927–1943</div>
-        <div class="card__badge">СКОРО</div>
-      </button>
-    </div>
-
-    <footer class="menu__footer">
-      <p>Сохраним память вместе</p>
-    </footer>
-  </section>
-
-  <!-- СТАРТОВЫЙ ЭКРАН ИСТОРИИ -->
-  <section class="story-start" id="storyStart">
-    <div class="story-start__word">ЗИНА</div>
-    <button class="story-start__btn" id="storyStartBtn">НАЧАТЬ</button>
-  </section>
-
-  <!-- ПРЕЛОАДЕР ИГРЫ -->
-  <div class="preloader" id="preloader">
-    <div class="zina-word" id="preloaderWord">ЗИНА</div>
-  </div>
-
-  <!-- СЦЕНЫ -->
-  <main id="app"></main>
-
-  <!-- КНОПКА ВЫХОДА В МЕНЮ -->
-  <button class="exit-btn" id="exitBtn">МЕНЮ</button>
-  <script type="module" src="js/main.js"></script>
-
-</body>
+    <!-- КНОПКА ВЫХОДА В МЕНЮ -->
+    <button class="exit-btn" id="exitBtn">МЕНЮ</button>
+    <script type="module" src="js/main.js"></script>
+  </body>
 </html>
