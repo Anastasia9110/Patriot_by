@@ -1566,3 +1566,127 @@ body {
   transition: opacity 2s ease;
 }
 .lida-city__fade.is-active { opacity: 1; }
+/* ============================================================
+   ЛИДА — СЦЕНА 2. ОТЕЦ
+   ============================================================ */
+.scene--lida-father { background: #0a0a0a; display: block; }
+
+.lida-father__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.78) contrast(1.1);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  will-change: opacity;
+}
+.lida-father__layer.is-active { opacity: 1; }
+
+/* Комната с подпольщиками */
+.lida-father__layer--room {
+  background-image: url("../assets/images/lida/scene03-father-room.jpg");
+}
+/* Лида слушает (в начале сцены) */
+.lida-father__layer--listening {
+  background-image: url("../assets/images/lida/scene03-lida-listening.jpg");
+}
+/* Лида у двери (альтернативный кадр) */
+.lida-father__layer--door {
+  background-image: url("../assets/images/lida/scene03b-lida-door.jpg");
+}
+/* Отец молчит */
+.lida-father__layer--closed {
+  background-image: url("../assets/images/lida/scene04-father-closed.jpg");
+}
+/* Отец говорит (строгий) */
+.lida-father__layer--talk {
+  background-image: url("../assets/images/lida/scene05-father-talk.jpg");
+}
+/* Отец улыбается — финал */
+.lida-father__layer--smile {
+  background-image: url("../assets/images/lida/scene06-father-smile.jpg");
+}
+
+.lida-father__btn {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+}
+.lida-father__btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.lida-father__btn:hover { opacity: 1; background: #fff; color: #000; }
+.lida-father__btn.is-gone { opacity: 0; pointer-events: none; }
+/* ============================================================
+   ЛИДА — СЦЕНА 3. СУМКА
+   ============================================================ */
+.scene--lida-bag { background: #0a0a0a; display: block; }
+
+.lida-bag__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.85) contrast(1.05);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  will-change: opacity;
+}
+.lida-bag__layer.is-active { opacity: 1; }
+
+.lida-bag__layer--shop        { background-image: url("../assets/images/lida/scene07-shop.jpg"); }
+.lida-bag__layer--yard        { background-image: url("../assets/images/lida/scene08-yard.jpg"); }
+.lida-bag__layer--room        { background-image: url("../assets/images/lida/scene09-room-bag.jpg"); }
+.lida-bag__layer--hands       { background-image: url("../assets/images/lida/scene10-bag-hands.jpg"); }
+.lida-bag__layer--mother-closed { background-image: url("../assets/images/lida/scene11-mother-closed.jpg"); }
+.lida-bag__layer--mother-talk   { background-image: url("../assets/images/lida/scene12-mother-talk.jpg"); }
+
+.lida-bag__btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+}
+.lida-bag__btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.lida-bag__btn:hover { opacity: 1; background: #fff; color: #000; }
+.lida-bag__btn.is-gone { opacity: 0; pointer-events: none; }
+
+/* Затемнение в конце */
+.lida-bag__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.lida-bag__fade.is-active { opacity: 1; }

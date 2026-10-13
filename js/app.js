@@ -2062,3 +2062,622 @@ export function playLidaScene1(onDone) {
     }, 2000);
   });
 }
+/* ============================================================
+   ЛИДА — СЦЕНА 2. ОТЕЦ
+   ============================================================ */
+function buildLidaFather() {
+  const el = document.createElement("section");
+  el.className = "scene scene--lida-father";
+  el.innerHTML = `
+    <div class="lida-father__layer lida-father__layer--room is-active" id="lidaFatherRoom"></div>
+    <div class="lida-father__layer lida-father__layer--listening"      id="lidaFatherListening"></div>
+    <div class="lida-father__layer lida-father__layer--door"           id="lidaFatherDoor"></div>
+    <div class="lida-father__layer lida-father__layer--closed"         id="lidaFatherClosed"></div>
+    <div class="lida-father__layer lida-father__layer--talk"           id="lidaFatherTalk"></div>
+    <div class="lida-father__layer lida-father__layer--smile"          id="lidaFatherSmile"></div>
+
+    <button class="lida-father__btn" id="lidaFatherBtn">ПОГОВОРИТЬ С ОТЦОМ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="lidaFatherTitleInner">
+        <p class="title-bar__text" id="lidaFatherTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+  `;
+  return el;
+}
+
+export function playLidaScene2(onDone) {
+  const el = buildLidaFather();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const room      = el.querySelector("#lidaFatherRoom");
+  const listening = el.querySelector("#lidaFatherListening");
+  const door      = el.querySelector("#lidaFatherDoor");
+  const closed    = el.querySelector("#lidaFatherClosed");
+  const talk      = el.querySelector("#lidaFatherTalk");
+  const smile     = el.querySelector("#lidaFatherSmile");
+  const btn       = el.querySelector("#lidaFatherBtn");
+  const inner     = el.querySelector("#lidaFatherTitleInner");
+  const textEl    = el.querySelector("#lidaFatherTitleText");
+
+  /* ============================================================
+     ФОНОВЫЕ ЗВУКИ — ночь, тиканье часов
+     ============================================================ */
+  startAmbient("night", "assets/audio/lida/night.mp3", 0.25);
+  startAmbient("clock", "assets/audio/lida/clock.mp3", 0.15);
+
+  /* ============================================================
+     ЧАСТЬ 1: подпольщики за столом
+     Каждый титр — 4 секунды
+     ============================================================ */
+
+  /* --- Титр 1: «Завтра в шесть. У старой мельницы.» --- */
+  after(1000, () => {
+    textEl.textContent = "— Завтра в шесть. У старой мельницы.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/02_1.mp3", 1.0);
+  });
+  after(5000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(6000, () => inner.classList.remove("is-visible"));
+
+  /* --- Титр 2: «А если провал?» --- */
+  after(6500, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— А если провал?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/02_2.mp3", 1.0);
+  });
+  after(10500, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(11500, () => inner.classList.remove("is-visible"));
+
+  /* --- Титр 3: «Тогда — рассыпаемся.» --- */
+  after(12000, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Тогда — рассыпаемся. Каждый сам.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/02_3.mp3", 1.0);
+  });
+  after(16000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(17000, () => inner.classList.remove("is-visible"));
+
+  /* --- Титр 4: «А девочка? Лида?» --- */
+  after(17500, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— А девочка? Лида?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/02_4.mp3", 1.0);
+  });
+  after(21500, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(22500, () => inner.classList.remove("is-visible"));
+
+  /* --- Титр 5: «Лида — не при чём. Она ребёнок.» --- */
+  after(23000, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Лида — не при чём. Она ребёнок.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/02_5.mp3", 1.0);
+  });
+  after(27000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(28000, () => inner.classList.remove("is-visible"));
+
+  /* --- Титр 6: «Я не ребёнок.» (шёпот Лиды) → кадр «Лида слушает» --- */
+  after(28500, () => {
+    room.classList.remove("is-active");
+    listening.classList.add("is-active");
+
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Я не ребёнок.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/02_6.mp3", 1.0);
+  });
+  after(32000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============================================================
+     КНОПКА «ПОГОВОРИТЬ С ОТЦОМ»
+     ============================================================ */
+  after(33500, () => {
+    btn.classList.add("is-visible");
+  });
+
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+
+    /* Переход на кадр «отец, рот закрыт» */
+    listening.classList.remove("is-active");
+    closed.classList.add("is-active");
+
+    /* ============================================================
+       ЧАСТЬ 2: диалог Лиды с отцом
+       ============================================================ */
+
+    /* «— Лида? Ты почему не спишь?» — отец говорит */
+    after(1500, () => {
+      closed.classList.remove("is-active");
+      talk.classList.add("is-active");
+
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "— Лида? Ты почему не спишь?";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      playVoice("assets/audio/lida/02_7.mp3", 1.0);
+    });
+
+    /* «— Не хочется.» — Лида, отец молчит */
+    after(5500, () => {
+      talk.classList.remove("is-active");
+      closed.classList.add("is-active");
+
+      textEl.textContent = "— Не хочется.";
+      playVoice("assets/audio/lida/02_8.mp3", 1.0);
+    });
+
+    /* «— Что ты слышала?» — отец говорит */
+    after(8500, () => {
+      closed.classList.remove("is-active");
+      talk.classList.add("is-active");
+
+      textEl.textContent = "— Что ты слышала?";
+      playVoice("assets/audio/lida/02_9.mp3", 1.0);
+    });
+
+    /* «— Всё.» — Лида */
+    after(12000, () => {
+      talk.classList.remove("is-active");
+      closed.classList.add("is-active");
+
+      textEl.textContent = "— Всё.";
+      playVoice("assets/audio/lida/02_10.mp3", 1.0);
+    });
+
+    /* «— И что ты думаешь?» — отец */
+    after(14500, () => {
+      closed.classList.remove("is-active");
+      talk.classList.add("is-active");
+
+      textEl.textContent = "— И что ты думаешь?";
+      playVoice("assets/audio/lida/02_11.mp3", 1.0);
+    });
+
+    /* «— Я хочу помогать.» — Лида */
+    after(18500, () => {
+      talk.classList.remove("is-active");
+      closed.classList.add("is-active");
+
+      textEl.textContent = "— Я хочу помогать.";
+      playVoice("assets/audio/lida/02_12.mp3", 1.0);
+    });
+
+    /* «— Тебе десять лет.» — отец */
+    after(21500, () => {
+      closed.classList.remove("is-active");
+      talk.classList.add("is-active");
+
+      textEl.textContent = "— Тебе десять лет.";
+      playVoice("assets/audio/lida/02_13.mp3", 1.0);
+    });
+
+    /* «— И что? Фашистам всё равно, сколько мне лет.» — Лида */
+    after(25000, () => {
+      talk.classList.remove("is-active");
+      closed.classList.add("is-active");
+
+      textEl.textContent = "— И что? Фашистам всё равно, сколько мне лет.";
+      playVoice("assets/audio/lida/02_14.mp3", 1.0);
+    });
+
+    /* «— Ты вся в меня.» — ОТЕЦ УЛЫБАЕТСЯ */
+    after(29500, () => {
+      closed.classList.remove("is-active");
+      smile.classList.add("is-active");
+
+      textEl.textContent = "— Ты вся в меня.";
+      playVoice("assets/audio/lida/02_15.mp3", 1.0);
+    });
+
+    /* --- Гасим титр --- */
+    after(34000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* --- Конец сцены --- */
+    after(36000, () => {
+      stopAmbient("night", 800);
+      stopAmbient("clock", 800);
+
+      el.classList.remove("is-active");
+      setTimeout(() => {
+        el.remove();
+        onDone && onDone();
+      }, 1500);
+    });
+  });
+}
+/* ============================================================
+   ЛИДА — СЦЕНА 3. СУМКА
+   ============================================================ */
+function buildLidaBag() {
+  const el = document.createElement("section");
+  el.className = "scene scene--lida-bag";
+  el.innerHTML = `
+    <div class="lida-bag__layer lida-bag__layer--shop is-active" id="lidaBagShop"></div>
+    <div class="lida-bag__layer lida-bag__layer--yard"           id="lidaBagYard"></div>
+    <div class="lida-bag__layer lida-bag__layer--room"           id="lidaBagRoom"></div>
+    <div class="lida-bag__layer lida-bag__layer--hands"          id="lidaBagHands"></div>
+    <div class="lida-bag__layer lida-bag__layer--mother-closed"  id="lidaBagMotherClosed"></div>
+    <div class="lida-bag__layer lida-bag__layer--mother-talk"    id="lidaBagMotherTalk"></div>
+
+    <button class="lida-bag__btn" id="lidaBagBtn">СОБРАТЬ СУМКУ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="lidaBagTitleInner">
+        <p class="title-bar__text" id="lidaBagTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+
+    <div class="lida-bag__fade" id="lidaBagFade"></div>
+  `;
+  return el;
+}
+
+export function playLidaScene3(onDone) {
+  const el = buildLidaBag();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const shop         = el.querySelector("#lidaBagShop");
+  const yard         = el.querySelector("#lidaBagYard");
+  const room         = el.querySelector("#lidaBagRoom");
+  const hands        = el.querySelector("#lidaBagHands");
+  const motherClosed = el.querySelector("#lidaBagMotherClosed");
+  const motherTalk   = el.querySelector("#lidaBagMotherTalk");
+  const btn          = el.querySelector("#lidaBagBtn");
+  const fade         = el.querySelector("#lidaBagFade");
+  const inner        = el.querySelector("#lidaBagTitleInner");
+  const textEl       = el.querySelector("#lidaBagTitleText");
+
+  /* ============================================================
+     ФОН: гул магазина
+     ============================================================ */
+  startAmbient("shop", "assets/audio/lida/shop.mp3", 0.2);
+
+  /* ============================================================
+     ЧАСТЬ 1: МАГАЗИН (титры по 4 сек)
+     ============================================================ */
+
+  /* — Опять ты, девка. Что тебе? */
+  after(1000, () => {
+    textEl.textContent = "— Опять ты, девка. Что тебе?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/03_1.mp3", 1.0);
+  });
+  after(5000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(6000, () => inner.classList.remove("is-visible"));
+
+  /* — Бумагу. Две штуки. */
+  after(6500, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Бумагу. Две штуки.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/03_2.mp3", 1.0);
+  });
+  after(10500, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(11500, () => inner.classList.remove("is-visible"));
+
+  /* — Две? Зачем тебе столько? */
+  after(12000, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Две? Зачем тебе столько?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/03_3.mp3", 1.0);
+  });
+  after(16000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(17000, () => inner.classList.remove("is-visible"));
+
+  /* — Рисовать. Учительница задала. */
+  after(17500, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Рисовать. Учительница задала.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/03_4.mp3", 1.0);
+  });
+  after(21500, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============================================================
+     ПЕРЕХОД: магазин → двор
+     ============================================================ */
+  after(23000, () => {
+    shop.classList.remove("is-active");
+    yard.classList.add("is-active");
+
+    stopAmbient("shop", 800);
+    startAmbient("yard", "assets/audio/lida/yard.mp3", 0.2);
+  });
+
+  /* ============================================================
+     ЧАСТЬ 2: ДВОР
+     ============================================================ */
+
+  /* — Слушайте. Каждому — по два листа. */
+  after(24000, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Слушайте. Каждому — по два листа.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/03_5.mp3", 1.0);
+  });
+  after(28000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(29000, () => inner.classList.remove("is-visible"));
+
+  /* — А зачем, Лида? */
+  after(29500, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— А зачем, Лида?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/03_6.mp3", 1.0);
+  });
+  after(33500, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(34500, () => inner.classList.remove("is-visible"));
+
+  /* — Потом узнаешь. Главное — сделай. */
+  after(35000, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Потом узнаешь. Главное — сделай. Никому ни слова.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/03_7.mp3", 1.0);
+  });
+  after(39000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(40000, () => inner.classList.remove("is-visible"));
+
+  /* — А если спросят? */
+  after(40500, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— А если спросят?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/03_8.mp3", 1.0);
+  });
+  after(44500, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(45500, () => inner.classList.remove("is-visible"));
+
+  /* — Скажешь — в школу. Для тетрадей. */
+  after(46000, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Скажешь — в школу. Для тетрадей.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/03_9.mp3", 1.0);
+  });
+  after(50000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+   /* ============================================================
+     ПЕРЕХОД: двор → дом
+     ============================================================ */
+  after(51500, () => {
+    yard.classList.remove("is-active");
+    room.classList.add("is-active");
+
+    stopAmbient("yard", 800);
+    startAmbient("home", "assets/audio/lida/home.mp3", 0.15);
+  });
+
+  /* ============================================================
+     ЧАСТЬ 3: ДОМ — диалог Лиды с матерью
+     На репликах МАТЕРИ:  кадр «мать говорит» (рот открыт)
+     На репликах ЛИДЫ:    кадр «мать молчит» (слушает)
+     ============================================================ */
+
+  /* --- Титр 1: «— Лида. Что это?» — МАТЬ ГОВОРИТ --- */
+  after(52500, () => {
+    room.classList.remove("is-active");
+    motherTalk.classList.add("is-active");
+
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Лида. Что это?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/03_10.mp3", 1.0);
+  });
+  after(56500, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(57500, () => inner.classList.remove("is-visible"));
+
+  /* --- Титр 2: «— Уголь. Для бабушки. Печку топить.» — ЛИДА, мать молчит --- */
+  after(58000, () => {
+    motherTalk.classList.remove("is-active");
+    motherClosed.classList.add("is-active");
+
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Уголь. Для бабушки. Печку топить.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/03_11.mp3", 1.0);
+  });
+  after(62000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(63000, () => inner.classList.remove("is-visible"));
+
+  /* --- Титр 3: «— С каких пор ты носишь уголь?» — МАТЬ ГОВОРИТ --- */
+  after(63500, () => {
+    motherClosed.classList.remove("is-active");
+    motherTalk.classList.add("is-active");
+
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— С каких пор ты носишь уголь?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/03_12.mp3", 1.0);
+  });
+  after(67500, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(68500, () => inner.classList.remove("is-visible"));
+
+  /* --- Титр 4: «— С сегодняшнего. Бабушка старая. Ей тяжело.» — ЛИДА, мать молчит --- */
+  after(69000, () => {
+    motherTalk.classList.remove("is-active");
+    motherClosed.classList.add("is-active");
+
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— С сегодняшнего. Бабушка старая. Ей тяжело.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/03_13.mp3", 1.0);
+  });
+  after(73000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============================================================
+     КНОПКА «СОБРАТЬ СУМКУ»
+     ============================================================ */
+  after(74500, () => {
+    btn.classList.add("is-visible");
+  });
+
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+
+    /* Переход на крупный план: уголь в сумке */
+       /* Переход на крупный план: уголь в сумке */
+    motherClosed.classList.remove("is-active");
+    motherTalk.classList.remove("is-active");
+    hands.classList.add("is-active");
+    /* --- Диалог с матерью (крупный план) --- */
+
+    /* — Будь осторожна. */
+    after(1500, () => {
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "— Будь осторожна.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      playVoice("assets/audio/lida/03_14.mp3", 1.0);
+    });
+
+    /* — Я всегда осторожна. */
+    after(5500, () => {
+      textEl.textContent = "— Я всегда осторожна.";
+      playVoice("assets/audio/lida/03_15.mp3", 1.0);
+    });
+
+    /* --- Гасим титр --- */
+    after(10000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* ============================================================
+       КНОПКА «ВЫЙТИ ИЗ ДОМА»
+       ============================================================ */
+    after(12000, () => {
+      btn.textContent = "ВЫЙТИ ИЗ ДОМА";
+      btn.classList.remove("is-gone");
+      btn.classList.add("is-visible");
+    });
+
+    /* --- Клик «ВЫЙТИ ИЗ ДОМА» --- */
+    const onLeaveClick = () => {
+      btn.removeEventListener("click", onLeaveClick);
+      btn.classList.remove("is-visible");
+      btn.classList.add("is-gone");
+
+      /* Экран темнеет */
+      fade.classList.add("is-active");
+
+      after(2500, () => {
+        stopAmbient("home", 800);
+
+        el.classList.remove("is-active");
+        setTimeout(() => {
+          el.remove();
+          onDone && onDone();
+        }, 1500);
+      });
+    };
+
+    btn.addEventListener("click", onLeaveClick, { once: true });
+  });
+}

@@ -13,6 +13,8 @@ import {
   playScene10,
   playLidaScene0,
   playLidaScene1,
+  playLidaScene2,
+  playLidaScene3,
 } from "./app.js";
 import { initMenu, backToMenu } from "./menu.js";
 
@@ -53,8 +55,11 @@ function startLidaStory() {
   // Без прелоадера — сцена 0 сама выполняет роль заставки
   playLidaScene0(() => {
     playLidaScene1(() => {
-      // Дальше — playLidaScene2 и т.д.
-      backToMenu();
+          playLidaScene2(() => {
+             playLidaScene3(() => {       // ← добавить
+          backToMenu();
+        });
+      });
     });
   });
 }
