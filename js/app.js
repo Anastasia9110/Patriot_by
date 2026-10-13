@@ -2001,7 +2001,7 @@ function typeText(node, fullText, speed, onDone) {
     cursor.insertAdjacentText("beforebegin", fullText[i]);
     i++;
   }, speed);
-}
+} //бла бла
 /* ============================================================
    ЛИДА — СЦЕНА 0. ЧЁРНЫЙ. ТИШИНА.
    ============================================================ */
