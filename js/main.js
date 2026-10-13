@@ -11,6 +11,10 @@ import {
   playScene8,
   playScene9,
   playScene10,
+  playLidaScene0,
+  playLidaScene1,
+  playLidaScene2,
+  playLidaScene3,
 } from "./app.js";
 import { initMenu, backToMenu } from "./menu.js";
 
@@ -46,8 +50,25 @@ function startZinaStory() {
 }
 
 /* ============================================================
+   ЗАПУСК ИСТОРИИ «ЛИДА»
+   ============================================================ */
+function startLidaStory() {
+  playLidaScene0(() => {
+    playLidaScene1(() => {
+      playLidaScene2(() => {
+        playLidaScene3(() => {
+          // Дальше — playLidaScene4 и т.д.
+          backToMenu();
+        });
+      });
+    });
+  });
+}
+
+/* ============================================================
    ИНИЦИАЛИЗАЦИЯ МЕНЮ
    ============================================================ */
 initMenu((story) => {
   if (story === "zina") startZinaStory();
+  if (story === "lida") startLidaStory();
 });

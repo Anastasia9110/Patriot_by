@@ -64,7 +64,20 @@ export function initMenu(onStorySelected) {
     }, 1400);
   });
 
-  cardLida.addEventListener("click", (e) => e.preventDefault());
+  /* --- 5. Клик по карточке Лиды (без титула — сразу в историю) --- */
+cardLida.addEventListener("click", () => {
+  if (cardLida.classList.contains("is-soon")) return;
+
+  flash.classList.add("is-active");
+  setTimeout(() => menuEl.classList.remove("is-active"), 400);
+  setTimeout(() => flash.classList.remove("is-active"), 1200);
+
+  setTimeout(() => {
+    menuEl.style.display = "none";
+    exitBtn.classList.add("is-visible");
+    onStoryStart && onStoryStart("lida");
+  }, 1400);
+});
 
   /* --- 5. Кнопка «МЕНЮ» --- */
   exitBtn.addEventListener("click", backToMenu);
