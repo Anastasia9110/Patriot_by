@@ -506,7 +506,24 @@ export function playScene3(onDone) {
   const inner = el.querySelector("#leafletTitleInner");
   const textEl = el.querySelector("#leafletTitleText");
 
-  /* ====== ДО КНОПКИ: только голос Зины ====== */
+  let runAudio = null;
+
+  function killRun() {
+    try {
+      stopAmbient("run", 0);
+    } catch (e) {}
+    if (runAudio) {
+      try {
+        runAudio.pause();
+        runAudio.currentTime = 0;
+        runAudio.volume = 0;
+        runAudio.src = "";
+        runAudio.load();
+      } catch (e) {}
+      runAudio = null;
+    }
+  }
+
   after(2000, () => {
     textEl.textContent =
       "Мы расклеивали листовки. Собирали сведения о немцах. Устраивали диверсии.";
@@ -568,7 +585,6 @@ export function playScene3(onDone) {
     btn.classList.remove("is-visible");
     btn.classList.add("is-gone");
 
-    /* 📄 ТОЛЬКО ЗДЕСЬ включаем paper */
     startAmbient("paper", "assets/audio/paper.mp3", 0.5);
 
     video.classList.add("is-active");
@@ -580,17 +596,15 @@ export function playScene3(onDone) {
         video.classList.remove("is-active");
         video.pause();
 
-        /* 📄 ВЫКЛЮЧАЕМ paper — клеить закончили */
         stopAmbient("paper", 300);
 
         layer2.classList.remove("is-active");
         layer3.classList.add("is-active");
 
-        /* 🎵 ВКЛЮЧАЕМ night3 — играет до конца сцены, громко */
         startAmbient("night3", "assets/audio/night3.mp3", 0.55);
 
-        /* 🏃 ШАГИ — ровно 3 секунды и всё */
-        playOnce("run", "assets/audio/run.mp3", 0.7);
+        runAudio = playOnce("run", "assets/audio/run.mp3", 0.7);
+        after(3500, killRun);
 
         after(500, () => {
           textEl.classList.remove("is-fading");
@@ -608,8 +622,8 @@ export function playScene3(onDone) {
         });
 
         after(13000, () => {
-          /* 🎵 Глушим только ночь — шаги уже давно отзвучали */
           stopAmbient("night3", 800);
+          killRun();
 
           el.classList.remove("is-active");
           setTimeout(() => {
@@ -625,6 +639,9 @@ export function playScene3(onDone) {
 
 /* ============================================================
    СЦЕНА 4 — СТОЛОВАЯ
+   🎵 bar — очень тихий фон на всю сцену
+   🎵 poison — один раз во время видео, сразу отключается
+   🎵 soup — только на словах «Меня заставили попробовать суп» и сразу стоп
    ============================================================ */
 function buildCanteen() {
   const el = document.createElement("section");
@@ -662,6 +679,9 @@ export function playScene4(onDone) {
   app.appendChild(el);
   void el.offsetWidth;
   el.classList.add("is-active");
+
+  /* 🍺 очень тихий бар на всю сцену */
+  startAmbient("bar", "assets/audio/bar.mp3", 0.12);
 
   const work = el.querySelector("#canteenWork");
   const officerClosed = el.querySelector("#canteenOfficerClosed");
@@ -764,6 +784,12 @@ export function playScene4(onDone) {
       video.currentTime = 0;
       video.play().catch((e) => console.warn("Видео не пошло:", e));
 
+      /* ☠️ яд — один раз, сразу отключается */
+      playOnce("poison", "assets/audio/poison.mp3", 0.7);
+      after(2000, () => {
+        stopAmbient("poison", 0);
+      });
+
       after(1000, () => {
         textEl.classList.remove("is-fading");
         textEl.textContent = "Погибло более ста офицеров.";
@@ -789,6 +815,12 @@ export function playScene4(onDone) {
             inner.classList.add("is-visible");
             textEl.classList.add("is-visible");
             playVoiceSmart("s4_06", V_MONO);
+
+            /* 🥣 soup — только на этих словах и сразу стоп */
+            playOnce("soup", "assets/audio/soup.mp3", 0.5);
+            after(2500, () => {
+              stopAmbient("soup", 0);
+            });
           });
 
           after(11000, () => {
@@ -823,6 +855,7 @@ export function playScene4(onDone) {
           });
 
           after(35000, () => {
+            stopAmbient("bar", 800);
             el.classList.remove("is-active");
             setTimeout(() => {
               el.remove();
@@ -842,6 +875,8 @@ export function playScene4(onDone) {
 
 /* ============================================================
    СЦЕНА 5 — ЛЕС
+   🎵 snowstorm — на всю сцену
+   🎵 silent-single-shot — только на «Я научилась стрелять» и сразу стоп
    ============================================================ */
 function buildForest() {
   const el = document.createElement("section");
@@ -874,6 +909,9 @@ export function playScene5(onDone) {
   app.appendChild(el);
   void el.offsetWidth;
   el.classList.add("is-active");
+
+  /* ❄️ снежная буря — на всю сцену */
+  startAmbient("snowstorm", "assets/audio/snowstorm.mp3", 0.35);
 
   const camp = el.querySelector("#forestCamp");
   const commanderClosed = el.querySelector("#forestCommanderClosed");
@@ -989,6 +1027,16 @@ export function playScene5(onDone) {
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
       playVoiceSmart("s5_09", V_MONO);
+
+      /* 🔫 один выстрел — и сразу стоп */
+      playOnce(
+        "silent-single-shot",
+        "assets/audio/silent-single-shot.mp3",
+        0.7,
+      );
+      after(1500, () => {
+        stopAmbient("silent-single-shot", 0);
+      });
     });
 
     after(52000, () => {
@@ -1032,6 +1080,7 @@ export function playScene5(onDone) {
     });
 
     after(75000, () => {
+      stopAmbient("snowstorm", 800);
       el.classList.remove("is-active");
       setTimeout(() => {
         el.remove();
@@ -1195,6 +1244,7 @@ export function playScene6(onDone) {
 
 /* ============================================================
    СЦЕНА 7 — ДОПРОС
+   🔫 single-shot-m-1-rifle — один раз при выхвате пистолета (на вспышке)
    ============================================================ */
 function buildInterrog() {
   const el = document.createElement("section");
@@ -1348,6 +1398,16 @@ export function playScene7(onDone) {
         flash.classList.remove("is-active");
       }, 400);
 
+      /* 🔫 один выстрел — и сразу стоп */
+      playOnce(
+        "single-shot-m-1-rifle",
+        "assets/audio/single-shot-m-1-rifle.mp3",
+        0.8,
+      );
+      after(1500, () => {
+        stopAmbient("single-shot-m-1-rifle", 0);
+      });
+
       after(600, () => {
         handGun.classList.remove("is-active");
         run.classList.add("is-active");
@@ -1382,6 +1442,9 @@ export function playScene7(onDone) {
 
 /* ============================================================
    СЦЕНА 8 — РЕКА
+   🎵 02814 — шаги на «Ноги несли сами»
+   🎵 dog — 1–2 раза, стоп на «Они уже были рядом»
+   🎵 big-river — с момента, когда она видит реку, до «Они вытащили меня…»
    ============================================================ */
 function buildRiver() {
   const el = document.createElement("section");
@@ -1432,6 +1495,12 @@ export function playScene8(onDone) {
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
     playVoiceSmart("s8_01", V_MONO);
+
+    /* 🏃 шаги — на «Ноги несли сами» */
+    playOnce("02814", "assets/audio/02814.mp3", 0.7);
+    after(3000, () => {
+      stopAmbient("02814", 0);
+    });
   });
 
   after(10000, () => {
@@ -1451,6 +1520,9 @@ export function playScene8(onDone) {
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
     playVoiceSmart("s8_02", V_MONO);
+
+    /* 🌊 big-river — с момента, когда она видит реку */
+    startAmbient("big-river", "assets/audio/big-river_m1q75meo.mp3", 0.5);
   });
 
   after(22000, () => {
@@ -1481,6 +1553,15 @@ export function playScene8(onDone) {
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
       playVoiceSmart("s8_03", V_MONO);
+
+      /* 🐕 собаки — 1–2 раза, и стоп */
+      playOnce("dog", "assets/audio/dogbarking.mp3", 0.5);
+      after(1500, () => {
+        playOnce("dog", "assets/audio/dogbarking.mp3", 0.5);
+      });
+      after(3000, () => {
+        stopAmbient("dog", 0);
+      });
     });
 
     after(5000, () => {
@@ -1524,6 +1605,9 @@ export function playScene8(onDone) {
     });
 
     after(29000, () => {
+      /* 🌊 стоп big-river — на «Они вытащили меня…» */
+      stopAmbient("big-river", 600);
+
       textEl.classList.remove("is-visible");
       textEl.classList.add("is-fading");
       inner.classList.remove("is-visible");
@@ -1541,6 +1625,7 @@ export function playScene8(onDone) {
 
 /* ============================================================
    СЦЕНА 9 — ТЮРЬМА
+   🎵 99_cavern_of_lost_souls — на всю сцену
    ============================================================ */
 function buildPrison() {
   const el = document.createElement("section");
@@ -1573,6 +1658,13 @@ export function playScene9(onDone) {
   app.appendChild(el);
   void el.offsetWidth;
   el.classList.add("is-active");
+
+  /* 🏚️ гул тюрьмы — на всю сцену */
+  startAmbient(
+    "99_cavern_of_lost_souls",
+    "assets/audio/99_cavern_of_lost_souls.mp3",
+    0.4,
+  );
 
   const cell = el.querySelector("#priCell");
   const officerClosed = el.querySelector("#priOfficerClosed");
@@ -1688,6 +1780,7 @@ export function playScene9(onDone) {
     });
 
     after(48000, () => {
+      stopAmbient("99_cavern_of_lost_souls", 800);
       el.classList.remove("is-active");
       setTimeout(() => {
         el.remove();
@@ -1699,6 +1792,9 @@ export function playScene9(onDone) {
 
 /* ============================================================
    СЦЕНА 10 — УТРО (финал)
+   🎵 snowstorm — на всю сцену
+   🎵 snow_steps_light_regular — с «Утром 13 января…» до «Я не просила…»
+   🎵 uzi_45_distant_burst_01 — выстрел, стоп до «Зинаида Мартыновна…»
    ============================================================ */
 function buildMorning() {
   const el = document.createElement("section");
@@ -1743,6 +1839,9 @@ export function playScene10(onDone) {
   void el.offsetWidth;
   el.classList.add("is-active");
 
+  /* ❄️ снежная буря — на всю сцену */
+  startAmbient("snowstorm", "assets/audio/snowstorm.mp3", 0.35);
+
   const dawn = el.querySelector("#morDawn");
   const walk = el.querySelector("#morWalk");
   const convoy = el.querySelector("#morConvoy");
@@ -1764,6 +1863,13 @@ export function playScene10(onDone) {
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
     playVoiceSmart("s10_01", V_MONO);
+
+    /* 👣 снежные шаги — с этого момента */
+    startAmbient(
+      "snow_steps_light_regular",
+      "assets/audio/snow_steps_light_regular.mp3",
+      0.4,
+    );
   });
 
   after(12000, () => {
@@ -1843,9 +1949,22 @@ export function playScene10(onDone) {
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
     playVoiceSmart("s10_06", V_MONO);
+
+    /* 🛑 стоп шагов — на «Я не просила…» */
+    stopAmbient("snow_steps_light_regular", 500);
+
+    /* 💥 выстрел — сразу после остановки шагов */
+    playOnce(
+      "uzi_45_distant_burst_01",
+      "assets/audio/uzi_45_distant_burst_01.mp3",
+      0.8,
+    );
   });
 
-  after(56000, () => {
+  after(52000, () => {
+    /* 🔇 глушим выстрел до «Зинаида Мартыновна…» */
+    stopAmbient("uzi_45_distant_burst_01", 0);
+
     textEl.classList.remove("is-visible");
     textEl.classList.add("is-fading");
     inner.classList.remove("is-visible");
@@ -1920,6 +2039,7 @@ export function playScene10(onDone) {
     });
 
     after(35000, () => {
+      stopAmbient("snowstorm", 1200);
       el.classList.remove("is-active");
       setTimeout(() => {
         el.remove();
