@@ -15,6 +15,7 @@ import {
   playLidaScene1,
   playLidaScene2,
   playLidaScene3,
+  playLidaScene4,
 } from "./app.js";
 import { initMenu, backToMenu } from "./menu.js";
 
@@ -57,8 +58,9 @@ function startLidaStory() {
     playLidaScene1(() => {
       playLidaScene2(() => {
         playLidaScene3(() => {
-          // Дальше — playLidaScene4 и т.д.
+          playLidaScene4(() => {
           backToMenu();
+          });
         });
       });
     });

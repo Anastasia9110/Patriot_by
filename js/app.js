@@ -2867,3 +2867,352 @@ export function playLidaScene3(onDone) {
     btn.addEventListener("click", onLeaveClick, { once: true });
   });
 }
+/* ============================================================
+   ЛИДА — СЦЕНА 4. МОСТ
+   ============================================================ */
+function buildLidaBridge() {
+  const el = document.createElement("section");
+  el.className = "scene scene--lida-bridge";
+  el.innerHTML = `
+    <div class="lida-bridge__layer lida-bridge__layer--bridge is-active" id="lidaBridgeBg"></div>
+    <div class="lida-bridge__layer lida-bridge__layer--police-young"      id="lidaBridgePoliceYoung"></div>
+    <div class="lida-bridge__layer lida-bridge__layer--police-young-talk" id="lidaBridgePoliceYoungTalk"></div>
+    <div class="lida-bridge__layer lida-bridge__layer--police-old"        id="lidaBridgePoliceOld"></div>
+    <div class="lida-bridge__layer lida-bridge__layer--police-old-talk"   id="lidaBridgePoliceOldTalk"></div>
+    <div class="lida-bridge__layer lida-bridge__layer--coal"              id="lidaBridgeCoal"></div>
+    <div class="lida-bridge__layer lida-bridge__layer--past"              id="lidaBridgePast"></div>
+
+    <div class="lida-bridge__choices" id="lidaBridgeChoices">
+      <button class="lida-bridge__btn" id="lidaBridgeShow">ПОКАЗАТЬ СУМКУ</button>
+      <button class="lida-bridge__btn" id="lidaBridgeHide">НЕ ПОКАЗЫВАТЬ</button>
+    </div>
+
+    <button class="lida-bridge__btn-single" id="lidaBridgeNext">ИДТИ ДАЛЬШЕ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="lidaBridgeTitleInner">
+        <p class="title-bar__text" id="lidaBridgeTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+
+    <div class="lida-bridge__fade" id="lidaBridgeFade"></div>
+  `;
+  return el;
+}
+
+export function playLidaScene4(onDone) {
+  const el = buildLidaBridge();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const bg                = el.querySelector("#lidaBridgeBg");
+  const policeYoung       = el.querySelector("#lidaBridgePoliceYoung");
+  const policeYoungTalk   = el.querySelector("#lidaBridgePoliceYoungTalk");
+  const policeOld         = el.querySelector("#lidaBridgePoliceOld");
+  const policeOldTalk     = el.querySelector("#lidaBridgePoliceOldTalk");
+  const coal              = el.querySelector("#lidaBridgeCoal");
+  const past              = el.querySelector("#lidaBridgePast");
+  const choices           = el.querySelector("#lidaBridgeChoices");
+  const btnShow           = el.querySelector("#lidaBridgeShow");
+  const btnHide           = el.querySelector("#lidaBridgeHide");
+  const btnNext           = el.querySelector("#lidaBridgeNext");
+  const fade              = el.querySelector("#lidaBridgeFade");
+  const inner             = el.querySelector("#lidaBridgeTitleInner");
+  const textEl            = el.querySelector("#lidaBridgeTitleText");
+
+  startAmbient("bridge", "assets/audio/lida/bridge.mp3", 0.25);
+
+  /* ============================================================
+     ЧАСТЬ 1: ДИАЛОГ НА МОСТУ
+     ============================================================ */
+
+  /* «— Стой. Куда идёшь?» — молодой, рот открыт */
+  after(1000, () => {
+    bg.classList.remove("is-active");
+    policeYoungTalk.classList.add("is-active");
+
+    textEl.textContent = "— Стой. Куда идёшь?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/04_1.mp3", 1.0);
+  });
+  after(5000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(6000, () => inner.classList.remove("is-visible"));
+
+  /* «— В лес. К тётке.» — Лида, молодой молчит */
+  after(6500, () => {
+    policeYoungTalk.classList.remove("is-active");
+    policeYoung.classList.add("is-active");
+
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— В лес. К тётке.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/04_2.mp3", 1.0);
+  });
+  after(10500, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(11500, () => inner.classList.remove("is-visible"));
+
+  /* «— Что в сумке?» — молодой кричит */
+  after(12000, () => {
+    policeYoung.classList.remove("is-active");
+    policeYoungTalk.classList.add("is-active");
+
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Что в сумке?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/04_3.mp3", 1.0);
+  });
+  after(16000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(17000, () => inner.classList.remove("is-visible"));
+
+  /* «— Уголь.» — Лида, молодой молчит */
+  after(17500, () => {
+    policeYoungTalk.classList.remove("is-active");
+    policeYoung.classList.add("is-active");
+
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Уголь.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/04_4.mp3", 1.0);
+  });
+  after(21500, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(22500, () => inner.classList.remove("is-visible"));
+
+  /* «— Покажи.» — молодой кричит */
+  after(23000, () => {
+    policeYoung.classList.remove("is-active");
+    policeYoungTalk.classList.add("is-active");
+
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Покажи.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/04_5.mp3", 1.0);
+  });
+  after(27000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(28000, () => inner.classList.remove("is-visible"));
+
+  /* «— Оставь. Малолетка.» — СТАРЫЙ, рот открыт */
+  after(28500, () => {
+    policeYoungTalk.classList.remove("is-active");
+    policeOldTalk.classList.add("is-active");
+
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Оставь. Малолетка.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/04_6.mp3", 1.0);
+  });
+  after(32500, () => {
+    policeOldTalk.classList.remove("is-active");
+    policeOld.classList.add("is-active");   // вернулся к «курит»
+
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(33500, () => inner.classList.remove("is-visible"));
+
+  /* «— А если там не уголь?» — молодой кричит */
+  after(34000, () => {
+    policeOld.classList.remove("is-active");
+    policeYoungTalk.classList.add("is-active");
+
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— А если там не уголь?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/04_7.mp3", 1.0);
+  });
+  after(38000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+  });
+  after(39000, () => inner.classList.remove("is-visible"));
+
+  /* «— А если там уголь? Что тогда?» — старый говорит */
+  after(39500, () => {
+    policeYoungTalk.classList.remove("is-active");
+    policeOldTalk.classList.add("is-active");
+
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— А если там уголь? Что тогда? Мамке скажешь — извините, ошиблись?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/04_8.mp3", 1.0);
+  });
+  after(46500, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============================================================
+     КНОПКИ ВЫБОРА
+     ============================================================ */
+  after(48000, () => {
+    choices.classList.add("is-visible");
+  });
+
+  /* --- ВАРИАНТ 1: ПОКАЗАТЬ СУМКУ --- */
+  btnShow.addEventListener("click", () => {
+    choices.classList.remove("is-visible");
+
+    policeOldTalk.classList.remove("is-active");
+    coal.classList.add("is-active");
+
+    after(2000, () => {
+      textEl.classList.remove("is-fading");
+      textEl.textContent =
+        "— Хотите — берите. Но мамка будет ругаться. Печку нечем топить.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      playVoice("assets/audio/lida/04_9.mp3", 1.0);
+    });
+
+    after(8000, () => {
+      coal.classList.remove("is-active");
+      policeOldTalk.classList.add("is-active");
+
+      textEl.textContent = "— Иди.";
+      playVoice("assets/audio/lida/04_10.mp3", 1.0);
+    });
+
+    after(11000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    after(13000, () => {
+      btnNext.classList.add("is-visible");
+    });
+  }, { once: true });
+
+  /* --- ВАРИАНТ 2: НЕ ПОКАЗЫВАТЬ --- */
+  btnHide.addEventListener("click", () => {
+    choices.classList.remove("is-visible");
+
+    policeOldTalk.classList.remove("is-active");
+    policeYoungTalk.classList.add("is-active");
+
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Не имеете права. Я ребёнок.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoice("assets/audio/lida/04_11.mp3", 1.0);
+
+    after(5000, () => {
+      policeYoungTalk.classList.remove("is-active");
+      policeOldTalk.classList.add("is-active");
+
+      textEl.textContent = "— Иди, пока цела.";
+      playVoice("assets/audio/lida/04_12.mp3", 1.0);
+    });
+
+    after(9000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    after(11000, () => {
+      btnNext.classList.add("is-visible");
+    });
+  }, { once: true });
+
+  /* ============================================================
+     КНОПКА «ИДТИ ДАЛЬШЕ» — за мостом
+     ============================================================ */
+  btnNext.addEventListener("click", () => {
+    btnNext.classList.remove("is-visible");
+    btnNext.classList.add("is-gone");
+
+    policeOld.classList.remove("is-active");
+    policeOldTalk.classList.remove("is-active");
+    policeYoung.classList.remove("is-active");
+    policeYoungTalk.classList.remove("is-active");
+
+    /* Переход на кадр «Лида + молодой полицай» */
+    past.classList.add("is-active");
+
+    /* «— Эй, девка!» — молодой догоняет */
+    after(1500, () => {
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "— Эй, девка!";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      playVoice("assets/audio/lida/04_13.mp3", 1.0);
+    });
+
+    after(5500, () => {
+      textEl.textContent = "— Ты это… осторожнее. Поняла?";
+      playVoice("assets/audio/lida/04_14.mp3", 1.0);
+    });
+
+    after(10000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* --- Финальные титры на том же кадре --- */
+    after(12000, () => {
+      textEl.classList.remove("is-fading");
+      textEl.textContent =
+        "Взрывчатку она донесла. Вечером мощный взрыв потряс окрестности Гродно.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+    });
+
+    after(19000, () => {
+      textEl.textContent =
+        "Она вернулась домой. Села на стул. И только тогда заплакала.";
+    });
+
+    after(26000, () => {
+      textEl.textContent = "Ей было одиннадцать.";
+    });
+
+    after(32000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    after(34000, () => {
+      fade.classList.add("is-active");
+    });
+
+    after(36500, () => {
+      stopAmbient("bridge", 800);
+      el.classList.remove("is-active");
+      setTimeout(() => {
+        el.remove();
+        onDone && onDone();
+      }, 1500);
+    });
+  }, { once: true });
+}
