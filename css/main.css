@@ -1780,3 +1780,476 @@ body {
   transition: opacity 2s ease;
 }
 .lida-bridge__fade.is-active { opacity: 1; }
+/* ============================================================
+   ЛИДА — СЦЕНА 5. ВЗРЫВ
+   ============================================================ */
+.scene--lida-explosion { background: #000; display: block; }
+
+.lida-explosion__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.8) contrast(1.1);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  will-change: opacity;
+}
+.lida-explosion__layer.is-active { opacity: 1; }
+
+.lida-explosion__layer--bag      { background-image: url("../assets/images/lida/scene18-bag-night.jpg"); }
+.lida-explosion__layer--boom     { background-image: url("../assets/images/lida/scene19-explosion.jpg"); filter: grayscale(0) brightness(1.1) contrast(1.2); }
+.lida-explosion__layer--father   { background-image: url("../assets/images/lida/scene20-father-closed.jpg"); }
+.lida-explosion__layer--father-t { background-image: url("../assets/images/lida/scene20b-father-talk.jpg"); }
+.lida-explosion__layer--room     { background-image: url("../assets/images/lida/scene21-underground.jpg"); }
+.lida-explosion__layer--lida     { background-image: url("../assets/images/lida/scene22-lida-enter.jpg"); }
+
+/* Белая/жёлтая вспышка */
+.lida-explosion__flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  z-index: 30;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+.lida-explosion__flash.is-active { opacity: 1; }
+
+/* Кнопка «ДАЛЬШЕ» */
+.lida-explosion__btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+}
+.lida-explosion__btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.lida-explosion__btn:hover { opacity: 1; background: #fff; color: #000; }
+.lida-explosion__btn.is-gone { opacity: 0; pointer-events: none; }
+
+.lida-explosion__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.lida-explosion__fade.is-active { opacity: 1; }
+/* ============================================================
+   ЛИДА — СЦЕНА 6. ОБЛАВА
+   ============================================================ */
+.scene--lida-raid { background: #0a0a0a; display: block; }
+
+.lida-raid__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.82) contrast(1.08);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  will-change: opacity;
+}
+.lida-raid__layer.is-active { opacity: 1; }
+
+.lida-raid__layer--street          { background-image: url("../assets/images/lida/scene23-raid-street.jpg"); }
+.lida-raid__layer--door            { background-image: url("../assets/images/lida/scene24-lida-door.jpg"); }
+.lida-raid__layer--masha-closed    { background-image: url("../assets/images/lida/scene25-masha-closed.jpg"); }
+.lida-raid__layer--masha-talk      { background-image: url("../assets/images/lida/scene25b-masha-talk.jpg"); }
+.lida-raid__layer--mother-grab     { background-image: url("../assets/images/lida/scene26-mother-grab.jpg"); }
+.lida-raid__layer--mother-talk     { background-image: url("../assets/images/lida/scene26b-mother-talk.jpg"); }
+.lida-raid__layer--lida-closed     { background-image: url("../assets/images/lida/scene27-lida-mother-closed.jpg"); }
+.lida-raid__layer--lida-talk       { background-image: url("../assets/images/lida/scene27b-lida-mother-talk.jpg"); }
+.lida-raid__layer--police-closed   { background-image: url("../assets/images/lida/scene28-police-closed.jpg"); }
+.lida-raid__layer--police-talk     { background-image: url("../assets/images/lida/scene28b-police-talk.jpg"); }
+.lida-raid__layer--run             { background-image: url("../assets/images/lida/scene29-lida-run-raid.jpg"); }
+
+.lida-raid__btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+}
+.lida-raid__btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.lida-raid__btn:hover { opacity: 1; background: #fff; color: #000; }
+.lida-raid__btn.is-gone { opacity: 0; pointer-events: none; }
+
+.lida-raid__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.lida-raid__fade.is-active { opacity: 1; }
+/* ============================================================
+   ЛИДА — СЦЕНА 7. ТИШИНА
+   ============================================================ */
+.scene--lida-silence { background: #0a0a0a; display: block; }
+
+.lida-silence__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.78) contrast(1.1);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.8s ease;
+  will-change: opacity;
+}
+.lida-silence__layer.is-active { opacity: 1; }
+
+.lida-silence__layer--empty     { background-image: url("../assets/images/lida/scene29-empty-room.jpg"); }
+.lida-silence__layer--bag-tie   { background-image: url("../assets/images/lida/scene30-bag-tie.jpg"); }
+.lida-silence__layer--memory    { background-image: url("../assets/images/lida/scene31-father-memory.jpg"); }
+.lida-silence__layer--heart     { background-image: url("../assets/images/lida/scene31b-father-heart.jpg"); }
+.lida-silence__layer--lida-tie  { background-image: url("../assets/images/lida/scene32-lida-tie.jpg"); }
+.lida-silence__layer--zoya      { background-image: url("../assets/images/lida/scene33-zoya-closed.jpg"); }
+.lida-silence__layer--zoya-talk { background-image: url("../assets/images/lida/scene33b-zoya-talk.jpg"); }
+
+/* Воспоминания — в дымке */
+.lida-silence__layer--memory,
+.lida-silence__layer--heart {
+  filter: grayscale(1) brightness(0.75) contrast(1.05) blur(1.2px);
+}
+
+.lida-silence__btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+}
+.lida-silence__btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.lida-silence__btn:hover { opacity: 1; background: #fff; color: #000; }
+.lida-silence__btn.is-gone { opacity: 0; pointer-events: none; }
+
+.lida-silence__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.lida-silence__fade.is-active { opacity: 1; }
+/* ============================================================
+   ЛИДА — СЦЕНА 8. ГОДЫ
+   ============================================================ */
+.scene--lida-years { background: #0a0a0a; display: block; }
+
+.lida-years__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.85) contrast(1.05);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 2s ease;
+  will-change: opacity;
+}
+.lida-years__layer.is-active { opacity: 1; }
+
+.lida-years__layer--winter        { background-image: url("../assets/images/lida/scene35-winter.jpg"); }
+.lida-years__layer--summer        { background-image: url("../assets/images/lida/scene36-summer.jpg"); }
+.lida-years__layer--winter-again  { background-image: url("../assets/images/lida/scene37-winter-again.jpg"); }
+.lida-years__layer--camp          { background-image: url("../assets/images/lida/scene38-camp-fire.jpg"); }
+.lida-years__layer--cmd-closed    { background-image: url("../assets/images/lida/scene39-commander-closed.jpg"); }
+.lida-years__layer--cmd-talk      { background-image: url("../assets/images/lida/scene39b-commander-talk.jpg"); }
+.lida-years__layer--lida-listen   { background-image: url("../assets/images/lida/scene40-lida-listen.jpg"); }
+.lida-years__layer--lida-talk     { background-image: url("../assets/images/lida/scene40b-lida-talk.jpg"); }
+.lida-years__layer--rookie        { background-image: url("../assets/images/lida/scene41-rookie.jpg"); }
+
+.lida-years__btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+}
+.lida-years__btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.lida-years__btn:hover { opacity: 1; background: #fff; color: #000; }
+.lida-years__btn.is-gone { opacity: 0; pointer-events: none; }
+
+.lida-years__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.lida-years__fade.is-active { opacity: 1; }
+/* ============================================================
+   ЛИДА — СЦЕНА 9. МОЛЧАНИЕ
+   ============================================================ */
+.scene--lida-silence2 { background: #0a0a0a; display: block; }
+
+.lida-silence2__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.82) contrast(1.05);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 2s ease;
+  will-change: opacity;
+}
+.lida-silence2__layer.is-active { opacity: 1; }
+
+.lida-silence2__layer--adult      { background-image: url("../assets/images/lida/scene42-adult-lida.jpg"); }
+.lida-silence2__layer--girl       { background-image: url("../assets/images/lida/scene43-girl-lida.jpg"); }
+.lida-silence2__layer--two        { background-image: url("../assets/images/lida/scene44-two-lidas.jpg"); }
+.lida-silence2__layer--mother-old { background-image: url("../assets/images/lida/scene45-mother-old.jpg"); }
+.lida-silence2__layer--hug        { background-image: url("../assets/images/lida/scene46-mother-hug.jpg"); }
+
+/* Девочка-Лида — лёгкая дымка */
+.lida-silence2__layer--girl,
+.lida-silence2__layer--two {
+  filter: grayscale(1) brightness(0.78) contrast(1.02) blur(0.5px);
+}
+
+.lida-silence2__btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+}
+.lida-silence2__btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.lida-silence2__btn:hover { opacity: 1; background: #fff; color: #000; }
+.lida-silence2__btn.is-gone { opacity: 0; pointer-events: none; }
+
+.lida-silence2__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.lida-silence2__fade.is-active { opacity: 1; }
+/* ============================================================
+   ЛИДА — СЦЕНА 10. УТРО (финал)
+   ============================================================ */
+.scene--lida-morning { background: #000; display: block; }
+
+.lida-morning__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.85) contrast(1.05);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 2s ease;
+  will-change: opacity;
+}
+.lida-morning__layer.is-active { opacity: 1; }
+
+.lida-morning__layer--classroom { background-image: url("../assets/images/lida/scene47-classroom.jpg"); }
+.lida-morning__layer--student   { background-image: url("../assets/images/lida/scene48-student.jpg"); }
+.lida-morning__layer--colleague { background-image: url("../assets/images/lida/scene49-colleague.jpg"); }
+
+/* Белый финальный экран */
+.lida-morning__white {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: #fff;
+  opacity: 0;
+  transition: opacity 2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 5vh 5vw;
+  text-align: center;
+  pointer-events: none;
+}
+.lida-morning__white.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Портрет */
+.lida-morning__portrait {
+  width: clamp(180px, 22vw, 280px);
+  height: auto;
+  margin-bottom: 4vh;
+  filter: grayscale(1) brightness(0.9) contrast(1.05);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+.lida-morning__portrait.is-visible { opacity: 1; }
+
+/* Текст-титры */
+.lida-morning__credits {
+  font-family: "Special Elite", "Neucha", "Cutive Mono", monospace;
+  color: #111;
+  font-size: clamp(1rem, 1.6vw, 1.5rem);
+  line-height: 1.6;
+  letter-spacing: 0.04em;
+  max-width: 700px;
+  min-height: 4em;
+  margin-bottom: 6vh;
+  white-space: pre-wrap;
+}
+.lida-morning__credits .cursor {
+  display: inline-block;
+  width: 2px;
+  background: #111;
+  animation: blink 0.8s steps(2) infinite;
+  margin-left: 2px;
+  vertical-align: bottom;
+  height: 1.1em;
+}
+
+/* Шёпот */
+.lida-morning__whisper {
+  font-family: "Special Elite", "Neucha", serif;
+  color: #333;
+  font-size: clamp(1rem, 1.3vw, 1.3rem);
+  line-height: 1.7;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transition: opacity 2s ease;
+  margin-bottom: 5vh;
+  text-align: center;
+  max-width: 700px;
+}
+.lida-morning__whisper.is-visible { opacity: 0.85; }
+
+/* Кнопка «ЗАКОНЧИТЬ ИСТОРИЮ» */
+.lida-morning__btn {
+  padding: 18px 60px;
+  border: 1px solid rgba(0, 0, 0, 0.65);
+  background: none;
+  color: #111;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.9rem, 1.4vw, 1.15rem);
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 1.5s ease, background 0.3s ease, color 0.3s ease;
+  pointer-events: none;
+}
+.lida-morning__btn.is-visible {
+  opacity: 0.85;
+  pointer-events: auto;
+}
+.lida-morning__btn:hover {
+  opacity: 1;
+  background: #111;
+  color: #fff;
+}
+
+/* Финальный монолог */
+.lida-morning__final {
+  position: absolute;
+  inset: 0;
+  z-index: 11;
+  background: #fff;
+  color: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5vh 6vw;
+  text-align: center;
+  font-family: "Special Elite", "Neucha", serif;
+  font-size: clamp(1rem, 1.35vw, 1.35rem);
+  line-height: 1.75;
+  letter-spacing: 0.03em;
+  opacity: 0;
+  transition: opacity 2.5s ease;
+  pointer-events: none;
+}
+.lida-morning__final.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+.lida-morning__final-inner {
+  max-width: 800px;
+}
+.lida-morning__final-p {
+  opacity: 0;
+  transition: opacity 2s ease;
+  margin-bottom: 2vh;
+}
+.lida-morning__final-p.is-visible { opacity: 1; }
