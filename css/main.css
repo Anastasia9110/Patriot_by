@@ -2247,3 +2247,97 @@ body {
   margin-bottom: 2vh;
 }
 .lida-morning__final-p.is-visible { opacity: 1; }
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 0. ЧЁРНЫЙ. ИМЯ.
+   ============================================================ */
+.scene--nadezhda-intro {
+  background: #000;
+}
+
+/* Фото Надежды — по центру */
+.nadezhda-intro__photo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) scale(0.98);
+  width: clamp(240px, 28vw, 440px);
+  height: auto;
+  opacity: 0;
+  filter: grayscale(1) brightness(0.7) contrast(1.15);
+  z-index: 2;
+  transition: opacity 4s ease, transform 4s ease;
+  pointer-events: none;
+}
+.nadezhda-intro__photo.is-visible {
+  opacity: 0.75;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Красный флаг — поверх, в правом верхнем углу фото */
+.nadezhda-intro__accent {
+  position: absolute;
+  left: 50%;
+  top: 45%;                /* чуть выше центра, чтобы не наезжал на слово */
+  transform: translate(-50%, -50%);
+  width: clamp(360px, 45vw, 700px);   /* ← было 240–480, стало в ~1.5 раза больше */
+  height: auto;
+  opacity: 0;
+  filter: drop-shadow(0 0 50px rgba(177, 18, 38, 0.8))
+          drop-shadow(0 0 20px rgba(177, 18, 38, 0.6));
+  z-index: 3;
+  transition: opacity 3s ease;
+  pointer-events: none;
+  animation: flagWave 3.5s ease-in-out infinite;
+}
+.nadezhda-intro__accent.is-visible {
+  opacity: 0.95;
+}
+
+@keyframes flagWave {
+  0%, 100% {
+    transform: translate(-50%, -50%) rotate(-4deg);
+  }
+  50% {
+    transform: translate(-50%, -50%) rotate(4deg);
+  }
+}
+
+/* Слово НАДЕЖДА по буквам */
+.nadezhda-intro__word {
+  position: absolute;
+  left: 50%;
+  bottom: 12vh;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 0.25em;
+  z-index: 4;
+  pointer-events: none;
+}
+.nadezhda-intro__word span {
+  font-family: "Special Elite", "Neucha", serif;
+  font-size: clamp(1.8rem, 5.5vw, 4rem);
+  letter-spacing: 0.18em;
+  color: #fff;
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+.nadezhda-intro__word span.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Затемнение */
+.nadezhda-intro__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.nadezhda-intro__fade.is-active {
+  opacity: 1;
+}

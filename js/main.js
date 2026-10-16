@@ -22,6 +22,7 @@ import {
   playLidaScene8,
   playLidaScene9,
   playLidaScene10,
+  playNadezhdaScene0,
 } from "./app.js";
 import { initMenu, backToMenu } from "./menu.js";
 
@@ -84,11 +85,17 @@ function startLidaStory() {
     });
   });
 }
-
+function startNadezhdaStory() {
+  playNadezhdaScene0(() => {
+    // дальше — playNadezhdaScene1 и т.д.
+    backToMenu();
+  });
+}
 /* ============================================================
    ИНИЦИАЛИЗАЦИЯ МЕНЮ
    ============================================================ */
 initMenu((story) => {
   if (story === "zina") startZinaStory();
   if (story === "lida") startLidaStory();
+  if (story === "nadezhda") startNadezhdaStory();
 });

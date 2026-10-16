@@ -4736,3 +4736,74 @@ export function playLidaScene10(onDone) {
     });
   }, { once: true });
 }
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 0. ЧЁРНЫЙ. ИМЯ.
+   ============================================================ */
+function buildNadezhdaIntro() {
+  const el = document.createElement("section");
+  el.className = "scene scene--nadezhda-intro";
+  el.innerHTML = `
+    <img class="nadezhda-intro__accent" id="nadezhdaIntroAccent"
+         src="assets/images/nadezhda/accent-flag.png" alt="">
+
+    <div class="nadezhda-intro__word" id="nadezhdaIntroWord">
+      <span>Н</span>
+      <span>А</span>
+      <span>Д</span>
+      <span>Е</span>
+      <span>Ж</span>
+      <span>Д</span>
+      <span>А</span>
+    </div>
+
+    <div class="nadezhda-intro__fade" id="nadezhdaIntroFade"></div>
+  `;
+  return el;
+}
+
+export function playNadezhdaScene0(onDone) {
+  const el = buildNadezhdaIntro();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+    const accent  = el.querySelector("#nadezhdaIntroAccent");
+  const letters = el.querySelectorAll("#nadezhdaIntroWord span");
+  const fade    = el.querySelector("#nadezhdaIntroFade");
+
+  /* 🔇 ГАСИМ ВСЁ С ПРЕДЫДУЩИХ СЦЕН */
+  stopAllAmbient(0);
+  stopAllVoices();
+
+  /* --- 1. Флаг появляется (0.3 сек) --- */
+  after(300, () => {
+    accent.classList.add("is-visible");
+  });
+
+  /* --- 2. Слово «НАДЕЖДА» по буквам --- */
+  letters.forEach((letter, i) => {
+    after(1200 + i * 300, () => {
+      letter.classList.add("is-visible");
+    });
+  });
+
+  /* --- 3. Растворение --- */
+  after(9000, () => {
+    accent.classList.remove("is-visible");
+    letters.forEach((l) => l.classList.remove("is-visible"));
+  });
+
+  /* --- 4. Затемнение --- */
+  after(9500, () => {
+    fade.classList.add("is-active");
+  });
+
+  /* --- 5. Конец сцены --- */
+  after(11000, () => {
+    el.classList.remove("is-active");
+    setTimeout(() => {
+      el.remove();
+      onDone && onDone();
+    }, 1500);
+  });
+}

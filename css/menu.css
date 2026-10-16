@@ -120,11 +120,11 @@
   inset: 0;
   z-index: 10000;
   background: #000;
-  display: flex;
-  flex-direction: column;
   opacity: 0;
   transition: opacity 1.8s ease;
   pointer-events: none;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 .menu.is-active {
   opacity: 1;
@@ -146,18 +146,22 @@
 }
 
 .menu__grid {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(3vw, 6vw, 8vw);
-  padding: 0 5vw;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4vh 4vw;
+  padding: 4vh 6vw;
+  max-width: 1100px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  justify-items: start; /* Изменено с center на start, чтобы карточки прижимались к левому краю своих колонок */
+  align-items: start;
 }
+
+
 
 .card {
   position: relative;
-  width: clamp(220px, 22vw, 320px);
+  width: 100%; /* Карточка будет идеально растягиваться по размерам колонки сетки */
   background: none;
   border: none;
   padding: 0;
@@ -169,6 +173,7 @@
   align-items: center;
   transition: transform 0.6s ease;
 }
+
 .card:hover { transform: translateY(-6px); }
 
 .card__photo {
@@ -346,17 +351,52 @@
 }
 .preloader.is-flashing { background: #fff; }
 .preloader.is-gone { opacity: 0; pointer-events: none; }
+/* ============================================================
+   КАСТОМНЫЙ СКРОЛЛБАР
+   ============================================================ */
+/* Chrome, Edge, Safari (WebKit) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;                    /* тёмный трек */
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #b11226, #8b0e1c);
+  border-radius: 0;
+  border: 2px solid #0a0a0a;
+  box-shadow:
+    inset 0 0 6px rgba(255, 255, 255, 0.15),
+    0 0 8px rgba(177, 18, 38, 0.6);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #d81f35, #a01525);
+  box-shadow:
+    inset 0 0 8px rgba(255, 255, 255, 0.25),
+    0 0 12px rgba(216, 31, 53, 0.9);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #d81f35;                    /* ярче при наведении */
+}
+::-webkit-scrollbar-corner {
+  background: #0a0a0a;
+}
 
+/* Firefox (свой синтаксис) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #b11226 #0a0a0a;
+}
 /* ============================================================
    АДАПТИВ
    ============================================================ */
 @media (max-width: 700px) {
-  .menu__grid {
-    flex-direction: column;
-    gap: 4vh;
-    padding: 4vh 8vw;
-    overflow-y: auto;
-  }
+.menu__grid {
+  grid-template-columns: 1fr;
+  gap: 3vh;
+  padding: 4vh 6vw;
+}
   .card { width: min(70vw, 320px); }
   .intro__title { white-space: normal; }
   .story-start__word {
@@ -372,5 +412,152 @@
     font-size: 0.7rem;
     letter-spacing: 0.25em;
     text-indent: 0.25em;
+  }
+}
+/* ============================================================
+   ПАНЕЛЬ «О ПРОЕКТЕ»
+   ============================================================ */
+.about-wrap {
+  position: relative;
+  z-index: 20;
+}
+
+/* Замыливание фона — вне about-wrap, не ловит мышь */
+.menu__dim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;     /* ← ключевое: не перехватывает мышь */
+  z-index: 1;
+  transition: opacity 0.3s ease;
+}
+.menu__dim.is-active {
+  opacity: 1;
+}
+
+/* Панель */
+.about-panel {
+  position: absolute;
+  top: 100%;               /* прилипаем к бренду, без зазора */
+  left: 0;
+  width: 26vw;
+  min-width: 280px;
+  max-width: 380px;
+  padding: 3vh 2.5vw;
+  background: rgba(10, 10, 10, 0.96);
+  border: 1px solid rgba(177, 18, 38, 0.35);
+  box-shadow:
+    0 0 40px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(177, 18, 38, 0.15) inset;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  z-index: 10;
+}
+.about-panel.is-open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.about-panel__title {
+  font-family: "Special Elite", "Neucha", serif;
+  color: #b11226;
+  font-size: clamp(1rem, 1.4vw, 1.3rem);
+  letter-spacing: 0.25em;
+  text-indent: 0.25em;
+  margin-bottom: 2.5vh;
+  text-shadow: 0 0 20px rgba(177, 18, 38, 0.5);
+}
+
+.about-panel__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4vh;
+}
+
+.about-item { position: relative; }
+
+.about-item__label {
+  font-family: "Special Elite", "Neucha", monospace;
+  color: #e8e4d6;
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+  letter-spacing: 0.15em;
+  padding: 8px 10px;
+  border-left: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+.about-item:hover .about-item__label,
+.about-item.is-open .about-item__label {
+  color: #b11226;
+  border-color: #b11226;
+  background: rgba(177, 18, 38, 0.08);
+}
+
+.about-item__tip {
+  position: absolute;
+  left: calc(100% + 12px);
+  top: 0;
+  width: 260px;
+  padding: 14px 18px;
+  background: rgba(14, 12, 10, 0.98);
+  border: 1px solid rgba(232, 228, 214, 0.2);
+  color: #e8e4d6;
+  font-family: Georgia, serif;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateX(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 20;
+}
+.about-item__tip p { margin: 0; }
+.about-item__tip em { font-style: normal; color: #b11226; }
+.about-item:hover .about-item__tip,
+.about-item.is-open .about-item__tip {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(0);
+}
+
+.menu__brand { cursor: pointer; }
+
+/* ============================================================
+   МОБИЛЬНАЯ ВЕРСИЯ
+   ============================================================ */
+@media (max-width: 700px) {
+  .about-panel {
+    position: fixed;
+    top: 14vh;
+    left: 4vw;
+    right: 4vw;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    padding: 3vh 5vw;
+  }
+
+  .about-panel__list { gap: 1vh; }
+
+  .about-item__tip {
+    position: static;
+    left: auto;
+    top: auto;
+    width: 100%;
+    margin-top: 8px;
+    transform: translateY(-6px);
+  }
+  .about-item:hover .about-item__tip,
+  .about-item.is-open .about-item__tip {
+    transform: translateY(0);
   }
 }

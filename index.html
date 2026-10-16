@@ -37,9 +37,50 @@
     <!-- МЕНЮ ВЫБОРА ИСТОРИЙ -->
 <!-- МЕНЮ ВЫБОРА ИСТОРИЙ -->
 <section class="menu" id="menu">
-  <header class="menu__header">
-    <div class="menu__brand">ДЕТИ-ВОЙНЫ</div>
-  </header>
+      <!-- Затемнение фона (отдельно от about-wrap) -->
+      <div class="menu__dim" id="menuDim"></div>
+
+      <header class="menu__header">
+        <div class="about-wrap" id="aboutWrap">
+
+          <div class="menu__brand" id="brandBtn">ДЕТИ-ВОЙНЫ</div>
+
+          <aside class="about-panel" id="aboutPanel">
+            <h2 class="about-panel__title">О проекте</h2>
+
+            <ul class="about-panel__list">
+              <li class="about-item">
+                <div class="about-item__label">О нас</div>
+                <div class="about-item__tip">
+                  <p>Проект создан студенческой командой как дань памяти детям, чьё детство украла война.</p>
+                </div>
+              </li>
+
+              <li class="about-item">
+                <div class="about-item__label">Суть проекта</div>
+                <div class="about-item__tip">
+                  <p>Каждая история — интерактивный мультимедийный рассказ о реальном ребёнке-герое. Мы бережно реконструируем события по документам и свидетельствам.</p>
+                </div>
+              </li>
+
+              <li class="about-item">
+                <div class="about-item__label">Источники</div>
+                <div class="about-item__tip">
+                  <p>Материалы собраны из открытых архивов, книг и публикаций.</p>
+                </div>
+              </li>
+
+              <li class="about-item">
+                <div class="about-item__label">Контакты</div>
+                <div class="about-item__tip">
+                  <p>Связаться с нами: <em>zina@project.ru</em></p>
+                </div>
+              </li>
+            </ul>
+          </aside>
+
+        </div>
+      </header>
 
   <div class="menu__grid">
     <button class="card is-available" id="cardZina" data-story="zina">
@@ -55,15 +96,20 @@
     <button class="card is-available" id="cardLida" data-story="lida">
       <div
         class="card__photo"
-        style="background-image: url('assets/images/menu/card-lida.jpg')"
-      ></div>
+        style="background-image: url('assets/images/menu/card-lida.jpg')"></div>
       <div class="card__line"></div>
       <div class="card__name">ЛИДА ВАШКЕВИЧ</div>
       <div class="card__years">1932–2023</div>
     </button>
+    <button class="card is-available" id="cardNadezhda" data-story="nadezhda">
+      <div
+          class="card__photo"
+          style="background-image: url('assets/images/menu/card-nadezhda.jpg')"></div>
+        <div class="card__line"></div>
+        <div class="card__name">НАДЕЖДА БОГДАНОВА</div>
+        <div class="card__years">1931–1991</div>
+    </button>
   </div>
-  <!-- ↑ вот этого </div> не хватало -->
-
   <footer class="menu__footer">
     <p>Сохраним память вместе</p>
   </footer>
