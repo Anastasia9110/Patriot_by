@@ -2148,13 +2148,7 @@ body {
 
 /* Портрет */
 .lida-morning__portrait {
-  width: clamp(180px, 22vw, 280px);
-  height: auto;
-  margin-bottom: 4vh;
-  filter: grayscale(1) brightness(0.9) contrast(1.05);
-  border: 1px solid rgba(0, 0, 0, 0.25);
-  opacity: 0;
-  transition: opacity 2s ease;
+  display: none;
 }
 .lida-morning__portrait.is-visible { opacity: 1; }
 
