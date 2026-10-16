@@ -9,7 +9,8 @@ export function after(ms, fn) {
 export function clearAll() {
   timers.forEach(clearTimeout);
   timers = [];
-  stopAllAmbient();
+  stopAllAmbient(0);      /* ← 0, а не 500 — мгновенно */
+  stopAllOnce();          /* ← теперь гасим и разовые звуки */
 }
 
 /* ============================================================
@@ -61,22 +62,6 @@ export function startAmbient(key, src, volume = 0.3) {
     .catch((e) => console.warn(`⚠️ Фон [${key}] не запустился:`, e));
 }
 
-/* ============================================================
-   ОДНОРАЗОВЫЙ ЗВУК
-   ============================================================ */
-export function playOnce(key, src, volume = 0.3) {
-  if (!soundOn) return;
-  const a = new Audio(src);
-  a.volume = volume;
-  a.preload = "auto";
-  a.addEventListener("error", () => {
-    console.error(`❌ Ошибка [${key}]:`, src, a.error);
-  });
-  a.play()
-    .then(() => console.log(`✅ Разовый звук [${key}] играет`))
-    .catch((e) => console.warn(`⚠️ [${key}] не запустился:`, e));
-}
-
 export function stopAmbient(key, fadeMs = 800) {
   const a = ambientSounds[key];
   if (!a) return;
@@ -107,4 +92,44 @@ export function stopAmbient(key, fadeMs = 800) {
 
 export function stopAllAmbient(fadeMs = 500) {
   Object.keys(ambientSounds).forEach((key) => stopAmbient(key, fadeMs));
+}
+
+/* ============================================================
+   ОДНОРАЗОВЫЕ ЗВУКИ — теперь их можно остановить
+   ============================================================ */
+const onceSounds = new Set();
+
+export function playOnce(key, src, volume = 0.3) {
+  if (!soundOn) return null;
+  const a = new Audio(src);
+  a.volume = volume;
+  a.preload = "auto";
+
+  onceSounds.add(a);
+
+  const cleanUp = () => onceSounds.delete(a);
+  a.addEventListener("ended", cleanUp, { once: true });
+  a.addEventListener("error", () => {
+    console.error(`❌ Ошибка [${key}]:`, src, a.error);
+    cleanUp();
+  });
+
+  a.play()
+    .then(() => console.log(`✅ Разовый звук [${key}] играет`))
+    .catch((e) => {
+      console.warn(`⚠️ [${key}] не запустился:`, e);
+      cleanUp();
+    });
+
+  return a;
+}
+
+export function stopAllOnce() {
+  onceSounds.forEach((a) => {
+    try {
+      a.pause();
+      a.currentTime = 0;
+    } catch (e) {}
+  });
+  onceSounds.clear();
 }

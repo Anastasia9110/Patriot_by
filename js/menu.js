@@ -1,6 +1,8 @@
 /* ============================================================
    ЗАСТАВКА + МЕНЮ + СТАРТОВЫЙ ЭКРАН ИСТОРИИ + КНОПКА ВЫХОДА
    ============================================================ */
+import { clearAll } from "./utils.js";
+import { stopAllVoices } from "./app.js";
 let menuEl = null;
 let exitBtn = null;
 let onStoryStart = null;
@@ -102,7 +104,15 @@ export function initMenu(onStorySelected) {
       onStoryStart && onStoryStart("nadezhda");
     }, 1400);
   });
-
+  /* ============================================================
+     ПАНЕЛЬ «О ПРОЕКТЕ» — получаем элементы
+     ============================================================ */
+  const aboutWrap  = document.getElementById("aboutWrap");
+  const brandBtn   = document.getElementById("brandBtn");
+  const aboutPanel = document.getElementById("aboutPanel");
+  const menuDim    = document.getElementById("menuDim");
+  const menuGrid   = document.querySelector(".menu__grid");
+  const menuFooter = document.querySelector(".menu__footer");
   if (aboutWrap && brandBtn && aboutPanel && menuDim) {
     const isTouch = window.matchMedia("(hover: none)").matches;
 
@@ -209,11 +219,13 @@ export function initMenu(onStorySelected) {
    ВОЗВРАТ В МЕНЮ
    ============================================================ */
 export function backToMenu() {
-  import("./utils.js").then(({ clearAll }) => clearAll());
-  import("./app.js")
-    .then(({ stopAllVoices }) => stopAllVoices())
-    .catch(() => {});
+  /* 1. Стоп таймеров + фоновых звуков (синхронно) */
+  clearAll();
 
+  /* 2. Стоп всех голосов, играющих в сценах (синхронно) */
+  stopAllVoices();
+
+  /* 3. Стоп всех video/audio, которые есть в DOM */
   document.querySelectorAll("video, audio").forEach((media) => {
     try {
       media.pause();
@@ -221,20 +233,26 @@ export function backToMenu() {
     } catch (e) {}
   });
 
+  /* 4. Убираем все сцены из #app */
   const app = document.getElementById("app");
   if (app) app.innerHTML = "";
 
+  /* 5. Убираем прелоадер, если висит */
   const pre = document.getElementById("preloader");
   if (pre && pre.parentNode) pre.remove();
 
+  /* 6. Скрываем кнопку «МЕНЮ» */
   if (exitBtn) exitBtn.classList.remove("is-visible");
 
+  /* 7. Скрываем стартовый экран истории, если открыт */
   const storyStart = document.getElementById("storyStart");
   if (storyStart) {
     storyStart.classList.remove("is-active");
+    storyStart.classList.remove("is-gone");
     storyStart.style.display = "none";
   }
 
+  /* 8. Возвращаем меню */
   if (menuEl) {
     menuEl.style.display = "";
     requestAnimationFrame(() => menuEl.classList.add("is-active"));
