@@ -1,7 +1,7 @@
 /* ============================================================
    ЗАСТАВКА + МЕНЮ + СТАРТОВЫЙ ЭКРАН ИСТОРИИ + КНОПКА ВЫХОДА
    ============================================================ */
-import { clearAll } from "./utils.js";
+import { clearAll, unlockAudio } from "./utils.js";
 import { stopAllVoices } from "./app.js";
 let menuEl = null;
 let exitBtn = null;
@@ -37,6 +37,7 @@ export function initMenu(onStorySelected) {
      2. КЛИК «ВОЙТИ»
      ============================================================ */
   introBtn.addEventListener("click", () => {
+    unlockAudio();
     flash.classList.add("is-active");
 
     setTimeout(() => intro.classList.add("is-gone"), 500);
@@ -49,6 +50,7 @@ export function initMenu(onStorySelected) {
      3. КЛИК ПО КАРТОЧКЕ ЗИНЫ (с титулом «ЗИНА / ПОРТНОВА»)
      ============================================================ */
   cardZina.addEventListener("click", () => {
+    unlockAudio();
     if (cardZina.classList.contains("is-soon")) return;
 
     flash.classList.add("is-active");
@@ -75,6 +77,7 @@ export function initMenu(onStorySelected) {
      4. КЛИК ПО КАРТОЧКЕ ЛИДЫ (без титула)
      ============================================================ */
   cardLida.addEventListener("click", () => {
+    unlockAudio();
     if (cardLida.classList.contains("is-soon")) return;
 
     flash.classList.add("is-active");
@@ -92,6 +95,7 @@ export function initMenu(onStorySelected) {
      5. КЛИК ПО КАРТОЧКЕ НАДЕЖДЫ (без титула)
      ============================================================ */
   cardNadezhda.addEventListener("click", () => {
+    unlockAudio();
     if (cardNadezhda.classList.contains("is-soon")) return;
 
     flash.classList.add("is-active");
