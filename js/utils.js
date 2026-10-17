@@ -20,13 +20,31 @@ let audioUnlocked = false;
 
 export function unlockAudio() {
   if (audioUnlocked) return;
-  try {
-    const ctx = new (window.AudioContext || window.webkitAudioContext)();
-    if (ctx.state === "suspended") ctx.resume();
 
-    const a = new Audio();
-    a.volume = 0;
-    a.play().catch(() => {});
+  // Короткий «тихий» WAV (0.02 сек тишины) — реальный источник, без него iOS не разблокирует
+  const silentWav =
+    "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA";
+
+  try {
+    // 1. HTMLAudioElement с реальным источником
+    const a = new Audio(silentWav);
+    a.volume = 0.01;
+    const p = a.play();
+    if (p && p.catch) p.catch(() => {});
+
+    // 2. AudioContext — резюмируем и проигрываем пустой буфер
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (Ctx) {
+      const ctx = new Ctx();
+      if (ctx.state === "suspended") ctx.resume();
+
+      const buf = ctx.createBuffer(1, 1, 22050);
+      const src = ctx.createBufferSource();
+      src.buffer = buf;
+      src.connect(ctx.destination);
+      src.start(0);
+    }
+
     audioUnlocked = true;
     console.log("🔊 Аудио разблокировано");
   } catch (e) {
