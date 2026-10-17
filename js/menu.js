@@ -8,9 +8,10 @@ let exitBtn = null;
 let onStoryStart = null;
 
 export function initMenu(onStorySelected) {
-["pointerdown", "click", "touchstart", "keydown"].forEach((evt) => {
-  document.addEventListener(evt, unlockAudio, { once: true, passive: true });
-});
+  ["pointerdown", "click", "touchstart", "keydown"].forEach((evt) => {
+    // Убрали { once: true }, теперь проверка идет постоянно
+    document.addEventListener(evt, unlockAudio, { passive: true });
+  });
   onStoryStart = onStorySelected;
 
   const intro     = document.getElementById("intro");
@@ -42,7 +43,6 @@ export function initMenu(onStorySelected) {
   introBtn.addEventListener("click", () => {
     unlockAudio();
     flash.classList.add("is-active");
-
     setTimeout(() => intro.classList.add("is-gone"), 500);
     setTimeout(() => menuEl.classList.add("is-active"), 900);
     setTimeout(() => flash.classList.remove("is-active"), 1400);
