@@ -4,6 +4,8 @@ import {
   stopAmbient,
   stopAllAmbient,
   playOnce,
+  loadAudioBuffer,
+  playAudioBuffer,
 } from "./utils.js";
 
 const app = document.getElementById("app");
@@ -43,97 +45,47 @@ export function runPreloader(onDone) {
    ============================================================ */
 const activeVoices = new Set();
 
-function playVoiceSmart(baseName, volume = 1.0) {
+async function playVoiceSmart(baseName, volume = 1.0) {
   if (!soundOn) return null;
-
   const formats = [".m4a", ".mp3"];
-  let idx = 0;
-
-  function tryNext() {
-    if (idx >= formats.length) {
-      console.warn("❌ Не найден ни .m4a, ни .mp3:", baseName);
-      return;
+  for (const fmt of formats) {
+    const url = `assets/audio/${baseName}${fmt}`;
+    const buffer = await loadAudioBuffer(url);
+    if (buffer) {
+      const handle = playAudioBuffer(buffer, volume, false);
+      if (handle) {
+        activeVoices.add(handle);
+        handle.source.onended = () => activeVoices.delete(handle);
+      }
+      return handle;
     }
-    const src = `assets/audio/${baseName}${formats[idx]}`;
-    idx++;
-
-    const a = new Audio(src);
-    a.volume = volume;
-
-    const cleanUp = () => activeVoices.delete(a);
-    a.addEventListener("ended", cleanUp, { once: true });
-    a.addEventListener(
-      "error",
-      () => {
-        cleanUp();
-        tryNext();
-      },
-      { once: true },
-    );
-
-    activeVoices.add(a);
-    a.play().catch(() => {
-      cleanUp();
-      tryNext();
-    });
   }
-
-  tryNext();
+  console.warn("❌ Не найден:", baseName);
   return null;
 }
 
-// 👇 ВОТ ТА САМАЯ УМНАЯ ФУНКЦИЯ, КОТОРАЯ ИЩЕТ m4a, А ПОТОМ mp3 👇
-function playVoice(src, volume = 1.0) {
+async function playVoice(src, volume = 1.0) {
   if (!soundOn) return null;
-
   let cleanSrc = src.replace(/\.mp3$/, "").replace(/\.m4a$/, "");
   const extensions = [".m4a", ".mp3"];
-  let extIdx = 0;
-
-  function tryNextExt() {
-    if (extIdx >= extensions.length) {
-      console.warn("❌ Файл не найден (ни m4a, ни mp3):", cleanSrc);
-      return;
+  for (const ext of extensions) {
+    const url = cleanSrc + ext;
+    const buffer = await loadAudioBuffer(url);
+    if (buffer) {
+      const handle = playAudioBuffer(buffer, volume, false);
+      if (handle) {
+        activeVoices.add(handle);
+        handle.source.onended = () => activeVoices.delete(handle);
+      }
+      return handle;
     }
-
-    const currentSrc = cleanSrc + extensions[extIdx];
-    extIdx++;
-
-    const a = new Audio(currentSrc);
-    a.volume = volume;
-
-    const cleanUp = () => activeVoices.delete(a);
-    a.addEventListener("ended", cleanUp, { once: true });
-    a.addEventListener(
-      "error",
-      () => {
-        cleanUp();
-        tryNextExt();
-      },
-      { once: true },
-    );
-
-    activeVoices.add(a);
-
-    a.play().catch(() => {
-      cleanUp();
-      tryNextExt();
-    });
   }
-
-  tryNextExt();
+  console.warn("❌ Не найден:", cleanSrc);
   return null;
 }
 
 export function stopAllVoices() {
-  activeVoices.forEach((a) => {
-    try {
-      a.pause();
-      a.currentTime = 0;
-    } catch (e) {
-      /* ignore */
-    }
-  });
+  activeVoices.forEach((h) => { try { h.source.stop(); } catch (e) {} });
   activeVoices.clear();
 }
 

@@ -8,9 +8,9 @@ let exitBtn = null;
 let onStoryStart = null;
 
 export function initMenu(onStorySelected) {
-document.addEventListener("pointerdown", unlockAudio, { once: true });
-document.addEventListener("click", unlockAudio, { once: true });
-document.addEventListener("touchstart", unlockAudio, { once: true, passive: true });
+["pointerdown", "click", "touchstart", "keydown"].forEach((evt) => {
+  document.addEventListener(evt, unlockAudio, { once: true, passive: true });
+});
   onStoryStart = onStorySelected;
 
   const intro     = document.getElementById("intro");
