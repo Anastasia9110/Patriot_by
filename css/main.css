@@ -2377,3 +2377,730 @@ body {
       0 1px 2px rgba(0, 0, 0, 0.9);
   }
 }
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 1. ЭВАКУАЦИЯ. ПОЕЗД
+   ============================================================ */
+.scene--nadezhda-train { background: #000; display: block; }
+
+.nadezhda-train__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.75) contrast(1.15);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 2s ease;
+  will-change: opacity;
+}
+.nadezhda-train__layer.is-active { opacity: 1; }
+
+.nadezhda-train__layer--train-night   { background-image: url("../assets/images/nadezhda/scene01-train-night.jpg"); }
+.nadezhda-train__layer--train-windows { background-image: url("../assets/images/nadezhda/scene02-train-windows.jpg"); }
+.nadezhda-train__layer--bombing       { background-image: url("../assets/images/nadezhda/scene03-bombing.jpg"); filter: grayscale(0.3) brightness(1.1) contrast(1.3); }
+.nadezhda-train__layer--alone         { background-image: url("../assets/images/nadezhda/scene04-alone.jpg"); }
+
+/* Белая вспышка для взрыва */
+.nadezhda-train__flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.nadezhda-train__flash.is-active { opacity: 1; }
+
+.nadezhda-train__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 30;
+  pointer-events: none;
+  transition: opacity 3s ease;
+}
+.nadezhda-train__fade.is-active { opacity: 1; }
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 2. ВИТЕБСК. ПОДВАЛ
+   ============================================================ */
+.scene--nadezhda-vitebsk {
+  background: #050505;
+  display: block;
+}
+
+.nadezhda-vitebsk__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.78) contrast(1.1);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.8s ease;
+  will-change: opacity;
+}
+.nadezhda-vitebsk__layer.is-active { opacity: 1; }
+
+.nadezhda-vitebsk__layer--ruins         { background-image: url("../assets/images/nadezhda/scene05-vitebsk-ruins.jpg"); }
+.nadezhda-vitebsk__layer--begging       { background-image: url("../assets/images/nadezhda/scene06-begging.jpg"); }
+.nadezhda-vitebsk__layer--basement      { background-image: url("../assets/images/nadezhda/scene07-basement.jpg"); }
+.nadezhda-vitebsk__layer--children      { background-image: url("../assets/images/nadezhda/scene08-children-cellar.jpg"); }
+.nadezhda-vitebsk__layer--vanya-closed  { background-image: url("../assets/images/nadezhda/scene09-vanya-closed.jpg"); }
+.nadezhda-vitebsk__layer--vanya-talk    { background-image: url("../assets/images/nadezhda/scene09b-vanya-talk.jpg"); }
+.nadezhda-vitebsk__layer--nadya-closed  { background-image: url("../assets/images/nadezhda/scene10-nadya-listen.jpg"); }
+.nadezhda-vitebsk__layer--nadya-talk    { background-image: url("../assets/images/nadezhda/scene10b-nadya-talk.jpg"); }
+.nadezhda-vitebsk__layer--mines         { background-image: url("../assets/images/nadezhda/scene11-stealing-mines.jpg"); }
+.nadezhda-vitebsk__layer--forest        { background-image: url("../assets/images/nadezhda/scene12-into-forest.jpg"); }
+
+.nadezhda-vitebsk__btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+}
+.nadezhda-vitebsk__btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.nadezhda-vitebsk__btn:hover      { opacity: 1; background: #fff; color: #000; }
+.nadezhda-vitebsk__btn.is-gone    { opacity: 0; pointer-events: none; }
+
+.nadezhda-vitebsk__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.nadezhda-vitebsk__fade.is-active { opacity: 1; }
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 3. ПАРТИЗАНСКИЙ ОТРЯД
+   ============================================================ */
+.scene--nadezhda-camp { background: #0a0a0a; display: block; }
+
+.nadezhda-camp__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.8) contrast(1.1);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.8s ease;
+  will-change: opacity;
+}
+.nadezhda-camp__layer.is-active { opacity: 1; }
+
+.nadezhda-camp__layer--camp          { background-image: url("../assets/images/nadezhda/scene13-campfire.jpg"); }
+.nadezhda-camp__layer--dyachkov-cl   { background-image: url("../assets/images/nadezhda/scene14-dyachkov-closed.jpg"); }
+.nadezhda-camp__layer--dyachkov-talk { background-image: url("../assets/images/nadezhda/scene14b-dyachkov-talk.jpg"); }
+.nadezhda-camp__layer--nadya-cl      { background-image: url("../assets/images/nadezhda/scene15-nadya-closed.jpg"); }
+.nadezhda-camp__layer--nadya-talk    { background-image: url("../assets/images/nadezhda/scene15b-nadya-talk.jpg"); }
+
+.nadezhda-camp__btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+}
+.nadezhda-camp__btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.nadezhda-camp__btn:hover { opacity: 1; background: #fff; color: #000; }
+.nadezhda-camp__btn.is-gone { opacity: 0; pointer-events: none; }
+
+.nadezhda-camp__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.nadezhda-camp__fade.is-active { opacity: 1; }
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 4. РАЗВЕДКА. НИЩЕНКА
+   ============================================================ */
+.scene--nadezhda-scout { background: #0a0a0a; display: block; }
+
+.nadezhda-scout__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.8) contrast(1.1);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.8s ease;
+  will-change: opacity;
+}
+.nadezhda-scout__layer.is-active { opacity: 1; }
+
+.nadezhda-scout__layer--village   { background-image: url("../assets/images/nadezhda/scene16-village-soldiers.jpg"); }
+.nadezhda-scout__layer--begging   { background-image: url("../assets/images/nadezhda/scene17-nadya-begging.jpg"); }
+.nadezhda-scout__layer--observing { background-image: url("../assets/images/nadezhda/scene18-nadya-observing.jpg"); }
+.nadezhda-scout__layer--forest    { background-image: url("../assets/images/nadezhda/scene19-return-forest.jpg"); }
+
+.nadezhda-scout__btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+}
+.nadezhda-scout__btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.nadezhda-scout__btn:hover { opacity: 1; background: #fff; color: #000; }
+.nadezhda-scout__btn.is-gone { opacity: 0; pointer-events: none; }
+
+.nadezhda-scout__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.nadezhda-scout__fade.is-active { opacity: 1; }
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 5. ФЛАГИ (ИНТЕРАКТИВ)
+   ============================================================ */
+.scene--nadezhda-flags {
+  background: #0a0a0a;
+  display: block;
+}
+
+.nadezhda-flags__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.8) contrast(1.1);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+.nadezhda-flags__layer.is-active { opacity: 1; }
+
+.nadezhda-flags__layer--roof   { background-image: url("../assets/images/nadezhda/scene05-roof.jpg"); }
+.nadezhda-flags__layer--done   { background-image: url("../assets/images/nadezhda/scene06-flags.jpg"); }
+.nadezhda-flags__layer--patrol { background-image: url("../assets/images/nadezhda/scene07-patrol.jpg"); filter: grayscale(1) brightness(1.1) contrast(1.3); }
+.nadezhda-flags__layer--caught { background-image: url("../assets/images/nadezhda/scene08-caught.jpg"); }
+
+.nadezhda-flags__btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+}
+.nadezhda-flags__btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.nadezhda-flags__btn:hover      { opacity: 1; background: #fff; color: #000; }
+.nadezhda-flags__btn.is-gone    { opacity: 0; pointer-events: none; }
+
+.nadezhda-flags__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.nadezhda-flags__fade.is-active { opacity: 1; }
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 6. РАССТРЕЛ. ЯМА
+   ============================================================ */
+.scene--nadezhda-execution {
+  background: #050505;
+  display: block;
+}
+
+.nadezhda-exec__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.7) contrast(1.15);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.8s ease;
+}
+.nadezhda-exec__layer.is-active { opacity: 1; }
+
+.nadezhda-exec__layer--ravine { background-image: url("../assets/images/nadezhda/scene09-ravine.jpg"); }
+.nadezhda-exec__layer--fall   { background-image: url("../assets/images/nadezhda/scene10-fall.jpg"); }
+.nadezhda-exec__layer--dark   { background-image: url("../assets/images/nadezhda/scene11-dark.jpg"); filter: grayscale(1) brightness(0.3) contrast(1.5); }
+.nadezhda-exec__layer--hands  { background-image: url("../assets/images/nadezhda/scene12-hands.jpg"); }
+
+.nadezhda-exec__flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.nadezhda-exec__flash.is-active { opacity: 1; }
+
+.nadezhda-exec__btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(0, 0, 0, 0.6);
+  color: #e8e4d6;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+}
+.nadezhda-exec__btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.nadezhda-exec__btn:hover      { opacity: 1; background: #fff; color: #000; }
+.nadezhda-exec__btn.is-gone    { opacity: 0; pointer-events: none; }
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 7. СПАСЕНИЕ КОМАНДИРА
+   ============================================================ */
+.scene--nadezhda-rescue {
+  background: #050505;
+  display: block;
+}
+
+.nadezhda-rescue__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.75) contrast(1.1);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+.nadezhda-rescue__layer.is-active { opacity: 1; }
+
+.nadezhda-rescue__layer--forest { background-image: url("../assets/images/nadezhda/scene13-forest.jpg"); }
+.nadezhda-rescue__layer--coat   { background-image: url("../assets/images/nadezhda/scene14-coat.jpg"); }
+.nadezhda-rescue__layer--drag   { background-image: url("../assets/images/nadezhda/scene15-drag.jpg"); }
+.nadezhda-rescue__layer--safe   { background-image: url("../assets/images/nadezhda/scene16-safe.jpg"); }
+
+.nadezhda-rescue__btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+}
+.nadezhda-rescue__btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.nadezhda-rescue__btn:hover      { opacity: 1; background: #fff; color: #000; }
+.nadezhda-rescue__btn.is-gone    { opacity: 0; pointer-events: none; }
+
+.nadezhda-rescue__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.nadezhda-rescue__fade.is-active { opacity: 1; }
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 8. МОСТ
+   ============================================================ */
+.scene--nadezhda-bridge {
+  background: #0a0a0a;
+  display: block;
+}
+
+.nadezhda-bridge__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.75) contrast(1.1);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+}
+.nadezhda-bridge__layer.is-active { opacity: 1; }
+
+.nadezhda-bridge__layer--bridge { background-image: url("../assets/images/nadezhda/scene17-bridge.jpg"); }
+.nadezhda-bridge__layer--work   { background-image: url("../assets/images/nadezhda/scene18-work.jpg"); }
+.nadezhda-bridge__layer--light  { background-image: url("../assets/images/nadezhda/scene19-light.jpg"); filter: grayscale(1) brightness(1.2) contrast(1.3); }
+.nadezhda-bridge__layer--run    { background-image: url("../assets/images/nadezhda/scene20-run.jpg"); }
+
+.nadezhda-bridge__flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+.nadezhda-bridge__flash.is-active { opacity: 1; }
+
+.nadezhda-bridge__btn, .nadezhda-bridge__btn-caught {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+}
+.nadezhda-bridge__btn.is-visible, .nadezhda-bridge__btn-caught.is-visible { opacity: 0.9; pointer-events: auto; }
+.nadezhda-bridge__btn:hover, .nadezhda-bridge__btn-caught:hover { opacity: 1; background: #fff; color: #000; }
+.nadezhda-bridge__btn.is-gone, .nadezhda-bridge__btn-caught.is-gone { opacity: 0; pointer-events: none; }
+
+.nadezhda-bridge__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.nadezhda-bridge__fade.is-active { opacity: 1; }
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 9. ПЫТКИ
+   ============================================================ */
+.scene--nadezhda-torture {
+  background: #050505;
+  display: block;
+}
+
+/* БАЗОВЫЕ СТИЛИ ДЛЯ ВСЕХ СЛОЕВ */
+.nadezhda-torture__bg, .nadezhda-torture__char {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.5s ease;
+  pointer-events: none;
+}
+.nadezhda-torture__bg.is-active, .nadezhda-torture__char.is-active { opacity: 1; }
+
+/* --- ФОНЫ (z-index: 1) --- */
+.nadezhda-torture__bg { z-index: 1; filter: grayscale(1) brightness(0.6) contrast(1.2); }
+.nadezhda-torture__bg--room  { background-image: url("../assets/images/nadezhda/scene21-room.jpg"); }
+.nadezhda-torture__bg--water { background-image: url("../assets/images/nadezhda/scene22-water.jpg"); }
+.nadezhda-torture__bg--stove { background-image: url("../assets/images/nadezhda/scene23-stove.jpg"); filter: grayscale(1) brightness(0.9) contrast(1.3); }
+.nadezhda-torture__bg--star  { background-image: url("../assets/images/nadezhda/scene24-star.jpg"); }
+
+/* --- ПОРТРЕТЫ (z-index: 3, чтобы быть поверх фонов) --- */
+.nadezhda-torture__char { z-index: 3; filter: grayscale(1) brightness(0.8) contrast(1.1); }
+.nadezhda-torture__char--sled-closed { background-image: url("../assets/images/nadezhda/scene21-sled-closed.jpg"); }
+.nadezhda-torture__char--sled-talk   { background-image: url("../assets/images/nadezhda/scene21b-sled-talk.jpg"); }
+.nadezhda-torture__char--nadya-closed { background-image: url("../assets/images/nadezhda/scene22-nadya-closed.jpg"); }
+.nadezhda-torture__char--nadya-talk   { background-image: url("../assets/images/nadezhda/scene22b-nadya-talk.jpg"); }
+
+/* КНОПКА */
+.nadezhda-torture__btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  background: rgba(0, 0, 0, 0.6);
+  color: #e8e4d6;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease, transform 0.1s ease;
+}
+.nadezhda-torture__btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.nadezhda-torture__btn:hover      { opacity: 1; background: #fff; color: #000; }
+.nadezhda-torture__btn.is-gone    { opacity: 0; pointer-events: none; }
+
+.nadezhda-torture__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.nadezhda-torture__fade.is-active { opacity: 1; }
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 10. МОРОЗ
+   ============================================================ */
+.scene--nadezhda-snow {
+  background: #050505;
+  display: block;
+}
+
+.nadezhda-snow__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.8) contrast(1.1);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+.nadezhda-snow__layer.is-active { opacity: 1; }
+
+.nadezhda-snow__layer--snow  { background-image: url("../assets/images/nadezhda/scene25-snow.jpg"); }
+.nadezhda-snow__layer--hands { background-image: url("../assets/images/nadezhda/scene26-hands.jpg"); }
+.nadezhda-snow__layer--house { background-image: url("../assets/images/nadezhda/scene27-house.jpg"); }
+.nadezhda-snow__layer--eyes  { background-image: url("../assets/images/nadezhda/scene28-eyes.jpg"); }
+
+.nadezhda-snow__btn {
+  position: absolute;
+  left: 50%;
+  bottom: 18%;
+  transform: translateX(-50%);
+  z-index: 5;
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease, transform 0.1s ease;
+}
+.nadezhda-snow__btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.nadezhda-snow__btn:hover      { opacity: 1; background: #fff; color: #000; }
+.nadezhda-snow__btn.is-gone    { opacity: 0; pointer-events: none; }
+
+.nadezhda-snow__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.nadezhda-snow__fade.is-active { opacity: 1; }
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 11. РАДИО
+   ============================================================ */
+.scene--nadezhda-radio { background: #0a0a0a; display: block; }
+
+.nadezhda-radio__layer {
+  position: absolute; inset: 0;
+  background-size: cover; background-position: center;
+  filter: grayscale(1) brightness(0.75) contrast(1.1);
+  z-index: 1; opacity: 0; transition: opacity 2s ease;
+}
+.nadezhda-radio__layer.is-active { opacity: 1; }
+
+.nadezhda-radio__layer--room  { background-image: url("../assets/images/nadezhda/scene29-room.jpg"); }
+.nadezhda-radio__layer--radio { background-image: url("../assets/images/nadezhda/scene30-radio.jpg"); }
+.nadezhda-radio__layer--adult { background-image: url("../assets/images/nadezhda/scene31-adult.jpg"); }
+.nadezhda-radio__layer--tears { background-image: url("../assets/images/nadezhda/scene32-tears.jpg"); }
+
+.nadezhda-radio__btn {
+  position: absolute; left: 50%; bottom: 18%; transform: translateX(-50%);
+  z-index: 5; padding: 16px 44px; border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55); color: #f2ede0; font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem); letter-spacing: 0.4em; text-indent: 0.4em;
+  cursor: pointer; opacity: 0; pointer-events: none;
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+}
+.nadezhda-radio__btn.is-visible { opacity: 0.9; pointer-events: auto; }
+.nadezhda-radio__btn:hover      { opacity: 1; background: #fff; color: #000; }
+.nadezhda-radio__btn.is-gone    { opacity: 0; pointer-events: none; }
+
+.nadezhda-radio__fade {
+  position: absolute; inset: 0; background: #000; opacity: 0; z-index: 20;
+  pointer-events: none; transition: opacity 2s ease;
+}
+.nadezhda-radio__fade.is-active { opacity: 1; }
+
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 12. ФИНАЛ
+   ============================================================ */
+.scene--nadezhda-final {
+  background: #050505;
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  flex-direction: column;
+}
+
+.nadezhda-final__bg {
+  position: absolute; 
+  inset: 0; 
+  background-color: #000;
+  background-image: url("../assets/images/nadezhda/scene34-background.jpg");
+  background-size: cover; 
+  background-position: center;
+  opacity: 0; 
+  transition: opacity 3s ease; 
+  z-index: 1;
+}
+.nadezhda-final__bg.is-visible { opacity: 0.4; } /* Сделал чуть темнее, чтобы текст читался лучше */
+
+.nadezhda-final__content {
+  position: relative; 
+  z-index: 2; 
+  display: flex; 
+  flex-direction: column;
+  align-items: center; 
+  text-align: center; 
+  padding: 0 5vw;
+}
+
+.nadezhda-final__name {
+  font-family: "Special Elite", "Neucha", serif; 
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  letter-spacing: 0.15em; 
+  text-indent: 0.15em; 
+  color: #e8e4d6;
+  margin-bottom: 1.5vh; 
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.nadezhda-final__years {
+  font-family: "Special Elite", "Neucha", serif; 
+  font-size: clamp(1.1rem, 1.7vw, 1.5rem);
+  letter-spacing: 0.3em; 
+  text-indent: 0.3em; 
+  color: #aaa; 
+  margin-bottom: 5vh;
+}
+
+.nadezhda-final__desc {
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(1.1rem, 1.5vw, 1.35rem); 
+  line-height: 1.7; 
+  color: #ccc;
+  min-height: 4em; 
+  white-space: pre-wrap;
+}
+
+/* Курсор для typeText */
+.nadezhda-final__desc .cursor {
+  display: inline-block; 
+  width: 2px; 
+  background: #ccc;
+  animation: blink 0.8s steps(2) infinite; 
+  margin-left: 2px;
+  vertical-align: bottom; 
+  height: 1.1em;
+}
+
+.nadezhda-final__btn {
+  position: relative; 
+  z-index: 3; 
+  margin-top: 8vh; 
+  padding: 18px 60px;
+  border: 1px solid rgba(255, 255, 255, 0.4); 
+  background: none; 
+  color: #e8e4d6;
+  font-family: "Special Elite", "Neucha", monospace; 
+  font-size: clamp(0.9rem, 1.4vw, 1.15rem);
+  letter-spacing: 0.5em; 
+  text-indent: 0.5em; 
+  cursor: pointer;
+  opacity: 0; 
+  pointer-events: none;
+  transition: opacity 2s ease, background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+.nadezhda-final__btn.is-visible { opacity: 0.85; pointer-events: auto; }
+.nadezhda-final__btn:hover { opacity: 1; background: #fff; color: #000; border-color: #fff; }
+.nadezhda-final__btn.is-gone { opacity: 0; pointer-events: none; }
+
+@media (max-width: 700px) {
+  .nadezhda-final__name { font-size: 1.8rem; }
+  .nadezhda-final__desc { font-size: 1rem; }
+  .nadezhda-final__btn { margin-top: 5vh; padding: 14px 40px; }
+}

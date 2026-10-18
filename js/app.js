@@ -4277,3 +4277,1916 @@ export function playNadezhdaScene0(onDone) {
     }, 1500);
   });
 }
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 1. ЭВАКУАЦИЯ. ПОЕЗД
+   ============================================================ */
+function buildNadezhdaTrain() {
+  const el = document.createElement("section");
+  el.className = "scene scene--nadezhda-train";
+  el.innerHTML = `
+    <div class="nadezhda-train__layer nadezhda-train__layer--train-night is-active" id="nadTrainNight"></div>
+    <div class="nadezhda-train__layer nadezhda-train__layer--train-windows"           id="nadTrainWindows"></div>
+    <div class="nadezhda-train__layer nadezhda-train__layer--bombing"                 id="nadTrainBombing"></div>
+    <div class="nadezhda-train__layer nadezhda-train__layer--alone"                   id="nadTrainAlone"></div>
+
+    <div class="nadezhda-train__flash" id="nadTrainFlash"></div>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="nadTrainTitleInner">
+        <p class="title-bar__text" id="nadTrainTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+
+    <div class="nadezhda-train__fade" id="nadTrainFade"></div>
+  `;
+  return el;
+}
+
+export function playNadezhdaScene1(onDone) {
+  const el = buildNadezhdaTrain();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const trainNight   = el.querySelector("#nadTrainNight");
+  const trainWindows = el.querySelector("#nadTrainWindows");
+  const bombing      = el.querySelector("#nadTrainBombing");
+  const alone        = el.querySelector("#nadTrainAlone");
+  const flash        = el.querySelector("#nadTrainFlash");
+  const fade         = el.querySelector("#nadTrainFade");
+  const inner        = el.querySelector("#nadTrainTitleInner");
+  const textEl       = el.querySelector("#nadTrainTitleText");
+
+  /* 🔇 ГАСИМ ВСЁ С ПРЕДЫДУЩИХ СЦЕН */
+  stopAllAmbient(0);
+  stopAllVoices();
+
+  /* ФОН: стук колёс + далёкий гул самолётов */
+  startAmbient("train-wheels", "assets/audio/nadezhda/train-wheels.mp3", 0.35);
+  startAmbient("planes-distant", "assets/audio/nadezhda/planes-distant.mp3", 0.15);
+
+  /* ============================================================
+     ЧАСТЬ 1: ПОЕЗД ИДЁТ ЧЕРЕЗ ПОЛЕ
+     ============================================================ */
+
+  /* «Мне было десять.» */
+  after(2000, () => {
+    textEl.textContent = "Мне было десять.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/nadezhda/01_1.mp3", 1.0);
+  });
+  after(6500, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* «Детский дом в Могилёве. Нас эвакуировали.» */
+  after(8000, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "Детский дом в Могилёве. Нас эвакуировали.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/nadezhda/01_2.mp3", 1.0);
+  });
+
+  /* Переход на кадр с окнами */
+  after(12000, () => {
+    trainNight.classList.remove("is-active");
+    trainWindows.classList.add("is-active");
+  });
+
+  after(15000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* «За Смоленском поезд разбомбили.» */
+  after(16500, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "За Смоленском поезд разбомбили.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/nadezhda/01_3.mp3", 1.0);
+  });
+  after(21500, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============================================================
+     ЧАСТЬ 2: ВЗРЫВ
+     ============================================================ */
+
+  after(23000, () => {
+    /* Резкая белая вспышка */
+    flash.classList.add("is-active");
+
+    /* Разовый звук взрыва */
+    playOnce("explosion", "assets/audio/nadezhda/explosion.mp3", 0.9);
+
+    /* Останавливаем стук колёс и гул самолётов */
+    stopAmbient("train-wheels", 200);
+    stopAmbient("planes-distant", 200);
+
+    /* Переключаем кадр на взрыв */
+    trainWindows.classList.remove("is-active");
+    bombing.classList.add("is-active");
+  });
+
+  after(23400, () => {
+    flash.classList.remove("is-active");
+  });
+
+  /* ============================================================
+     ЧАСТЬ 3: ТИШИНА ПОСЛЕ ВЗРЫВА
+     ============================================================ */
+
+  /* «Я не помню, как выжила.» */
+  after(25000, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "Я не помню, как выжила.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/nadezhda/01_4.mp3", 1.0);
+  });
+  after(29500, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* Переход на кадр одиночества + тихий фон */
+  after(31000, () => {
+    bombing.classList.remove("is-active");
+    alone.classList.add("is-active");
+
+    /* Включаем тишину после — тихий гул, редкие капли */
+    startAmbient("aftermath", "assets/audio/nadezhda/aftermath.mp3", 0.2);
+  });
+
+  /* «Помню только — стало тихо. И я одна.» */
+  after(32500, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "Помню только — стало тихо. И я одна.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/nadezhda/01_5.mp3", 1.0);
+  });
+  after(40000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============================================================
+     КОНЕЦ СЦЕНЫ
+     ============================================================ */
+
+  after(43000, () => {
+    /* Долгая пауза тишины и затемнение */
+    fade.classList.add("is-active");
+  });
+
+  after(46000, () => {
+    stopAllAmbient(800);
+    stopAllVoices();
+    el.classList.remove("is-active");
+    setTimeout(() => {
+      el.remove();
+      onDone && onDone();
+    }, 1500);
+  });
+}
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 2. ВИТЕБСК. ПОДВАЛ
+   ============================================================ */
+function buildNadezhdaVitebsk() {
+  const el = document.createElement("section");
+  el.className = "scene scene--nadezhda-vitebsk";
+  el.innerHTML = `
+    <div class="nadezhda-vitebsk__layer nadezhda-vitebsk__layer--ruins is-active" id="nVitRuins"></div>
+    <div class="nadezhda-vitebsk__layer nadezhda-vitebsk__layer--begging"           id="nVitBegging"></div>
+    <div class="nadezhda-vitebsk__layer nadezhda-vitebsk__layer--basement"          id="nVitBasement"></div>
+    <div class="nadezhda-vitebsk__layer nadezhda-vitebsk__layer--children"          id="nVitChildren"></div>
+    
+    <div class="nadezhda-vitebsk__layer nadezhda-vitebsk__layer--vanya-closed"      id="nVitVanyaClosed"></div>
+    <div class="nadezhda-vitebsk__layer nadezhda-vitebsk__layer--vanya-talk"        id="nVitVanyaTalk"></div>
+    <div class="nadezhda-vitebsk__layer nadezhda-vitebsk__layer--nadya-closed"      id="nVitNadyaClosed"></div>
+    <div class="nadezhda-vitebsk__layer nadezhda-vitebsk__layer--nadya-talk"        id="nVitNadyaTalk"></div>
+    
+    <div class="nadezhda-vitebsk__layer nadezhda-vitebsk__layer--mines"             id="nVitMines"></div>
+    <div class="nadezhda-vitebsk__layer nadezhda-vitebsk__layer--forest"            id="nVitForest"></div>
+
+    <button class="nadezhda-vitebsk__btn" id="nVitBtn">УЙТИ В ЛЕС</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="nVitTitleInner">
+        <p class="title-bar__text" id="nVitTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+    <div class="nadezhda-vitebsk__fade" id="nVitFade"></div>
+  `;
+  return el;
+}
+
+export function playNadezhdaScene2(onDone) {
+  const el = buildNadezhdaVitebsk();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const ruins = el.querySelector("#nVitRuins");
+  const begging = el.querySelector("#nVitBegging");
+  const basement = el.querySelector("#nVitBasement");
+  const children = el.querySelector("#nVitChildren");
+  const vanyaClosed = el.querySelector("#nVitVanyaClosed");
+  const vanyaTalk = el.querySelector("#nVitVanyaTalk");
+  const nadyaClosed = el.querySelector("#nVitNadyaClosed");
+  const nadyaTalk = el.querySelector("#nVitNadyaTalk");
+  const mines = el.querySelector("#nVitMines");
+  const forest = el.querySelector("#nVitForest");
+  
+  const btn = el.querySelector("#nVitBtn");
+  const fade = el.querySelector("#nVitFade");
+  const inner = el.querySelector("#nVitTitleInner");
+  const textEl = el.querySelector("#nVitTitleText");
+
+  startAmbient("nadezhda-ruins-wind", "assets/audio/nadezhda/ruins-wind.mp3", 0.3);
+
+  /* --- 0–9 сек: Руины --- */
+  after(2000, () => {
+    textEl.textContent = "Они добрались до оккупированного Витебска.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoiceSmart("nadezhda/02_1", V_MONO);
+  });
+  after(9000, () => {
+    ruins.classList.remove("is-active");
+    begging.classList.add("is-active");
+    textEl.textContent = "Жили в подвалах. Просили милостыню.";
+    playVoiceSmart("nadezhda/02_2", V_MONO);
+  });
+
+  /* --- 17–19 сек: Подвал --- */
+  after(17000, () => {
+    stopAmbient("nadezhda-ruins-wind", 800);
+    startAmbient("nadezhda-cellar-drops", "assets/audio/nadezhda/cellar-drops.mp3", 0.2);
+    begging.classList.remove("is-active");
+    basement.classList.add("is-active");
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  after(19000, () => {
+    basement.classList.remove("is-active");
+    children.classList.add("is-active");
+  });
+
+  /* --- 20 сек: Диалог с Ваней --- */
+  after(20000, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "— Ваня, есть хочешь?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoiceSmart("nadezhda/02_6", V_MONO);
+    
+    children.classList.remove("is-active");
+    nadyaTalk.classList.add("is-active");
+  });
+
+  after(24000, () => {
+    nadyaTalk.classList.remove("is-active");
+    vanyaTalk.classList.add("is-active");
+    textEl.textContent = "— Хочу. Но у нас ничего нет.";
+    playVoiceSmart("nadezhda/02_7", V_OTHER);
+  });
+
+  after(28000, () => {
+    vanyaTalk.classList.remove("is-active");
+    nadyaTalk.classList.add("is-active");
+    textEl.textContent = "— Значит, пойдём просить.";
+    playVoiceSmart("nadezhda/02_8", V_MONO);
+  });
+
+  after(32000, () => {
+    nadyaTalk.classList.remove("is-active");
+    vanyaTalk.classList.add("is-active");
+    textEl.textContent = "— Опять?";
+    playVoiceSmart("nadezhda/02_9", V_OTHER);
+  });
+
+  after(36000, () => {
+    vanyaTalk.classList.remove("is-active");
+    nadyaTalk.classList.add("is-active");
+    textEl.textContent = "— Опять. Пока не найдём своих.";
+    playVoiceSmart("nadezhda/02_10", V_MONO);
+  });
+
+  /* --- 40 сек: Мины --- */
+  after(40000, () => {
+    nadyaTalk.classList.remove("is-active");
+    mines.classList.add("is-active");
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  after(41500, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "Однажды украли у немцев мины. Хотели взорвать склад.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoiceSmart("nadezhda/02_3", V_MONO);
+  });
+
+  /* --- 48 сек: Лес --- */
+  after(48000, () => {
+    mines.classList.remove("is-active");
+    forest.classList.add("is-active");
+    stopAmbient("nadezhda-cellar-drops", 800);
+    startAmbient("nadezhda-night-forest", "assets/audio/nadezhda/night-forest.mp3", 0.25);
+    textEl.textContent = "Не получилось. Погибли свои.";
+    playVoiceSmart("nadezhda/02_4", V_MONO);
+  });
+
+  /* --- 56 сек: Финал --- */
+  after(56000, () => {
+    textEl.textContent = "Надежда и Ваня выжили. И ушли в лес.";
+    playVoiceSmart("nadezhda/02_5", V_MONO);
+  });
+
+  after(63000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* --- 64 сек: Кнопка --- */
+  after(64000, () => {
+    btn.classList.add("is-visible");
+  });
+
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+    fade.classList.add("is-active");
+    
+    setTimeout(() => {
+      stopAmbient("nadezhda-night-forest", 800);
+      el.classList.remove("is-active");
+      setTimeout(() => {
+        el.remove();
+        onDone && onDone();
+      }, 1500);
+    }, 1500);
+  }, { once: true });
+}
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 3. ПАРТИЗАНСКИЙ ОТРЯД
+   ============================================================ */
+function buildNadezhdaCamp() {
+  const el = document.createElement("section");
+  el.className = "scene scene--nadezhda-camp";
+  el.innerHTML = `
+    <div class="nadezhda-camp__layer nadezhda-camp__layer--camp is-active" id="nadCampBg"></div>
+    <div class="nadezhda-camp__layer nadezhda-camp__layer--dyachkov-cl"    id="nadCampDyachkovCl"></div>
+    <div class="nadezhda-camp__layer nadezhda-camp__layer--dyachkov-talk"  id="nadCampDyachkovTalk"></div>
+    <div class="nadezhda-camp__layer nadezhda-camp__layer--nadya-cl"       id="nadCampNadyaCl"></div>
+    <div class="nadezhda-camp__layer nadezhda-camp__layer--nadya-talk"     id="nadCampNadyaTalk"></div>
+
+    <button class="nadezhda-camp__btn" id="nadCampBtn">ВЗЯТЬ ЗАДАНИЕ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="nadCampTitleInner">
+        <p class="title-bar__text" id="nadCampTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+
+    <div class="nadezhda-camp__fade" id="nadCampFade"></div>
+  `;
+  return el;
+}
+
+export function playNadezhdaScene3(onDone) {
+  const el = buildNadezhdaCamp();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const camp          = el.querySelector("#nadCampBg");
+  const dyachkovCl    = el.querySelector("#nadCampDyachkovCl");
+  const dyachkovTalk  = el.querySelector("#nadCampDyachkovTalk");
+  const nadyaCl       = el.querySelector("#nadCampNadyaCl");
+  const nadyaTalk     = el.querySelector("#nadCampNadyaTalk");
+  const btn           = el.querySelector("#nadCampBtn");
+  const fade          = el.querySelector("#nadCampFade");
+  const inner         = el.querySelector("#nadCampTitleInner");
+  const textEl        = el.querySelector("#nadCampTitleText");
+
+  /* 🔇 ГАСИМ ВСЁ С ПРЕДЫДУЩИХ СЦЕН */
+  stopAllAmbient(0);
+  stopAllVoices();
+
+  /* ФОН: костёр */
+  startAmbient("campfire", "assets/audio/nadezhda/campfire.mp3", 0.25);
+
+  /* ============================================================
+     ЧАСТЬ 1: ЛАГЕРЬ, КОСТЁР
+     ============================================================ */
+
+  after(2000, () => {
+    camp.classList.remove("is-active");
+    dyachkovCl.classList.add("is-active");
+  });
+
+  /* --- «Сколько тебе лет, девочка?» — Дьячков говорит --- */
+  after(2500, () => {
+    dyachkovCl.classList.remove("is-active");
+    dyachkovTalk.classList.add("is-active");
+
+    textEl.textContent = "— Сколько тебе лет, девочка?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/nadezhda/03_1.mp3", 1.0);
+  });
+  after(6500, () => {
+    dyachkovTalk.classList.remove("is-active");
+    nadyaTalk.classList.add("is-active");
+
+    textEl.textContent = "— Двенадцать.";
+    // playVoice("assets/audio/nadezhda/03_2.mp3", 1.0);
+  });
+  after(9500, () => {
+    nadyaTalk.classList.remove("is-active");
+    dyachkovTalk.classList.add("is-active");
+
+    textEl.textContent = "— Не врёшь?";
+    // playVoice("assets/audio/nadezhda/03_3.mp3", 1.0);
+  });
+  after(12500, () => {
+    dyachkovTalk.classList.remove("is-active");
+    nadyaTalk.classList.add("is-active");
+
+    textEl.textContent = "— Не вру.";
+    // playVoice("assets/audio/nadezhda/03_4.mp3", 1.0);
+  });
+  after(15000, () => {
+    nadyaTalk.classList.remove("is-active");
+    dyachkovTalk.classList.add("is-active");
+
+    textEl.textContent = "— А Ваня?";
+    // playVoice("assets/audio/nadezhda/03_5.mp3", 1.0);
+  });
+  after(17500, () => {
+    dyachkovTalk.classList.remove("is-active");
+    nadyaTalk.classList.add("is-active");
+
+    textEl.textContent = "— Он со мной. Мы вместе.";
+    // playVoice("assets/audio/nadezhda/03_6.mp3", 1.0);
+  });
+  after(21000, () => {
+    nadyaTalk.classList.remove("is-active");
+    dyachkovTalk.classList.add("is-active");
+
+    textEl.textContent = "— Ладно. Остаётесь.";
+    // playVoice("assets/audio/nadezhda/03_7.mp3", 1.0);
+  });
+  after(24500, () => {
+    dyachkovTalk.classList.remove("is-active");
+    nadyaTalk.classList.add("is-active");
+
+    textEl.textContent = "— Что делать?";
+    // playVoice("assets/audio/nadezhda/03_8.mp3", 1.0);
+  });
+  after(27500, () => {
+    nadyaTalk.classList.remove("is-active");
+    dyachkovTalk.classList.add("is-active");
+
+    textEl.textContent = "— Пока — смотреть. Слушать. Запоминать.";
+    // playVoice("assets/audio/nadezhda/03_9.mp3", 1.0);
+  });
+  after(31500, () => {
+    dyachkovTalk.classList.remove("is-active");
+    nadyaCl.classList.add("is-active"); // остаётся кадр Нади
+
+    textEl.textContent = "— Я умею.";
+    // playVoice("assets/audio/nadezhda/03_10.mp3", 1.0);
+  });
+
+  /* Пауза перед титрами */
+  after(35000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============================================================
+     ЧАСТЬ 2: ТИТРЫ
+     ============================================================ */
+
+  after(36500, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "Ей было девять. Она сказала — двенадцать.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/nadezhda/03_11.mp3", 1.0);
+  });
+  after(42500, () => {
+    textEl.textContent = "Её приняли.";
+    // playVoice("assets/audio/nadezhda/03_12.mp3", 1.0);
+  });
+  after(46000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* --- Кнопка «ВЗЯТЬ ЗАДАНИЕ» --- */
+  after(48000, () => {
+    btn.classList.add("is-visible");
+  });
+
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+
+    fade.classList.add("is-active");
+
+    after(2500, () => {
+      stopAllAmbient(500);
+      stopAllVoices();
+      el.classList.remove("is-active");
+      setTimeout(() => {
+        el.remove();
+        onDone && onDone();
+      }, 1500);
+    });
+  }, { once: true });
+}
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 4. РАЗВЕДКА. НИЩЕНКА
+   ============================================================ */
+function buildNadezhdaScout() {
+  const el = document.createElement("section");
+  el.className = "scene scene--nadezhda-scout";
+  el.innerHTML = `
+    <div class="nadezhda-scout__layer nadezhda-scout__layer--village is-active" id="nadScoutVillage"></div>
+    <div class="nadezhda-scout__layer nadezhda-scout__layer--begging"             id="nadScoutBegging"></div>
+    <div class="nadezhda-scout__layer nadezhda-scout__layer--observing"           id="nadScoutObserving"></div>
+    <div class="nadezhda-scout__layer nadezhda-scout__layer--forest"              id="nadScoutForest"></div>
+
+    <button class="nadezhda-scout__btn" id="nadScoutBtn">ВЕРНУТЬСЯ К СВОИМ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="nadScoutTitleInner">
+        <p class="title-bar__text" id="nadScoutTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+
+    <div class="nadezhda-scout__fade" id="nadScoutFade"></div>
+  `;
+  return el;
+}
+
+export function playNadezhdaScene4(onDone) {
+  const el = buildNadezhdaScout();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const village   = el.querySelector("#nadScoutVillage");
+  const begging   = el.querySelector("#nadScoutBegging");
+  const observing = el.querySelector("#nadScoutObserving");
+  const forest    = el.querySelector("#nadScoutForest");
+  const btn       = el.querySelector("#nadScoutBtn");
+  const fade      = el.querySelector("#nadScoutFade");
+  const inner     = el.querySelector("#nadScoutTitleInner");
+  const textEl    = el.querySelector("#nadScoutTitleText");
+
+  /* 🔇 ГАСИМ ВСЁ С ПРЕДЫДУЩИХ СЦЕН */
+  stopAllAmbient(0);
+  stopAllVoices();
+
+  /* ФОН: деревня, лай, немецкая речь */
+  startAmbient("village", "assets/audio/nadezhda/village-ambient.mp3", 0.3);
+
+  /* ============================================================
+     ЧАСТЬ 1: ДЕРЕВНЯ, СЧИТАЕТ
+     ============================================================ */
+
+  after(1500, () => {
+    village.classList.remove("is-active");
+    begging.classList.add("is-active");
+
+    textEl.textContent = "— Один. Два. Три.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/nadezhda/04_1.mp3", 1.0);
+  });
+  after(5500, () => {
+    textEl.textContent = "— У окна — пулемёт.";
+    // playVoice("assets/audio/nadezhda/04_2.mp3", 1.0);
+  });
+  
+  /* Переход на крупный план */
+  after(8500, () => {
+    begging.classList.remove("is-active");
+    observing.classList.add("is-active");
+
+    textEl.textContent = "— В сарае — ящики.";
+    // playVoice("assets/audio/nadezhda/04_3.mp3", 1.0);
+  });
+  after(12000, () => {
+    textEl.textContent = "— Запомнила.";
+    // playVoice("assets/audio/nadezhda/04_4.mp3", 1.0);
+  });
+  after(14500, () => {
+    textEl.textContent = "— Теперь — хлеба попросить. Чтобы не заметили.";
+    // playVoice("assets/audio/nadezhda/04_5.mp3", 1.0);
+  });
+  
+  after(20000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============================================================
+     ЧАСТЬ 2: ТИТРЫ
+     ============================================================ */
+
+  after(21500, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "Она ходила по деревням с сумкой.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoice("assets/audio/nadezhda/04_6.mp3", 1.0);
+  });
+  after(26000, () => {
+    textEl.textContent = "Просила хлеб. Смотрела. Считала.";
+    // playVoice("assets/audio/nadezhda/04_7.mp3", 1.0);
+  });
+  after(31000, () => {
+    textEl.textContent = "Никто не замечал девочку-попрошайку.";
+    // playVoice("assets/audio/nadezhda/04_8.mp3", 1.0);
+  });
+  after(36000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* ============================================================
+     ЧАСТЬ 3: ВОЗВРАЩЕНИЕ К СВОИМ
+     ============================================================ */
+
+  after(38000, () => {
+    observing.classList.remove("is-active");
+    forest.classList.add("is-active");
+  });
+
+  /* --- Кнопка «ВЕРНУТЬСЯ К СВОИМ» --- */
+  after(40000, () => {
+    btn.classList.add("is-visible");
+  });
+
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+
+    fade.classList.add("is-active");
+
+    after(2500, () => {
+      stopAllAmbient(500);
+      stopAllVoices();
+      el.classList.remove("is-active");
+      setTimeout(() => {
+        el.remove();
+        onDone && onDone();
+      }, 1500);
+    });
+  }, { once: true });
+}
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 5. КРАСНЫЕ ФЛАГИ (ИНТЕРАКТИВ)
+   ============================================================ */
+function buildNadezhdaFlags() {
+  const el = document.createElement("section");
+  el.className = "scene scene--nadezhda-flags";
+  el.innerHTML = `
+    <div class="nadezhda-flags__layer nadezhda-flags__layer--roof is-active" id="nFlagsRoof"></div>
+    <div class="nadezhda-flags__layer nadezhda-flags__layer--done"          id="nFlagsDone"></div>
+    <div class="nadezhda-flags__layer nadezhda-flags__layer--patrol"        id="nFlagsPatrol"></div>
+    <div class="nadezhda-flags__layer nadezhda-flags__layer--caught"        id="nFlagsCaught"></div>
+
+    <button class="nadezhda-flags__btn" id="nFlagsBtnAction">ПОВЕСИТЬ ФЛАГ</button>
+    <button class="nadezhda-flags__btn" id="nFlagsBtnCaught">ПОПАСТЬСЯ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="nFlagsTitleInner">
+        <p class="title-bar__text" id="nFlagsTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+    <div class="nadezhda-flags__fade" id="nFlagsFade"></div>
+  `;
+  return el;
+}
+
+export function playNadezhdaScene5(onDone) {
+  const el = buildNadezhdaFlags();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const roof = el.querySelector("#nFlagsRoof");
+  const done = el.querySelector("#nFlagsDone");
+  const patrol = el.querySelector("#nFlagsPatrol");
+  const caught = el.querySelector("#nFlagsCaught");
+  const fade = el.querySelector("#nFlagsFade");
+
+  const btnAction = el.querySelector("#nFlagsBtnAction");
+  const btnCaught = el.querySelector("#nFlagsBtnCaught");
+
+  const inner = el.querySelector("#nFlagsTitleInner");
+  const textEl = el.querySelector("#nFlagsTitleText");
+
+  startAmbient("nadezhda-wind", "assets/audio/nadezhda/wind.mp3", 0.25);
+
+  /* --- ДИАЛОГ --- */
+  after(1000, () => {
+    textEl.textContent = "— Надежда, туда нельзя. Там свет.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoiceSmart("nadezhda/05_01", V_OTHER);
+  });
+  after(4500, () => {
+    textEl.textContent = "— Можно. Они внизу. Мы — выше.";
+    playVoiceSmart("nadezhda/05_02", V_MONO);
+  });
+  after(8000, () => {
+    textEl.textContent = "— А если увидят?";
+    playVoiceSmart("nadezhda/05_03", V_OTHER);
+  });
+  after(11000, () => {
+    textEl.textContent = "— Тогда бежим.";
+    playVoiceSmart("nadezhda/05_04", V_MONO);
+  });
+  after(14000, () => {
+    textEl.textContent = "— Ты не боишься?";
+    playVoiceSmart("nadezhda/05_05", V_OTHER);
+  });
+  after(17000, () => {
+    textEl.textContent = "— Боюсь. Но надо.";
+    playVoiceSmart("nadezhda/05_06", V_MONO);
+  });
+  after(20000, () => {
+    textEl.textContent = "— Почему?";
+    playVoiceSmart("nadezhda/05_07", V_OTHER);
+  });
+  after(23000, () => {
+    textEl.textContent = "— Чтобы знали — мы здесь. Мы не сдались.";
+    playVoiceSmart("nadezhda/05_08", V_MONO);
+  });
+  after(28000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* --- ИНТЕРАКТИВ: 3 ФЛАГА --- */
+  after(29500, () => {
+    btnAction.classList.add("is-visible");
+  });
+
+  let flagStep = 0;
+
+  btnAction.addEventListener("click", function hangFlag() {
+    flagStep++;
+
+    if (flagStep === 1) {
+      btnAction.textContent = "ПОВЕСИТЬ ВТОРОЙ";
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "Первый флаг — на вокзале.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+    } 
+    else if (flagStep === 2) {
+      btnAction.textContent = "ПОВЕСИТЬ ТРЕТИЙ";
+      textEl.textContent = "Второй — на училище.";
+    } 
+    else if (flagStep === 3) {
+      btnAction.classList.remove("is-visible");
+      btnAction.classList.add("is-gone");
+      
+      roof.classList.remove("is-active");
+      done.classList.add("is-active");
+
+      textEl.textContent = "Третий — на фабрике. 7 ноября 1941 года. Они справились.";
+      
+      after(6000, () => {
+        done.classList.remove("is-active");
+        patrol.classList.add("is-active");
+        textEl.textContent = "Но на обратном пути их схватили. — Halt!";
+        playVoiceSmart("nadezhda/05_09", V_OTHER);
+        
+        after(4000, () => {
+          textEl.classList.remove("is-visible");
+          textEl.classList.add("is-fading");
+          inner.classList.remove("is-visible");
+          
+          /* --- КНОПКА 2: ПОПАСТЬСЯ --- */
+          after(1500, () => {
+            btnCaught.classList.add("is-visible");
+          });
+        });
+      });
+    }
+  });
+
+  /* --- КНОПКА 2: КЛИК --- */
+  btnCaught.addEventListener("click", () => {
+    btnCaught.classList.remove("is-visible");
+    btnCaught.classList.add("is-gone");
+
+    patrol.classList.remove("is-active");
+    caught.classList.add("is-active");
+
+    after(1000, () => {
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "Они бежали. Но их окружили.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+    });
+
+    after(6000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+      fade.classList.add("is-active");
+    });
+
+    after(8500, () => {
+      stopAmbient("nadezhda-wind", 800);
+      el.classList.remove("is-active");
+      setTimeout(() => {
+        el.remove();
+        onDone && onDone();
+      }, 1500);
+    });
+  }, { once: true });
+}
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 6. РАССТРЕЛ. ЯМА
+   ============================================================ */
+function buildNadezhdaExecution() {
+  const el = document.createElement("section");
+  el.className = "scene scene--nadezhda-execution";
+  el.innerHTML = `
+    <div class="nadezhda-exec__layer nadezhda-exec__layer--ravine is-active" id="nExecRavine"></div>
+    <div class="nadezhda-exec__layer nadezhda-exec__layer--fall"            id="nExecFall"></div>
+    <div class="nadezhda-exec__layer nadezhda-exec__layer--dark"            id="nExecDark"></div>
+    <div class="nadezhda-exec__layer nadezhda-exec__layer--hands"           id="nExecHands"></div>
+
+    <div class="nadezhda-exec__flash" id="nExecFlash"></div>
+
+    <button class="nadezhda-exec__btn" id="nExecBtn">ОЧНУТЬСЯ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="nExecTitleInner">
+        <p class="title-bar__text" id="nExecTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+  `;
+  return el;
+}
+
+export function playNadezhdaScene6(onDone) {
+  const el = buildNadezhdaExecution();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const ravine = el.querySelector("#nExecRavine");
+  const fall = el.querySelector("#nExecFall");
+  const dark = el.querySelector("#nExecDark");
+  const hands = el.querySelector("#nExecHands");
+  const flash = el.querySelector("#nExecFlash");
+  const btn = el.querySelector("#nExecBtn");
+  const inner = el.querySelector("#nExecTitleInner");
+  const textEl = el.querySelector("#nExecTitleText");
+
+  after(2000, () => {
+    textEl.textContent = "Я не помню выстрела.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoiceSmart("nadezhda/06_01", V_MONO);
+  });
+
+  after(6000, () => {
+    textEl.textContent = "Помню — Ваня упал.";
+    playVoiceSmart("nadezhda/06_02", V_MONO);
+  });
+
+  after(10000, () => {
+    // Момент выстрела
+    playOnce("nadezhda-shot", "assets/audio/nadezhda/shot.mp3", 0.8);
+    flash.classList.add("is-active");
+    ravine.classList.remove("is-active");
+    fall.classList.add("is-active");
+
+    setTimeout(() => flash.classList.remove("is-active"), 400);
+    textEl.textContent = "Помню — стало холодно.";
+    playVoiceSmart("nadezhda/06_03", V_MONO);
+  });
+
+  after(16000, () => {
+    fall.classList.remove("is-active");
+    dark.classList.add("is-active");
+    textEl.textContent = "А потом — чьи-то руки.";
+    playVoiceSmart("nadezhda/06_04", V_MONO);
+  });
+
+  after(21000, () => {
+    textEl.textContent = "Свои.";
+    playVoiceSmart("nadezhda/06_05", V_MONO);
+  });
+
+  after(25000, () => {
+    dark.classList.remove("is-active");
+    hands.classList.add("is-active");
+    textEl.textContent = "Они вытащили меня из ямы.";
+    playVoiceSmart("nadezhda/06_06", V_MONO);
+  });
+
+  after(31000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  // Титры
+  after(33000, () => {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "Ваня погиб. Надежда упала за мгновение до выстрела.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+  });
+
+  after(40000, () => {
+    textEl.textContent = "Партизаны нашли её живой. Она выжила. Первый раз.";
+  });
+
+  after(46000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  after(47500, () => {
+    btn.classList.add("is-visible");
+  });
+
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+    el.classList.remove("is-active");
+    setTimeout(() => {
+      el.remove();
+      onDone && onDone();
+    }, 2000);
+  }, { once: true });
+}
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 7. СПАСЕНИЕ КОМАНДИРА (ИНТЕРАКТИВ)
+   ============================================================ */
+function buildNadezhdaRescue() {
+  const el = document.createElement("section");
+  el.className = "scene scene--nadezhda-rescue";
+  el.innerHTML = `
+    <div class="nadezhda-rescue__layer nadezhda-rescue__layer--forest is-active" id="nResForest"></div>
+    <div class="nadezhda-rescue__layer nadezhda-rescue__layer--coat"            id="nResCoat"></div>
+    <div class="nadezhda-rescue__layer nadezhda-rescue__layer--drag"            id="nResDrag"></div>
+    <div class="nadezhda-rescue__layer nadezhda-rescue__layer--safe"            id="nResSafe"></div>
+
+    <button class="nadezhda-rescue__btn" id="nResBtn">СПАСТИ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="nResTitleInner">
+        <p class="title-bar__text" id="nResTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+    <div class="nadezhda-rescue__fade" id="nResFade"></div>
+  `;
+  return el;
+}
+
+export function playNadezhdaScene7(onDone) {
+  const el = buildNadezhdaRescue();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const forest = el.querySelector("#nResForest");
+  const coat = el.querySelector("#nResCoat");
+  const drag = el.querySelector("#nResDrag");
+  const safe = el.querySelector("#nResSafe");
+  const fade = el.querySelector("#nResFade");
+  
+  const btn = el.querySelector("#nResBtn");
+  const inner = el.querySelector("#nResTitleInner");
+  const textEl = el.querySelector("#nResTitleText");
+
+  startAmbient("nadezhda-forest", "assets/audio/nadezhda/forest.mp3", 0.2);
+
+  /* --- ЧАСТЬ 1: РАНЕНЫЙ --- */
+  after(1000, () => {
+    textEl.textContent = "— Девочка… оставь меня.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoiceSmart("nadezhda/07_01", V_OTHER);
+  });
+
+  after(4500, () => {
+    textEl.textContent = "— Нет.";
+    playVoiceSmart("nadezhda/07_02", V_MONO);
+  });
+
+  after(7500, () => {
+    textEl.textContent = "— Я тяжёлый.";
+    playVoiceSmart("nadezhda/07_03", V_OTHER);
+  });
+
+  after(10500, () => {
+    textEl.textContent = "— Я сильная.";
+    playVoiceSmart("nadezhda/07_04", V_MONO);
+  });
+
+  after(14000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+    forest.classList.remove("is-active");
+    coat.classList.add("is-active");
+  });
+
+  /* --- ЧАСТЬ 2: КНОПКА СПАСТИ --- */
+  after(15500, () => {
+    btn.classList.add("is-visible");
+  });
+
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+
+    coat.classList.remove("is-active");
+    drag.classList.add("is-active");
+
+    after(500, () => {
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "— Куда ты меня тащишь?";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      playVoiceSmart("nadezhda/07_05", V_OTHER);
+    });
+
+    after(4000, () => {
+      textEl.textContent = "— К своим. Там помогут.";
+      playVoiceSmart("nadezhda/07_06", V_MONO);
+    });
+
+    after(7000, () => {
+      textEl.textContent = "— Ты знаешь, где свои?";
+      playVoiceSmart("nadezhda/07_07", V_OTHER);
+    });
+
+    after(10000, () => {
+      textEl.textContent = "— Знаю. Я тут всё знаю.";
+      playVoiceSmart("nadezhda/07_08", V_MONO);
+    });
+
+    after(13500, () => {
+      textEl.textContent = "— Как тебя зовут?";
+      playVoiceSmart("nadezhda/07_09", V_OTHER);
+    });
+
+    after(16500, () => {
+      textEl.textContent = "— Надежда.";
+      playVoiceSmart("nadezhda/07_10", V_MONO);
+    });
+
+    after(19500, () => {
+      textEl.textContent = "— Надежда… Запомню.";
+      playVoiceSmart("nadezhda/07_11", V_OTHER);
+    });
+
+    after(24000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* --- ТИТРЫ --- */
+    after(26000, () => {
+      drag.classList.remove("is-active");
+      safe.classList.add("is-active");
+      
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "Он выжил. И запомнил её навсегда.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+    });
+
+    after(33000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+      fade.classList.add("is-active");
+    });
+
+    after(35000, () => {
+      stopAmbient("nadezhda-forest", 800);
+      el.classList.remove("is-active");
+      setTimeout(() => {
+        el.remove();
+        onDone && onDone();
+      }, 1500);
+    });
+  }, { once: true });
+}
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 8. МИНИРОВАНИЕ МОСТА (ИНТЕРАКТИВ)
+   ============================================================ */
+function buildNadezhdaBridge() {
+  const el = document.createElement("section");
+  el.className = "scene scene--nadezhda-bridge";
+  el.innerHTML = `
+    <div class="nadezhda-bridge__layer nadezhda-bridge__layer--bridge is-active" id="nBriBridge"></div>
+    <div class="nadezhda-bridge__layer nadezhda-bridge__layer--work"            id="nBriWork"></div>
+    <div class="nadezhda-bridge__layer nadezhda-bridge__layer--light"           id="nBriLight"></div>
+    <div class="nadezhda-bridge__layer nadezhda-bridge__layer--run"             id="nBriRun"></div>
+
+    <div class="nadezhda-bridge__flash" id="nBriFlash"></div>
+
+    <button class="nadezhda-bridge__btn" id="nBriBtn">ПОДКЛЮЧИТЬ ПРОВОД</button>
+    <button class="nadezhda-bridge__btn-caught" id="nBriBtnCaught">ПОПАСТЬСЯ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="nBriTitleInner">
+        <p class="title-bar__text" id="nBriTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+    <div class="nadezhda-bridge__fade" id="nBriFade"></div>
+  `;
+  return el;
+}
+
+export function playNadezhdaScene8(onDone) {
+  const el = buildNadezhdaBridge();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const bridge = el.querySelector("#nBriBridge");
+  const work = el.querySelector("#nBriWork");
+  const light = el.querySelector("#nBriLight");
+  const run = el.querySelector("#nBriRun");
+  const flash = el.querySelector("#nBriFlash");
+  const fade = el.querySelector("#nBriFade");
+  
+  const btn = el.querySelector("#nBriBtn");
+  const btnCaught = el.querySelector("#nBriBtnCaught");
+  
+  const inner = el.querySelector("#nBriTitleInner");
+  const textEl = el.querySelector("#nBriTitleText");
+
+  startAmbient("nadezhda-night", "assets/audio/nadezhda/night.mp3", 0.25);
+
+  /* --- ЧАСТЬ 1: ПОДГОТОВКА --- */
+  after(1000, () => {
+    textEl.textContent = "— Надежда, быстрее.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoiceSmart("nadezhda/08_01", V_OTHER);
+  });
+  after(4500, () => {
+    textEl.textContent = "— Успеем.";
+    playVoiceSmart("nadezhda/08_02", V_MONO);
+  });
+  after(7500, () => {
+    textEl.textContent = "— Свет! Они идут!";
+    playVoiceSmart("nadezhda/08_03", V_OTHER);
+  });
+  after(11000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+    bridge.classList.remove("is-active");
+    work.classList.add("is-active");
+  });
+
+  /* --- ЧАСТЬ 2: ИНТЕРАКТИВ (3 КЛИКА) --- */
+  after(12500, () => {
+    btn.classList.add("is-visible");
+  });
+
+  let step = 0;
+  btn.addEventListener("click", () => {
+    step++;
+    playOnce("nadezhda-metal", "assets/audio/nadezhda/metal.mp3", 0.5);
+
+    if (step === 1) {
+      btn.textContent = "ВСТАВИТЬ ЗАРЯД";
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "— Руки дрожали, но я успевала.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+    } 
+    else if (step === 2) {
+      btn.textContent = "ПОДЖЕЧЬ ФИТИЛЬ";
+      textEl.textContent = "— Оставалось несколько секунд.";
+    } 
+    else if (step === 3) {
+      btn.classList.remove("is-visible");
+      btn.classList.add("is-gone");
+      
+      // Свет фонаря!
+      work.classList.remove("is-active");
+      light.classList.add("is-active");
+      flash.classList.add("is-active");
+      setTimeout(() => flash.classList.remove("is-active"), 300);
+
+      textEl.textContent = "— Halt!";
+      playVoiceSmart("nadezhda/08_11", V_OTHER);
+
+      after(2000, () => {
+        textEl.textContent = "— Бросай.";
+        playVoiceSmart("nadezhda/08_04", V_MONO);
+      });
+      after(4000, () => {
+        textEl.textContent = "— Не успею.";
+        playVoiceSmart("nadezhda/08_05", V_OTHER);
+      });
+      after(6000, () => {
+        textEl.textContent = "— Успеешь. Бросай и беги.";
+        playVoiceSmart("nadezhda/08_06", V_MONO);
+      });
+      after(8000, () => {
+        textEl.textContent = "— А ты?";
+        playVoiceSmart("nadezhda/08_07", V_OTHER);
+      });
+      after(10000, () => {
+        textEl.textContent = "— Я следом.";
+        playVoiceSmart("nadezhda/08_08", V_MONO);
+      });
+      after(12000, () => {
+        textEl.textContent = "— Обещаешь?";
+        playVoiceSmart("nadezhda/08_09", V_OTHER);
+      });
+      after(14000, () => {
+        textEl.textContent = "— Обещаю.";
+        playVoiceSmart("nadezhda/08_10", V_MONO);
+      });
+
+      // Смена на бег
+      after(17000, () => {
+        textEl.classList.remove("is-visible");
+        textEl.classList.add("is-fading");
+        inner.classList.remove("is-visible");
+        light.classList.remove("is-active");
+        run.classList.add("is-active");
+      });
+
+      // Титры
+      after(19000, () => {
+        textEl.classList.remove("is-fading");
+        textEl.textContent = "В феврале 1943-го они взорвали мост в Карасёво.";
+        inner.classList.add("is-visible");
+        textEl.classList.add("is-visible");
+      });
+      after(26000, () => {
+        textEl.textContent = "Они справились. Но их схватили.";
+      });
+      after(33000, () => {
+        textEl.classList.remove("is-visible");
+        textEl.classList.add("is-fading");
+        inner.classList.remove("is-visible");
+      });
+
+      /* --- КНОПКА «ПОПАСТЬСЯ» --- */
+      after(34500, () => {
+        btnCaught.classList.add("is-visible");
+      });
+    }
+  });
+
+  /* --- ЧАСТЬ 3: ПОПАСТЬСЯ --- */
+  btnCaught.addEventListener("click", () => {
+    btnCaught.classList.remove("is-visible");
+    btnCaught.classList.add("is-gone");
+    fade.classList.add("is-active");
+    
+    stopAmbient("nadezhda-night", 800);
+    el.classList.remove("is-active");
+    setTimeout(() => {
+      el.remove();
+      onDone && onDone();
+    }, 2000);
+  }, { once: true });
+}
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 9. ПЫТКИ (ДИАЛОГ + СМЕНА ФОНОВ)
+   ============================================================ */
+function buildNadezhdaTorture() {
+  const el = document.createElement("section");
+  el.className = "scene scene--nadezhda-torture";
+  el.innerHTML = `
+    <!-- ФОНЫ -->
+    <div class="nadezhda-torture__bg nadezhda-torture__bg--room is-active" id="nTorBgRoom"></div>
+    <div class="nadezhda-torture__bg nadezhda-torture__bg--water"           id="nTorBgWater"></div>
+    <div class="nadezhda-torture__bg nadezhda-torture__bg--stove"           id="nTorBgStove"></div>
+    <div class="nadezhda-torture__bg nadezhda-torture__bg--star"            id="nTorBgStar"></div>
+
+    <!-- ПОРТРЕТЫ ПЕРСОНАЖЕЙ -->
+    <div class="nadezhda-torture__char nadezhda-torture__char--sled-closed" id="nTorSledClosed"></div>
+    <div class="nadezhda-torture__char nadezhda-torture__char--sled-talk"   id="nTorSledTalk"></div>
+    <div class="nadezhda-torture__char nadezhda-torture__char--nadya-closed" id="nTorNadyaClosed"></div>
+    <div class="nadezhda-torture__char nadezhda-torture__char--nadya-talk"   id="nTorNadyaTalk"></div>
+
+    <button class="nadezhda-torture__btn" id="nTorBtn">ВЫДЕРЖАТЬ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="nTorTitleInner">
+        <p class="title-bar__text" id="nTorTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+    <div class="nadezhda-torture__fade" id="nTorFade"></div>
+  `;
+  return el;
+}
+
+export function playNadezhdaScene9(onDone) {
+  const el = buildNadezhdaTorture();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  // Фоны
+  const bgRoom = el.querySelector("#nTorBgRoom");
+  const bgWater = el.querySelector("#nTorBgWater");
+  const bgStove = el.querySelector("#nTorBgStove");
+  const bgStar = el.querySelector("#nTorBgStar");
+  
+  // Портреты
+  const sledClosed = el.querySelector("#nTorSledClosed");
+  const sledTalk = el.querySelector("#nTorSledTalk");
+  const nadyaClosed = el.querySelector("#nTorNadyaClosed");
+  const nadyaTalk = el.querySelector("#nTorNadyaTalk");
+  
+  const btn = el.querySelector("#nTorBtn");
+  const fade = el.querySelector("#nTorFade");
+  const inner = el.querySelector("#nTorTitleInner");
+  const textEl = el.querySelector("#nTorTitleText");
+
+  startAmbient("nadezhda-drip", "assets/audio/nadezhda/drip.mp3", 0.2);
+
+  /* --- ЧАСТЬ 1: ДИАЛОГ С ПОРТРЕТАМИ --- */
+  after(1000, () => {
+    textEl.textContent = "— Говори. Где отряд?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoiceSmart("nadezhda/09_01", V_OTHER);
+    sledTalk.classList.add("is-active");
+  });
+
+  after(4000, () => {
+    sledTalk.classList.remove("is-active");
+    sledClosed.classList.add("is-active");
+    textEl.textContent = "— …"; // Пауза
+  });
+
+  after(5500, () => {
+    sledClosed.classList.remove("is-active");
+    sledTalk.classList.add("is-active");
+    textEl.textContent = "— Молчишь? Мы умеем развязывать языки.";
+    playVoiceSmart("nadezhda/09_02", V_OTHER);
+  });
+
+  after(9000, () => {
+    sledTalk.classList.remove("is-active");
+    sledClosed.classList.add("is-active");
+    nadyaClosed.classList.add("is-active");
+    textEl.textContent = "— …";
+  });
+
+  after(11000, () => {
+    sledClosed.classList.remove("is-active");
+    sledTalk.classList.add("is-active");
+    nadyaClosed.classList.remove("is-active");
+    textEl.textContent = "— Кто ещё? Имена! Ты умрёшь здесь.";
+    playVoiceSmart("nadezhda/09_03", V_OTHER);
+  });
+
+  /* --- ЧАСТЬ 2: ИНТЕРАКТИВ (СМЕНА ФОНОВ) --- */
+  after(15000, () => {
+    // Убираем портреты, оставляем только фон комнаты
+    sledTalk.classList.remove("is-active");
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+    
+    btn.classList.add("is-visible");
+    btn.textContent = "ТЕРПЕТЬ";
+  });
+
+  let clicks = 0;
+  const requiredClicks = 3;
+  const btnTexts = ["МОЛЧАТЬ", "НЕ СДАВАТЬСЯ", "ВЫСТОЯТЬ"];
+
+  btn.addEventListener("click", function withstand() {
+    clicks++;
+    
+    btn.style.transform = "translateX(-50%) scale(0.95)";
+    setTimeout(() => btn.style.transform = "translateX(-50%) scale(1)", 100);
+
+    if (clicks === 1) {
+      // 1-й клик: Ледяная вода
+      bgRoom.classList.remove("is-active");
+      bgWater.classList.add("is-active");
+      btn.textContent = btnTexts[0];
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "— …"; // Молчание
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+    } 
+    else if (clicks === 2) {
+      // 2-й клик: Раскаленная печь
+      bgWater.classList.remove("is-active");
+      bgStove.classList.add("is-active");
+      btn.textContent = btnTexts[1];
+      textEl.textContent = "— …";
+    } 
+    else if (clicks === 3) {
+      // 3-й клик: Выжженная звезда
+      bgStove.classList.remove("is-active");
+      bgStar.classList.add("is-active");
+      btn.textContent = btnTexts[2];
+      textEl.textContent = "— …";
+    }
+
+    /* --- ЧАСТЬ 3: ФИНАЛ (Надежда говорит) --- */
+    if (clicks > requiredClicks) {
+      btn.removeEventListener("click", withstand);
+      btn.classList.remove("is-visible");
+      btn.classList.add("is-gone");
+
+      // Оставляем мрачный фон, возвращаем Надежду
+      bgStar.classList.remove("is-active");
+      bgRoom.classList.add("is-active"); // Возвращаем комнату для финала
+      
+      nadyaTalk.classList.add("is-active");
+
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "— Значит, умру. Но не скажу.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      playVoiceSmart("nadezhda/09_06", V_MONO);
+
+      /* --- ТИТРЫ --- */
+      after(5000, () => {
+        nadyaTalk.classList.remove("is-active");
+        textEl.classList.remove("is-visible");
+        textEl.classList.add("is-fading");
+        inner.classList.remove("is-visible");
+      });
+
+      after(7000, () => {
+        textEl.classList.remove("is-fading");
+        textEl.textContent = "Её пытали. Обливали ледяной водой на морозе.";
+        inner.classList.add("is-visible");
+        textEl.classList.add("is-visible");
+      });
+
+      after(14000, () => {
+        textEl.textContent = "Бросали на раскалённую печь. Выжгли звезду на спине.";
+      });
+
+      after(21000, () => {
+        textEl.textContent = "Она не сказала ничего.";
+      });
+
+      after(28000, () => {
+        textEl.classList.remove("is-visible");
+        textEl.classList.add("is-fading");
+        inner.classList.remove("is-visible");
+        fade.classList.add("is-active");
+      });
+
+      after(30000, () => {
+        stopAmbient("nadezhda-drip", 800);
+        el.classList.remove("is-active");
+        setTimeout(() => {
+          el.remove();
+          onDone && onDone();
+        }, 2000);
+      });
+    }
+  });
+}
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 10. МОРОЗ. ЗАНАЛЮЧКИ (ИНТЕРАКТИВ)
+   ============================================================ */
+function buildNadezhdaSnow() {
+  const el = document.createElement("section");
+  el.className = "scene scene--nadezhda-snow";
+  el.innerHTML = `
+    <div class="nadezhda-snow__layer nadezhda-snow__layer--snow is-active" id="nSnowBg"></div>
+    <div class="nadezhda-snow__layer nadezhda-snow__layer--hands"           id="nSnowHands"></div>
+    <div class="nadezhda-snow__layer nadezhda-snow__layer--house"           id="nSnowHouse"></div>
+    <div class="nadezhda-snow__layer nadezhda-snow__layer--eyes"            id="nSnowEyes"></div>
+
+    <button class="nadezhda-snow__btn" id="nSnowBtn">БОРОТЬСЯ ЗА ЖИЗНЬ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="nSnowTitleInner">
+        <p class="title-bar__text" id="nSnowTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+    <div class="nadezhda-snow__fade" id="nSnowFade"></div>
+  `;
+  return el;
+}
+
+export function playNadezhdaScene10(onDone) {
+  const el = buildNadezhdaSnow();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const bg = el.querySelector("#nSnowBg");
+  const hands = el.querySelector("#nSnowHands");
+  const house = el.querySelector("#nSnowHouse");
+  const eyes = el.querySelector("#nSnowEyes");
+  
+  const btn = el.querySelector("#nSnowBtn");
+  const fade = el.querySelector("#nSnowFade");
+  const inner = el.querySelector("#nSnowTitleInner");
+  const textEl = el.querySelector("#nSnowTitleText");
+
+  startAmbient("nadezhda-blizzard", "assets/audio/nadezhda/blizzard.mp3", 0.3);
+
+  /* --- ДИАЛОГ ЖЕНЩИН (0–18 сек) --- */
+  after(2000, () => {
+    textEl.textContent = "— Живая?";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoiceSmart("nadezhda/10_01", V_OTHER);
+  });
+  after(4500, () => {
+    textEl.textContent = "— Живая. Еле дышит.";
+    playVoiceSmart("nadezhda/10_02", V_OTHER);
+  });
+  after(7500, () => {
+    textEl.textContent = "— Неси в дом. Быстрее.";
+    playVoiceSmart("nadezhda/10_03", V_OTHER);
+  });
+  after(11000, () => {
+    textEl.textContent = "— Кто она?";
+    playVoiceSmart("nadezhda/10_04", V_OTHER);
+  });
+  after(13000, () => {
+    textEl.textContent = "— Наша.";
+    playVoiceSmart("nadezhda/10_05", V_OTHER);
+  });
+  after(15000, () => {
+    textEl.textContent = "— Откуда знаешь?";
+    playVoiceSmart("nadezhda/10_06", V_OTHER);
+  });
+  after(17000, () => {
+    textEl.textContent = "— По глазам. Наши глаза не врут.";
+    playVoiceSmart("nadezhda/10_07", V_OTHER);
+  });
+
+  /* --- ИНТЕРАКТИВ (18+ сек) --- */
+  after(21000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+    
+    // Сменяем фон на "руки"
+    bg.classList.remove("is-active");
+    hands.classList.add("is-active");
+
+    // Появляется кнопка спасения
+    btn.classList.add("is-visible");
+  });
+
+  let clicks = 0;
+  const requiredClicks = 3;
+  const btnTexts = ["ТЯНУТЬСЯ К СВЕТУ", "СОГРЕТЬСЯ", "ОТКРЫТЬ ГЛАЗА"];
+
+  btn.addEventListener("click", function survive() {
+    clicks++;
+    
+    // Визуальный эффект нажатия
+    btn.style.transform = "translateX(-50%) scale(0.95)";
+    setTimeout(() => btn.style.transform = "translateX(-50%) scale(1)", 100);
+
+    if (clicks === 1) {
+      btn.textContent = btnTexts[0];
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "Её выбросили на мороз. Решили — не выживет.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+    } 
+    else if (clicks === 2) {
+      btn.textContent = btnTexts[1];
+      textEl.textContent = "Её нашли жители деревни Заналючки. Выхаживали долго.";
+      // Сменяем фон на избу
+      hands.classList.remove("is-active");
+      house.classList.add("is-active");
+    } 
+    else if (clicks === 3) {
+      btn.textContent = btnTexts[2];
+      textEl.textContent = "Она выжила. Но почти ослепла.";
+      // Сменяем фон на глаза
+      house.classList.remove("is-active");
+      eyes.classList.add("is-active");
+    }
+
+    /* --- ФИНАЛ --- */
+    if (clicks > requiredClicks) {
+      btn.removeEventListener("click", survive);
+      btn.classList.remove("is-visible");
+      btn.classList.add("is-gone");
+
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+      
+      fade.classList.add("is-active");
+      
+      after(2500, () => {
+        stopAmbient("nadezhda-blizzard", 800);
+        el.classList.remove("is-active");
+        setTimeout(() => {
+          el.remove();
+          onDone && onDone();
+        }, 2000);
+      });
+    }
+  });
+}
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 11. 17 ЛЕТ МОЛЧАНИЯ. РАДИО (ИНТЕРАКТИВ)
+   ============================================================ */
+function buildNadezhdaRadio() {
+  const el = document.createElement("section");
+  el.className = "scene scene--nadezhda-radio";
+  el.innerHTML = `
+    <div class="nadezhda-radio__layer nadezhda-radio__layer--room is-active" id="nRadRoom"></div>
+    <div class="nadezhda-radio__layer nadezhda-radio__layer--radio"          id="nRadRadio"></div>
+    <div class="nadezhda-radio__layer nadezhda-radio__layer--adult"          id="nRadAdult"></div>
+    <div class="nadezhda-radio__layer nadezhda-radio__layer--tears"          id="nRadTears"></div>
+
+    <button class="nadezhda-radio__btn" id="nRadBtn">ВКЛЮЧИТЬ РАДИО</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="nRadTitleInner">
+        <p class="title-bar__text" id="nRadTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+    <div class="nadezhda-radio__fade" id="nRadFade"></div>
+  `;
+  return el;
+}
+
+export function playNadezhdaScene11(onDone) {
+  const el = buildNadezhdaRadio();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const room = el.querySelector("#nRadRoom");
+  const radio = el.querySelector("#nRadRadio");
+  const adult = el.querySelector("#nRadAdult");
+  const tears = el.querySelector("#nRadTears");
+  
+  const btn = el.querySelector("#nRadBtn");
+  const fade = el.querySelector("#nRadFade");
+  const inner = el.querySelector("#nRadTitleInner");
+  const textEl = el.querySelector("#nRadTitleText");
+
+  stopAllAmbient(0);
+  startAmbient("nadezhda-room", "assets/audio/nadezhda/room-quiet.mp3", 0.15);
+
+  /* --- ВСТУПЛЕНИЕ --- */
+  after(2000, () => {
+    textEl.textContent = "После войны она жила в Витебске. Никому не говорила, что воевала.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+  });
+
+  after(9000, () => {
+    textEl.textContent = "Считала себя обычной.";
+  });
+
+  after(14000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  /* --- ИНТЕРАКТИВ: ВКЛЮЧИТЬ РАДИО --- */
+  after(15500, () => {
+    btn.classList.add("is-visible");
+  });
+
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+
+    room.classList.remove("is-active");
+    radio.classList.add("is-active");
+
+    playOnce("nadezhda-radio-static", "assets/audio/nadezhda/radio-static.mp3", 0.4);
+
+    after(1000, () => {
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "Но однажды услышала по радио, как её командир сказал:";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+    });
+
+    after(6000, () => {
+      textEl.textContent = "«…начальник разведки 6-го отряда Ферапонт Слесаренко…»";
+      playVoiceSmart("nadezhda/11_01", V_OTHER);
+    });
+
+    after(11000, () => {
+      textEl.textContent = "«…Надю Богданову мы никогда не забудем…»";
+      playVoiceSmart("nadezhda/11_02", V_OTHER);
+    });
+
+    after(17000, () => {
+      radio.classList.remove("is-active");
+      adult.classList.add("is-active");
+      
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+    });
+
+    /* --- ОСОЗНАНИЕ --- */
+    after(19000, () => {
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "— Они помнят. Значит, не зря.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      playVoiceSmart("nadezhda/11_03", V_MONO);
+    });
+
+    after(24000, () => {
+      adult.classList.remove("is-active");
+      tears.classList.add("is-active");
+      
+      textEl.textContent = "— Значит, всё было не зря.";
+      playVoiceSmart("nadezhda/11_04", V_MONO);
+    });
+
+    after(30000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+      fade.classList.add("is-active");
+    });
+
+    after(32000, () => {
+      stopAllAmbient(1000);
+      el.classList.remove("is-active");
+      setTimeout(() => {
+        el.remove();
+        onDone && onDone();
+      }, 2000);
+    });
+  }, { once: true });
+}
+
+/* ============================================================
+   НАДЕЖДА — СЦЕНА 12. ИТОГОВАЯ СПРАВКА (ФИНАЛ)
+   ============================================================ */
+function buildNadezhdaFinal() {
+  const el = document.createElement("section");
+  el.className = "scene scene--nadezhda-final";
+  el.innerHTML = `
+    <div class="nadezhda-final__bg" id="nFinBg"></div>
+    
+    <div class="nadezhda-final__content">
+      <div class="nadezhda-final__text-box">
+        <h1 class="nadezhda-final__name">НАДЕЖДА БОГДАНОВА</h1>
+        <p class="nadezhda-final__years">1931–1991</p>
+        <p class="nadezhda-final__desc" id="nFinDesc"></p>
+      </div>
+    </div>
+
+    <button class="nadezhda-final__btn" id="nFinBtn">ПОМНИТЬ</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+  `;
+  return el;
+}
+
+export function playNadezhdaScene12(onDone) {
+  const el = buildNadezhdaFinal();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const bg = el.querySelector("#nFinBg");
+  const desc = el.querySelector("#nFinDesc");
+  const btn = el.querySelector("#nFinBtn");
+
+  stopAllAmbient(0);
+  // Тихий звон (если файла нет, просто не сыграет)
+  playOnce("nadezhda-final-bell", "assets/audio/nadezhda/final-bell.mp3", 0.2);
+
+  // Плавное появление фона (если картинка есть)
+  after(1000, () => {
+    bg.classList.add("is-visible");
+  });
+
+  // Печать текста
+  after(2500, () => {
+    typeText(
+      desc,
+      "Разведчица. Дважды казнена.\nВыжила. Не сказала ни слова.",
+      60,
+      () => {
+        after(2000, () => {
+          btn.classList.add("is-visible");
+        });
+      }
+    );
+  });
+
+  // Клик по кнопке
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+    
+    el.classList.remove("is-active");
+    setTimeout(() => {
+      el.remove();
+      onDone && onDone();
+    }, 2500);
+  }, { once: true });
+}
