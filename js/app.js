@@ -46,7 +46,7 @@ const activeVoices = new Set();
 function playVoiceSmart(baseName, volume = 1.0) {
   if (!soundOn) return null;
 
-  const formats = [".m4a", ".mp3"];
+  const formats = [".m4a", ".mp3", ".wav"];
   let idx = 0;
 
   function tryNext() {
@@ -136,7 +136,6 @@ export function stopAllVoices() {
   });
   activeVoices.clear();
 }
-
 /* ============================================================
    СЦЕНА 0 — ГАЗЕТА (ЗИНА)
    ============================================================ */
@@ -148,7 +147,6 @@ function buildNewspaper() {
       <source src="assets/video/fire/10229380-hd_1920_1080_30fps.mp4" type="video/mp4">
     </video>
     <div class="fire-overlay"></div>
-
     <div class="newspaper">
       <div class="newspaper__spread is-active">
         <img src="assets/images/newspaper/pg-00.jpg" alt="">
@@ -163,7 +161,6 @@ function buildNewspaper() {
         <img src="assets/images/newspaper/pg-05.jpg" alt="">
       </div>
     </div>
-
     <div class="title-bar">
       <div class="title-bar__inner" id="titleInner">
         <p class="title-bar__text" id="titleText"></p>
@@ -244,7 +241,6 @@ function buildRoad() {
     <div class="road-layer road-layer--scene2"           id="roadLayer2"></div>
     <div class="road-grain"></div>
     <div class="road-vignette"></div>
-
     <div class="title-bar">
       <div class="title-bar__inner" id="roadTitleInner">
         <p class="title-bar__text" id="roadTitleText"></p>
@@ -351,12 +347,9 @@ function buildObol() {
     <div class="obol-layer obol-layer--scene2"              id="obolLayer2"></div>
     <div class="obol-layer obol-layer--grandma-closed"      id="obolLayer3"></div>
     <div class="obol-layer obol-layer--grandma-talk"        id="obolLayer4"></div>
-
     <button class="obol-btn" id="obolBtn">ПОГОВОРИТЬ С БАБУШКОЙ</button>
-
     <div class="road-grain"></div>
     <div class="road-vignette"></div>
-
     <div class="title-bar">
       <div class="title-bar__inner" id="obolTitleInner">
         <p class="title-bar__text" id="obolTitleText"></p>
@@ -389,6 +382,7 @@ export function playScene2(onDone) {
       "Оболь оккупировали. Немецкие солдаты. Патрули. Собаки. Люди шли с опущенными глазами.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s2_01", V_MONO); // Добавил звук
   });
 
   after(12000, () => {
@@ -408,6 +402,7 @@ export function playScene2(onDone) {
       "Я осталась не потому, что была смелой. Я просто не могла бросить своих.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s2_02", V_MONO); // Добавил звук
   });
 
   after(21000, () => {
@@ -424,11 +419,11 @@ export function playScene2(onDone) {
     after(1500, () => {
       layer3.classList.remove("is-active");
       layer4.classList.add("is-active");
-
       textEl.classList.remove("is-fading");
       textEl.textContent = "— Зина, уезжай. Ты молодая. Тебя не тронут.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s2_03", V_OTHER); // Добавил звук бабушки
     });
 
     after(7500, () => {
@@ -464,15 +459,14 @@ export function playScene2(onDone) {
         "В 1942 году в Оболи создали подпольную организацию «Юные мстители». Меня приняли в её комитет. Мне было шестнадцать.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s2_07", V_MONO); // Добавил звук
     });
 
     after(34000, () => {
       textEl.classList.remove("is-visible");
       textEl.classList.add("is-fading");
       inner.classList.remove("is-visible");
-
       stopAmbient("village", 800);
-
       el.classList.remove("is-active");
       setTimeout(() => {
         el.remove();
@@ -492,17 +486,12 @@ function buildLeaflet() {
     <div class="leaflet-layer leaflet-layer--empty is-active" id="leafletLayer1"></div>
     <div class="leaflet-layer leaflet-layer--hands"           id="leafletLayer2"></div>
     <div class="leaflet-layer leaflet-layer--done"            id="leafletLayer3"></div>
-
-    <video class="leaflet-video" id="leafletVideo"
-           muted playsinline preload="auto">
+    <video class="leaflet-video" id="leafletVideo" muted playsinline preload="auto">
       <source src="assets/video/leaflet.mp4" type="video/mp4">
     </video>
-
     <button class="leaflet-btn" id="leafletBtn">ПОВЕСИТЬ ЛИСТОВКУ</button>
-
     <div class="road-grain"></div>
     <div class="road-vignette"></div>
-
     <div class="title-bar">
       <div class="title-bar__inner" id="leafletTitleInner">
         <p class="title-bar__text" id="leafletTitleText"></p>
@@ -515,7 +504,6 @@ function buildLeaflet() {
 
 export function playScene3(onDone) {
   stopAllAmbient(500);
-
   const el = buildLeaflet();
   app.appendChild(el);
   void el.offsetWidth;
@@ -530,7 +518,6 @@ export function playScene3(onDone) {
   const textEl = el.querySelector("#leafletTitleText");
 
   let runAudio = null;
-
   function killRun() {
     try {
       stopAmbient("run", 0);
@@ -607,7 +594,6 @@ export function playScene3(onDone) {
   btn.addEventListener("click", () => {
     btn.classList.remove("is-visible");
     btn.classList.add("is-gone");
-
     video.classList.add("is-active");
     video.play().catch((e) => console.warn("Видео не пошло:", e));
 
@@ -616,14 +602,10 @@ export function playScene3(onDone) {
       () => {
         video.classList.remove("is-active");
         video.pause();
-
         stopAmbient("paper", 300);
-
         layer2.classList.remove("is-active");
         layer3.classList.add("is-active");
-
         startAmbient("night3", "assets/audio/night3.mp3", 0.55);
-
         runAudio = playOnce("run", "assets/audio/run.mp3", 0.7);
         after(3500, killRun);
 
@@ -645,7 +627,6 @@ export function playScene3(onDone) {
         after(13000, () => {
           stopAmbient("night3", 800);
           killRun();
-
           el.classList.remove("is-active");
           setTimeout(() => {
             el.remove();
@@ -671,17 +652,12 @@ function buildCanteen() {
     <div class="canteen-layer canteen-layer--pour"           id="canteenPour"></div>
     <div class="canteen-layer canteen-layer--carry"          id="canteenCarry"></div>
     <div class="canteen-layer canteen-layer--eat"            id="canteenEat"></div>
-
-    <video class="canteen-video" id="canteenVideo"
-           muted playsinline preload="auto">
+    <video class="canteen-video" id="canteenVideo" muted playsinline preload="auto">
       <source src="assets/video/canteen.mp4" type="video/mp4">
     </video>
-
     <button class="canteen-btn" id="canteenBtn">ДАЛЕЕ</button>
-
     <div class="road-grain"></div>
     <div class="road-vignette"></div>
-
     <div class="title-bar">
       <div class="title-bar__inner" id="canteenTitleInner">
         <p class="title-bar__text" id="canteenTitleText"></p>
@@ -714,6 +690,7 @@ export function playScene4(onDone) {
       "По заданию подполья я устроилась работать в столовую курсов переподготовки немецких офицеров. Я носила воду. Дрова. Смотрела. Запоминала.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s4_01", V_MONO); // Добавил звук
   });
 
   after(16000, () => {
@@ -737,7 +714,6 @@ export function playScene4(onDone) {
     btn.removeEventListener("click", onOfficerClick);
     btn.classList.remove("is-visible");
     btn.classList.add("is-gone");
-
     officerClosed.classList.remove("is-active");
     officerTalk.classList.add("is-active");
 
@@ -746,12 +722,14 @@ export function playScene4(onDone) {
       textEl.textContent = "— Wasser! Schnell!";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s4_02", V_OTHER); // Добавил звук немца
     });
 
     after(4500, () => {
       officerTalk.classList.remove("is-active");
       officerClosed.classList.add("is-active");
       textEl.textContent = "— Ja.";
+      playVoiceSmart("s4_03", V_MONO); // Добавил звук
     });
 
     after(8000, () => {
@@ -770,6 +748,7 @@ export function playScene4(onDone) {
       textEl.textContent = "А однажды принесла яд.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s4_04", V_MONO); // Добавил звук
     });
 
     after(16000, () => {
@@ -788,10 +767,8 @@ export function playScene4(onDone) {
       btn.removeEventListener("click", onPoisonClick);
       btn.classList.remove("is-visible");
       btn.classList.add("is-gone");
-
       pour.classList.remove("is-active");
       video.classList.add("is-active");
-
       video.currentTime = 0;
       video.play().catch((e) => console.warn("Видео не пошло:", e));
 
@@ -807,7 +784,6 @@ export function playScene4(onDone) {
         () => {
           video.classList.remove("is-active");
           carry.classList.add("is-active");
-
           textEl.classList.remove("is-visible");
           textEl.classList.add("is-fading");
           inner.classList.remove("is-visible");
@@ -818,6 +794,7 @@ export function playScene4(onDone) {
               "Меня заставили попробовать суп. Чтобы доказать, что я не причастна.";
             inner.classList.add("is-visible");
             textEl.classList.add("is-visible");
+            playVoiceSmart("s4_05", V_MONO); // Добавил звук
           });
 
           after(11000, () => {
@@ -836,11 +813,13 @@ export function playScene4(onDone) {
             textEl.textContent = "Я ела. И чудом выжила.";
             inner.classList.add("is-visible");
             textEl.classList.add("is-visible");
+            playVoiceSmart("s4_06", V_MONO); // Добавил звук
           });
 
           after(24000, () => {
             textEl.textContent =
               "Я не считала. Я просто хотела, чтобы это закончилось.";
+            playVoiceSmart("s4_07", V_MONO); // Добавил звук
           });
 
           after(33000, () => {
@@ -860,10 +839,8 @@ export function playScene4(onDone) {
         { once: true },
       );
     };
-
     btn.addEventListener("click", onPoisonClick, { once: true });
   };
-
   btn.addEventListener("click", onOfficerClick, { once: true });
 }
 
@@ -880,12 +857,9 @@ function buildForest() {
     <div class="forest-layer forest-layer--shooting"              id="forestShooting"></div>
     <div class="forest-layer forest-layer--scout"                 id="forestScout"></div>
     <div class="forest-layer forest-layer--grown"                 id="forestGrown"></div>
-
     <button class="forest-btn" id="forestBtn">ПОГОВОРИТЬ С КОМАНДИРОМ</button>
-
     <div class="road-grain"></div>
     <div class="road-vignette"></div>
-
     <div class="title-bar">
       <div class="title-bar__inner" id="forestTitleInner">
         <p class="title-bar__text" id="forestTitleText"></p>
@@ -917,6 +891,7 @@ export function playScene5(onDone) {
       "После этого оставаться в Оболи было опасно. Летом 1943 года меня отправили в партизанский отряд имени Ворошилова.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s5_01", V_MONO); // Добавил звук
   });
 
   after(13000, () => {
@@ -941,41 +916,46 @@ export function playScene5(onDone) {
     after(500, () => {
       commanderClosed.classList.remove("is-active");
       commanderTalk.classList.add("is-active");
-
       textEl.classList.remove("is-fading");
       textEl.textContent = "— Портнова, страшно?";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s5_02", V_OTHER); // Твой файл
     });
 
     after(4500, () => {
       commanderTalk.classList.remove("is-active");
       commanderClosed.classList.add("is-active");
       textEl.textContent = "— Страшно.";
+      playVoiceSmart("s5_03", V_MONO); // Добавил звук
     });
 
     after(7500, () => {
       commanderClosed.classList.remove("is-active");
       commanderTalk.classList.add("is-active");
       textEl.textContent = "— А почему не уходишь?";
+      playVoiceSmart("s5_04", V_OTHER); // Твой файл
     });
 
     after(11500, () => {
       commanderTalk.classList.remove("is-active");
       commanderClosed.classList.add("is-active");
       textEl.textContent = "— Если все уйдут, кто останется?";
+      playVoiceSmart("s5_05", V_MONO); // Добавил звук
     });
 
     after(16000, () => {
       commanderClosed.classList.remove("is-active");
       commanderTalk.classList.add("is-active");
       textEl.textContent = "— Ты ребёнок.";
+      playVoiceSmart("s5_06", V_OTHER); // Добавил звук
     });
 
     after(19500, () => {
       commanderTalk.classList.remove("is-active");
       commanderClosed.classList.add("is-active");
       textEl.textContent = "— Уже нет.";
+      playVoiceSmart("s5_07", V_MONO); // Добавил звук
     });
 
     after(24000, () => {
@@ -990,6 +970,7 @@ export function playScene5(onDone) {
         "В лесу я впервые почувствовала, что я не одна. Что нас много. И что я могу быть нужной.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s5_08", V_MONO); // Добавил звук
     });
 
     after(38000, () => {
@@ -1001,12 +982,12 @@ export function playScene5(onDone) {
     after(40000, () => {
       commanderClosed.classList.remove("is-active");
       shooting.classList.add("is-active");
-
       textEl.classList.remove("is-fading");
       textEl.textContent =
         "С августа 1943 года я — разведчица. Я научилась стрелять.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s5_09", V_MONO); // Добавил звук
     });
 
     after(52000, () => {
@@ -1018,11 +999,11 @@ export function playScene5(onDone) {
     after(54000, () => {
       shooting.classList.remove("is-active");
       scout.classList.add("is-active");
-
       textEl.classList.remove("is-fading");
       textEl.textContent = "Я ходила на задания.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s5_10", V_MONO); // Добавил звук
     });
 
     after(63000, () => {
@@ -1034,11 +1015,11 @@ export function playScene5(onDone) {
     after(65000, () => {
       scout.classList.remove("is-active");
       grown.classList.add("is-active");
-
       textEl.classList.remove("is-fading");
       textEl.textContent = "Я выросла.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s5_11", V_MONO); // Добавил звук
     });
 
     after(72000, () => {
@@ -1071,12 +1052,9 @@ function buildMestishche() {
     <div class="mestishche-layer mestishche-layer--anna-talk"       id="mestAnnaTalk"></div>
     <div class="mestishche-layer mestishche-layer--police"          id="mestPolice"></div>
     <div class="mestishche-layer mestishche-layer--arrest"          id="mestArrest"></div>
-
     <button class="mestishche-btn" id="mestBtn">ОКЛИКНУТЬ АННУ</button>
-
     <div class="road-grain"></div>
     <div class="road-vignette"></div>
-
     <div class="title-bar">
       <div class="title-bar__inner" id="mestTitleInner">
         <p class="title-bar__text" id="mestTitleText"></p>
@@ -1108,6 +1086,7 @@ export function playScene6(onDone) {
       "Декабрь 1943 года. «Юные мстители» были раскрыты. Многие арестованы. Я вызвалась установить связь с оставшимися.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s6_01", V_MONO); // Добавил звук
   });
 
   after(14000, () => {
@@ -1127,6 +1106,7 @@ export function playScene6(onDone) {
       "Я возвращалась с задания. Деревня Мостище. Снег. Тишина. Слишком тихо.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s6_02", V_MONO); // Добавил звук
   });
 
   after(26000, () => {
@@ -1151,11 +1131,11 @@ export function playScene6(onDone) {
     after(500, () => {
       annaClosed.classList.remove("is-active");
       annaTalk.classList.add("is-active");
-
       textEl.classList.remove("is-fading");
       textEl.textContent = "— Вот она! Зина! Это она!";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s6_03", V_OTHER); // Добавил звук
     });
 
     after(5500, () => {
@@ -1166,6 +1146,7 @@ export function playScene6(onDone) {
     after(7000, () => {
       textEl.textContent =
         "Её звали Анна Храповицкая. Местная. Она узнала меня. И выдала.";
+      playVoiceSmart("s6_04", V_MONO); // Добавил звук
     });
 
     after(14000, () => {
@@ -1182,11 +1163,11 @@ export function playScene6(onDone) {
     after(21000, () => {
       police.classList.remove("is-active");
       arrest.classList.add("is-active");
-
       textEl.classList.remove("is-fading");
       textEl.textContent = "Меня схватили.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s6_05", V_MONO); // Добавил звук
     });
 
     after(28000, () => {
@@ -1219,14 +1200,10 @@ function buildInterrog() {
     <div class="interrog-layer interrog-layer--zina-talk"        id="intZinaTalk"></div>
     <div class="interrog-layer interrog-layer--hand-gun"         id="intHandGun"></div>
     <div class="interrog-layer interrog-layer--run"              id="intRun"></div>
-
     <div class="interrog-flash" id="intFlash"></div>
-
     <button class="interrog-btn" id="intBtn">ДАЛЕЕ</button>
-
     <div class="road-grain"></div>
     <div class="road-vignette"></div>
-
     <div class="title-bar">
       <div class="title-bar__inner" id="intTitleInner">
         <p class="title-bar__text" id="intTitleText"></p>
@@ -1283,7 +1260,6 @@ export function playScene7(onDone) {
     btn.removeEventListener("click", onAnswerClick);
     btn.classList.remove("is-visible");
     btn.classList.add("is-gone");
-
     officerClosed.classList.remove("is-active");
     officerTalk.classList.add("is-active");
 
@@ -1330,7 +1306,6 @@ export function playScene7(onDone) {
       zinaTable.classList.remove("is-active");
       zinaTalk.classList.remove("is-active");
       handGun.classList.add("is-active");
-
       textEl.classList.remove("is-fading");
       textEl.textContent = "Только не дрожи. Только не дрожи.";
       inner.classList.add("is-visible");
@@ -1354,7 +1329,6 @@ export function playScene7(onDone) {
       btn.removeEventListener("click", onShootClick);
       btn.classList.remove("is-visible");
       btn.classList.add("is-gone");
-
       flash.classList.add("is-active");
       setTimeout(() => {
         flash.classList.remove("is-active");
@@ -1363,7 +1337,6 @@ export function playScene7(onDone) {
       after(600, () => {
         handGun.classList.remove("is-active");
         run.classList.add("is-active");
-
         textEl.classList.remove("is-fading");
         textEl.textContent = "Я выстрелила. И побежала.";
         inner.classList.add("is-visible");
@@ -1385,10 +1358,8 @@ export function playScene7(onDone) {
         }, 2000);
       });
     };
-
     btn.addEventListener("click", onShootClick, { once: true });
   };
-
   btn.addEventListener("click", onAnswerClick, { once: true });
 }
 
@@ -1406,12 +1377,9 @@ function buildRiver() {
     <div class="river-layer river-layer--swim"          id="rivSwim"></div>
     <div class="river-layer river-layer--grab"          id="rivGrab"></div>
     <div class="river-layer river-layer--caught"        id="rivCaught"></div>
-
     <button class="river-btn" id="riverBtn">БЕЖАТЬ</button>
-
     <div class="road-grain"></div>
     <div class="road-vignette"></div>
-
     <div class="title-bar">
       <div class="title-bar__inner" id="riverTitleInner">
         <p class="title-bar__text" id="riverTitleText"></p>
@@ -1428,6 +1396,8 @@ export function playScene8(onDone) {
   void el.offsetWidth;
   el.classList.add("is-active");
 
+  startAmbient("big-river", "assets/audio/big-river.mp3", 0.25);
+
   const run = el.querySelector("#rivRun");
   const bank = el.querySelector("#rivBank");
   const zina = el.querySelector("#rivZina");
@@ -1443,6 +1413,7 @@ export function playScene8(onDone) {
     textEl.textContent = "Я бежала. Не помню сколько. Ноги несли сами.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s8_01", V_MONO); // Добавил звук
   });
 
   after(10000, () => {
@@ -1461,6 +1432,7 @@ export function playScene8(onDone) {
     textEl.textContent = "Река. За ней — лес. Если переплыву — уйду.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s8_02", V_MONO); // Добавил звук
   });
 
   after(22000, () => {
@@ -1485,11 +1457,11 @@ export function playScene8(onDone) {
     after(500, () => {
       zina.classList.remove("is-active");
       pursuers.classList.add("is-active");
-
       textEl.classList.remove("is-fading");
       textEl.textContent = "Они уже были рядом.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s8_03", V_MONO); // Добавил звук
     });
 
     after(5000, () => {
@@ -1501,11 +1473,11 @@ export function playScene8(onDone) {
     after(6500, () => {
       pursuers.classList.remove("is-active");
       swim.classList.add("is-active");
-
       textEl.classList.remove("is-fading");
       textEl.textContent = "Вода обжигала.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s8_04", V_MONO); // Добавил звук
     });
 
     after(13000, () => {
@@ -1522,17 +1494,16 @@ export function playScene8(onDone) {
     after(19000, () => {
       grab.classList.remove("is-active");
       caught.classList.add("is-active");
-
       textEl.classList.remove("is-fading");
       textEl.textContent =
         "Они вытащили меня. Я не сопротивлялась. Сил не было.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s8_05", V_MONO); // Добавил звук
     });
 
     after(29000, () => {
       stopAmbient("big-river", 600);
-
       textEl.classList.remove("is-visible");
       textEl.classList.add("is-fading");
       inner.classList.remove("is-visible");
@@ -1561,12 +1532,9 @@ function buildPrison() {
     <div class="prison-layer prison-layer--zina"             id="priZina"></div>
     <div class="prison-layer prison-layer--zina-talk"        id="priZinaTalk"></div>
     <div class="prison-layer prison-layer--final"            id="priFinal"></div>
-
     <button class="prison-btn" id="priBtn">ОТВЕЧАТЬ СЛЕДОВАТЕЛЮ</button>
-
     <div class="road-grain"></div>
     <div class="road-vignette"></div>
-
     <div class="title-bar">
       <div class="title-bar__inner" id="priTitleInner">
         <p class="title-bar__text" id="priTitleText"></p>
@@ -1593,11 +1561,18 @@ export function playScene9(onDone) {
   const inner = el.querySelector("#priTitleInner");
   const textEl = el.querySelector("#priTitleText");
 
+  startAmbient(
+    "99_cavern_of_lost_souls",
+    "assets/audio/99_cavern_of_lost_souls.mp3",
+    0.2,
+  );
+
   after(2000, () => {
     textEl.textContent =
       "Меня пытали. Больше месяца. Я поседела. Мне было семнадцать.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s9_01", V_MONO); // Добавил звук
   });
 
   after(12000, () => {
@@ -1622,38 +1597,37 @@ export function playScene9(onDone) {
     after(500, () => {
       officerClosed.classList.remove("is-active");
       officerTalk.classList.add("is-active");
-
       textEl.classList.remove("is-fading");
       textEl.textContent = "— Ты скажешь имена.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s9_01d", V_OTHER); // Твой файл
     });
 
     after(4500, () => {
       officerTalk.classList.remove("is-active");
       zinaTalk.classList.add("is-active");
-
       textEl.textContent = "— Нет.";
+      playVoiceSmart("s9_02", V_MONO); // Добавил звук
     });
 
     after(7500, () => {
       zinaTalk.classList.remove("is-active");
       officerTalk.classList.add("is-active");
-
       textEl.textContent = "— Ты пожалеешь.";
+      playVoiceSmart("s7_02b", V_OTHER); // Твой файл
     });
 
     after(11000, () => {
       officerTalk.classList.remove("is-active");
       zinaTalk.classList.add("is-active");
-
       textEl.textContent = "— Я не скажу.";
+      playVoiceSmart("s9_04", V_MONO); // Добавил звук
     });
 
     after(15000, () => {
       zinaTalk.classList.remove("is-active");
       zina.classList.add("is-active");
-
       textEl.classList.remove("is-visible");
       textEl.classList.add("is-fading");
       inner.classList.remove("is-visible");
@@ -1664,6 +1638,7 @@ export function playScene9(onDone) {
       textEl.textContent = "Я не сказала ничего.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("s9_05", V_MONO); // Добавил звук
     });
 
     after(23000, () => {
@@ -1685,7 +1660,6 @@ export function playScene9(onDone) {
       textEl.classList.remove("is-visible");
       textEl.classList.add("is-fading");
       inner.classList.remove("is-visible");
-
       zina.classList.remove("is-active");
       final.classList.add("is-active");
     });
@@ -1713,23 +1687,19 @@ function buildMorning() {
     <div class="morning-layer morning-layer--convoy"         id="morConvoy"></div>
     <div class="morning-layer morning-layer--feet"           id="morFeet"></div>
     <div class="morning-layer morning-layer--face"           id="morFace"></div>
-
     <div class="road-grain"></div>
     <div class="road-vignette"></div>
-
     <div class="title-bar">
       <div class="title-bar__inner" id="morTitleInner">
         <p class="title-bar__text" id="morTitleText"></p>
         <span class="title-bar__bottom-line"></span>
       </div>
     </div>
-
     <div class="morning-white" id="morWhite">
       <p class="morning-credits" id="morCredits"></p>
       <p class="morning-whisper" id="morWhisper"></p>
       <button class="morning-btn" id="morBtn">ПОМНИТЬ</button>
     </div>
-
     <div class="morning-final" id="morFinal">
       <div class="morning-final__inner">
         <p class="morning-final__p" id="morP1"></p>
@@ -1767,6 +1737,7 @@ export function playScene10(onDone) {
     textEl.textContent = "Утром 13 января 1944 года меня вывели на расстрел.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s10_01", V_MONO); // Добавил звук
   });
 
   after(12000, () => {
@@ -1785,10 +1756,12 @@ export function playScene10(onDone) {
     textEl.textContent = "— Зина, ты вернёшься?";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s10_02", V_OTHER); // Добавил звук
   });
 
   after(20000, () => {
     textEl.textContent = "— Я вернусь, бабушка. Только не вся.";
+    playVoiceSmart("s10_03", V_MONO); // Добавил звук
   });
 
   after(25000, () => {
@@ -1807,6 +1780,7 @@ export function playScene10(onDone) {
     textEl.textContent = "Я шла босая. По снегу. Слепая. Седая.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s10_04", V_MONO); // Добавил звук
   });
 
   after(34000, () => {
@@ -1820,6 +1794,7 @@ export function playScene10(onDone) {
     textEl.textContent = "Не сломленная.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s10_05", V_MONO); // Добавил звук
   });
 
   after(41000, () => {
@@ -1836,16 +1811,15 @@ export function playScene10(onDone) {
   after(47000, () => {
     feet.classList.remove("is-active");
     face.classList.add("is-active");
-
     textEl.classList.remove("is-fading");
     textEl.textContent = "Я не просила. Я не плакала. Я просто шла.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("s10_06", V_MONO); // Добавил звук
   });
 
   after(52000, () => {
     stopAmbient("uzi_45_distant_burst_01", 0);
-
     textEl.classList.remove("is-visible");
     textEl.classList.add("is-fading");
     inner.classList.remove("is-visible");
@@ -1865,11 +1839,9 @@ export function playScene10(onDone) {
           whisper.textContent = "Ей было семнадцать.";
           whisper.classList.add("is-visible");
         });
-
         after(6000, () => {
           whisper.textContent = "Ей было семнадцать.\nМне было семнадцать.";
         });
-
         after(11000, () => {
           btn.classList.add("is-visible");
         });
@@ -1881,7 +1853,6 @@ export function playScene10(onDone) {
     btn.classList.remove("is-visible");
     btn.classList.add("is-gone");
     white.classList.remove("is-active");
-
     finalBox.classList.add("is-visible");
 
     after(500, () => {
@@ -1918,29 +1889,6 @@ export function playScene10(onDone) {
       }, 2000);
     });
   });
-}
-
-/* ============================================================
-   ПЕЧАТАЮЩИЙ ТЕКСТ
-   ============================================================ */
-function typeText(node, fullText, speed, onDone) {
-  node.textContent = "";
-  let i = 0;
-
-  const cursor = document.createElement("span");
-  cursor.className = "cursor";
-  node.appendChild(cursor);
-
-  const timer = setInterval(() => {
-    if (i >= fullText.length) {
-      clearInterval(timer);
-      cursor.remove();
-      onDone && onDone();
-      return;
-    }
-    cursor.insertAdjacentText("beforebegin", fullText[i]);
-    i++;
-  }, speed);
 }
 
 /* ============================================================
@@ -2439,7 +2387,8 @@ export function playLidaScene3(onDone) {
 
   after(24000, () => {
     textEl.classList.remove("is-fading");
-    textEl.textContent = "— Слушайте. Каждому — по два листа.";
+    textEl.textContent =
+      "— Слушайте. Каждому — по два листа. Купить надо в разных местах. Понял, Витя? Ты — на Почтовой. Ты, Таня — на Советской. Никто не должен знать, зачем.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
     playVoice("assets/audio/lida/lida_9.mp3", 1.0);
@@ -2465,7 +2414,8 @@ export function playLidaScene3(onDone) {
 
   after(35000, () => {
     textEl.classList.remove("is-fading");
-    textEl.textContent = "— Потом узнаешь. Главное — сделай. Никому ни слова.";
+    textEl.textContent =
+      "— Потом узнаешь. Главное — сделай. Никому ни слова. Даже маме.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
     playVoice("assets/audio/lida/lida_10.mp3", 1.0);
@@ -2724,7 +2674,7 @@ export function playLidaScene4(onDone) {
     policeYoungTalk.classList.remove("is-active");
     policeOldTalk.classList.add("is-active");
     textEl.textContent = "— А если там уголь? Что тогда?";
-    playVoice("assets/audio/lida/police_5.mp3", 1.0);
+    playVoice("assets/audio/lida/police_оld.mp3", 1.0);
   });
   after(28000, () => {
     textEl.classList.remove("is-visible");
@@ -2743,7 +2693,8 @@ export function playLidaScene4(onDone) {
 
       after(1500, () => {
         textEl.classList.remove("is-fading");
-        textEl.textContent = "— Хотите — берите. Но мамка будет ругаться.";
+        textEl.textContent =
+          "— Хотите — берите. Но мамка будет ругаться. Печку нечем топить";
         inner.classList.add("is-visible");
         textEl.classList.add("is-visible");
         playVoice("assets/audio/lida/lida_17.mp3", 1.0);
@@ -2828,7 +2779,7 @@ export function playLidaScene4(onDone) {
         textEl.textContent = "Взрывчатку она донесла.";
         inner.classList.add("is-visible");
         textEl.classList.add("is-visible");
-        playVoice("assets/audio/lida/voice_13.mp3", 1.0);
+        playVoice("assets/audio/lida/she.mp3", 1.0);
       });
 
       after(11000, () => fade.classList.add("is-active"));
@@ -3284,7 +3235,7 @@ export function playLidaScene6(onDone) {
     mashaClosed.classList.remove("is-active");
     motherGrab.classList.add("is-active");
     textEl.classList.remove("is-fading");
-    textEl.textContent = "— Лида! Ты с ума сошла! Тебя же поймают!";
+    textEl.textContent = "— Лида! Ты с ума сошла!";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
     playVoice("assets/audio/lida/mom_4.mp3", 1.0);
@@ -3485,7 +3436,7 @@ export function playLidaScene7(onDone) {
     textEl.textContent = "Ей было десять. Одна. Но не сдалась.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
-    playVoice("assets/audio/lida/voice_11.mp3", 1.0);
+    playVoice("assets/audio/lida/10.mp3", 1.0);
   });
   after(19000, () => {
     textEl.classList.remove("is-visible");
@@ -3583,7 +3534,7 @@ export function playLidaScene7(onDone) {
       });
       after(19000, () => {
         textEl.textContent = "— Ты же ребёнок! Как ты справишься?";
-        playVoice("assets/audio/lida/voice_13.mp3", 1.0);
+        playVoice("assets/audio/lida/voice_14.mp3", 1.0);
       });
       after(24000, () => {
         textEl.textContent =
@@ -3696,7 +3647,7 @@ export function playLidaScene8(onDone) {
   });
   after(15000, () => {
     textEl.textContent = "Связная партизанского отряда имени Матросова.";
-    playVoice("assets/audio/lida/voice_12.mp3", 1.0);
+    playVoice("assets/audio/lida/voice_13.mp3", 1.0);
   });
   after(21000, () => {
     textEl.textContent = "Разведчица. Подпольщица. Девочка с чёрной сумкой.";
@@ -3717,7 +3668,7 @@ export function playLidaScene8(onDone) {
       "Город жил. Город боролся. Потому что дети не сдавались.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
-    playVoice("assets/audio/lida/city_life.mp3", 1.0);
+    playVoice("assets/audio/lida/city_life1.mp3", 1.0);
   });
   after(37000, () => {
     textEl.classList.remove("is-visible");
@@ -3780,7 +3731,7 @@ export function playLidaScene8(onDone) {
     cmdTalk.classList.remove("is-active");
     lidaTalk.classList.add("is-active");
     textEl.textContent = "— Двенадцать.";
-    playVoice("assets/audio/lida/lida_42.mp3", 1.0);
+    playVoice("assets/audio/lida/12.mp3", 1.0);
   });
   after(78000, () => {
     lidaTalk.classList.remove("is-active");
@@ -3811,7 +3762,7 @@ export function playLidaScene8(onDone) {
   });
   after(96500, () => {
     textEl.textContent = "— Правда.";
-    playVoice("assets/audio/lida/lida_40.mp3", 1.0);
+    playVoice("assets/audio/lida/true.mp3", 1.0);
   });
   after(98500, () => {
     textEl.textContent = "— Мне говорили, ты с десяти лет в подполье.";
@@ -3979,7 +3930,7 @@ export function playLidaScene9(onDone) {
     textEl.textContent = "— Лида… Ты жива…";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
-    playVoice("assets/audio/lida/mom_6.mp3", 1.0);
+    playVoice("assets/audio/lida/mom_7.mp3", 1.0);
   });
   after(64000, () => {
     textEl.textContent = "— Жива, мама. Жива.";
@@ -3998,14 +3949,11 @@ export function playLidaScene9(onDone) {
     motherOld.classList.remove("is-active");
     hug.classList.add("is-active");
     textEl.textContent = "— Как ты выжила? Как?";
-    playVoice("assets/audio/lida/mom_6.mp3", 1.0);
+    playVoice("assets/audio/lida/mom_8.mp3", 1.0);
   });
   after(85000, () => {
     textEl.textContent = "— Я просто шла. Каждый день. И не оглядывалась.";
-    playVoice(
-      "assets/audio/lida/Я_просто_шла_и_не_оглядывалась_каждый.mp3",
-      1.0,
-    );
+    playVoice("assets/audio/lida/iw.mp3", 1.0);
   });
   after(93000, () => {
     textEl.classList.remove("is-visible");
@@ -4168,7 +4116,7 @@ export function playLidaScene10(onDone) {
   });
   after(66000, () => {
     textEl.textContent = "— А зачем?";
-    playVoice("assets/audio/lida/lida_60.mp3", 1.0);
+    playVoice("assets/audio/lida/AndWhy.mp3", 1.0);
   });
   after(69000, () => {
     textEl.textContent = "— Вы же герой. Дети должны знать.";
