@@ -23,6 +23,18 @@ import {
   playLidaScene9,
   playLidaScene10,
   playNadezhdaScene0,
+  playNadezhdaScene1,  
+  playNadezhdaScene2,
+  playNadezhdaScene3,
+  playNadezhdaScene4,
+  playNadezhdaScene5,
+  playNadezhdaScene6,
+  playNadezhdaScene7,
+  playNadezhdaScene8,
+  playNadezhdaScene9,
+  playNadezhdaScene10,
+  playNadezhdaScene11,
+  playNadezhdaScene12,
 } from "./app.js";
 import { initMenu, backToMenu } from "./menu.js";
 
@@ -87,8 +99,31 @@ function startLidaStory() {
 }
 function startNadezhdaStory() {
   playNadezhdaScene0(() => {
-    // дальше — playNadezhdaScene1 и т.д.
-    backToMenu();
+    playNadezhdaScene1(() => {
+      playNadezhdaScene2(() => {       // ← сцена 2 «Витебск. Подвал»
+        playNadezhdaScene3(() => {     // ← сцена 3 «Партизанский отряд»
+          playNadezhdaScene4(() => {     // ← добавить
+            playNadezhdaScene5(() => {     // ← добавить
+              playNadezhdaScene6(() => {
+                playNadezhdaScene7(() => {
+                  playNadezhdaScene8(() => {
+                    playNadezhdaScene9(() => {
+                      playNadezhdaScene10(() => {
+                        playNadezhdaScene11(() => {
+                          playNadezhdaScene12(() => {
+                            backToMenu(); // Финал! Возврат в меню
+                          });
+                        });
+                     });
+                    });
+                  });
+                });
+              });
+            });
+          });
+        });
+      });
+    });
   });
 }
 /* ============================================================
