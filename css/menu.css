@@ -542,6 +542,44 @@
    МОБИЛЬНАЯ ВЕРСИЯ
    ============================================================ */
 @media (max-width: 700px) {
+  .menu__grid {
+    grid-template-columns: 1fr;
+    gap: 3vh;
+    padding: 4vh 6vw;
+  }
+
+  /* Делаем ВСЕ карточки на телефоне широкими и одинаковыми */
+  .menu__grid > .card {
+    width: 100%;
+    max-width: 100%;
+    justify-self: stretch;
+  }
+
+  /* Сбрасываем центрирование и старую ширину для 3-й карточки */
+  .menu__grid > .card:nth-child(3) {
+    grid-column: auto;       /* Убираем растягивание на 2 колонки */
+    justify-self: stretch;   /* Растягиваем по ширине */
+    width: 100%;             /* Занимает всю ширину */
+    max-width: 100%;
+  }
+
+  .intro__title { white-space: normal; }
+  .story-start__word {
+    font-size: clamp(2rem, 12vw, 3.5rem);
+    letter-spacing: 0.7em;
+    text-indent: 0.7em;
+  }
+  .story-start__btn { padding: 14px 40px; margin-top: 6vh; }
+  .exit-btn {
+    top: 2vh;
+    right: 4vw;
+    padding: 8px 16px;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-indent: 0.25em;
+  }
+
+  /* Панель "О проекте" */
   .about-panel {
     position: fixed;
     top: 14vh;
@@ -552,9 +590,7 @@
     max-width: none;
     padding: 3vh 5vw;
   }
-
   .about-panel__list { gap: 1vh; }
-
   .about-item__tip {
     position: static;
     left: auto;
@@ -566,10 +602,6 @@
   .about-item:hover .about-item__tip,
   .about-item.is-open .about-item__tip {
     transform: translateY(0);
-  }
-    .menu__grid > .card:nth-child(3) { 
-    width: min(70vw, 320px);
-    max-width: none;
   }
 }
 /* Чтобы длинные почты переносились на новую строку, а не вылезали за рамки */
