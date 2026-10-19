@@ -2501,14 +2501,13 @@ export function playLidaScene3(onDone) {
 
   after(80500, () => btn.classList.add("is-visible"));
 
-  btn.addEventListener("click", () => {
+ btn.addEventListener("click", () => {
     btn.classList.remove("is-visible");
     btn.classList.add("is-gone");
     motherClosed.classList.remove("is-active");
     motherTalk.classList.remove("is-active");
     hands.classList.add("is-active");
 
-    // 👇 ЗДЕСЬ ЗВУЧИТ "БУДЬ ОСТОРОЖНА" И "Я ВСЕГДА ОСТОРОЖНА" (ЕДИНСТВЕННЫЙ РАЗ)
     after(1500, () => {
       textEl.classList.remove("is-fading");
       textEl.textContent = "— Будь осторожна.";
@@ -2516,6 +2515,7 @@ export function playLidaScene3(onDone) {
       textEl.classList.add("is-visible");
       playVoice("assets/audio/lida/mom_3.mp3", 1.0);
     });
+    
     after(5500, () => {
       textEl.textContent = "— Я всегда осторожна.";
       playVoice("assets/audio/lida/lida_14.mp3", 1.0);
@@ -2549,7 +2549,9 @@ export function playLidaScene3(onDone) {
       });
     };
     btn.addEventListener("click", onLeaveClick, { once: true });
-  });
+    
+  }, { once: true }); // 👈 ВОТ ЭТА ПРИПИСКА РЕШИТ ПРОБЛЕМУ
+  
 }
 
 /* ============================================================

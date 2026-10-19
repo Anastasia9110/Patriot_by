@@ -73,10 +73,10 @@ function startZinaStory() {
    ЗАПУСК ИСТОРИИ «ЛИДА»
    ============================================================ */
 function startLidaStory() {
-  playLidaScene0(() => {
-    playLidaScene1(() => {
-      playLidaScene2(() => {
-        playLidaScene3(() => {
+  // playLidaScene0(() => {
+  //   playLidaScene1(() => {
+  //     playLidaScene2(() => {
+        // playLidaScene3(() => {
           playLidaScene4(() => {
             playLidaScene5(() => {     // ← добавить
               playLidaScene6(() => {     // ← добавить
@@ -92,10 +92,10 @@ function startLidaStory() {
               });
             });
           });
-        });
-      });
-    });
-  });
+        // });
+  //     });
+  //   });
+  // });
 }
 function startNadezhdaStory() {
   playNadezhdaScene0(() => {
