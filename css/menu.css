@@ -567,6 +567,10 @@
   .about-item.is-open .about-item__tip {
     transform: translateY(0);
   }
+    .menu__grid > .card:nth-child(3) {
+    width: min(70vw, 320px);
+    max-width: none;
+  }
 }
 /* Чтобы длинные почты переносились на новую строку, а не вылезали за рамки */
 .about-item__tip p {
