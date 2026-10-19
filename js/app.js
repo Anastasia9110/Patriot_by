@@ -4122,6 +4122,7 @@ export function playLidaScene10(onDone) {
     textEl.textContent = "— Ничего. Просто… помните. Это всё, что нужно.";
     playVoice("assets/audio/lida/lida_61.mp3", 1.0);
   });
+  // 1. Убираем диалог и показываем финальный экран
   after(98000, () => {
     textEl.classList.remove("is-visible");
     textEl.classList.add("is-fading");
@@ -4131,10 +4132,10 @@ export function playLidaScene10(onDone) {
   after(101000, () => {
     colleague.classList.remove("is-active");
     white.classList.add("is-active");
-    portrait.classList.add("is-visible");
   });
 
-  after(104000, () => {
+  // 2. Печатаем имя и регалии
+  after(103000, () => {
     typeText(
       credits,
       "Лидия Михайловна Вашкевич.\n1932–2023.\nПионер-герой. Связная. Учительница.",
@@ -4145,54 +4146,54 @@ export function playLidaScene10(onDone) {
           whisper.classList.add("is-visible");
         });
         after(6000, () => {
-          whisper.textContent =
-            "Ей было десять, когда она начала бороться.\nЕй было тринадцать, когда война закончилась.";
+          whisper.textContent = "Ей было десять, когда она начала бороться.\nЕй было тринадцать, когда война закончилась.";
         });
-        after(12000, () => btn.classList.add("is-visible"));
-      },
+        after(11000, () => {
+          btn.textContent = "ПОМНИТЬ"; // Меняем текст кнопки
+          btn.classList.add("is-visible");
+        });
+      }
     );
   });
 
-  btn.addEventListener(
-    "click",
-    () => {
-      btn.classList.remove("is-visible");
-      btn.classList.add("is-gone");
-      white.classList.remove("is-active");
-      finalBox.classList.add("is-visible");
+  // 3. Клик по кнопке и показ трёх абзацев
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+    white.classList.remove("is-active");
+    finalBox.classList.add("is-visible");
 
-      after(500, () => {
-        p1.textContent =
-          "История Лиды Вашкевич — это история о девочке, которая не испугалась. О чёрной сумке, которую она пронесла через всю войну. О памяти, которую она сохранила для нас.";
-        p1.classList.add("is-visible");
-        playVoice("assets/audio/lida/история_лиды_вашкевич.mp3", 1.0);
-      });
-      after(12000, () => {
-        p2.textContent =
-          "Я — Лида. Лидия Михайловна Вашкевич. Пионер-герой. Связная. Учительница.";
-        p2.classList.add("is-visible");
-      });
-      after(21000, () => {
-        p3.textContent = "Я не жалею. Я была счастлива.";
-        p3.classList.add("is-visible");
-      });
+    after(500, () => {
+      p1.textContent = "История Лиды Вашкевич — это история о девочке, которая не испугалась. О чёрной сумке, которую она пронесла через всю войну. О памяти, которую она сохранила для нас.";
+      p1.classList.add("is-visible");
+      playVoice("assets/audio/lida/история_лиды_вашкевич.mp3", 1.0);
+    });
 
-      after(30000, () => {
-        finalBox.style.transition = "opacity 4s ease";
-        finalBox.style.opacity = "0";
-      });
-      after(35000, () => {
-        stopAllAmbient(1200);
-        stopAllVoices();
-        el.classList.remove("is-active");
-        setTimeout(() => {
-          el.remove();
-          onDone && onDone();
-        }, 2000);
-      });
-    },
-    { once: true },
-  );
+    after(12000, () => {
+      p2.textContent = "Я — Лида. Лидия Михайловна Вашкевич. Пионер-герой. Связная. Учительница.";
+      p2.classList.add("is-visible");
+    });
+
+    after(21000, () => {
+      p3.textContent = "Я не жалею. Я была счастлива.";
+      p3.classList.add("is-visible");
+    });
+
+    after(30000, () => {
+      finalBox.style.transition = "opacity 4s ease";
+      finalBox.style.opacity = "0";
+    });
+
+    after(35000, () => {
+      stopAllAmbient(1200);
+      stopAllVoices();
+      el.classList.remove("is-active");
+      setTimeout(() => {
+        el.remove();
+        onDone && onDone();
+      }, 2000);
+    });
+  }, { once: true });
 }
 
 /* ============================================================
@@ -6130,4 +6131,27 @@ export function playNadezhdaScene12(onDone) {
     },
     { once: true },
   );
+}
+/* ============================================================
+   ПЕЧАТАЮЩИЙ ТЕКСТ
+   ============================================================ */
+function typeText(node, fullText, speed, onDone) {
+  if (!node) return;
+  node.textContent = "";
+  let i = 0;
+
+  const cursor = document.createElement("span");
+  cursor.className = "cursor";
+  node.appendChild(cursor);
+
+  const timer = setInterval(() => {
+    if (i >= fullText.length) {
+      clearInterval(timer);
+      cursor.remove();
+      onDone && onDone();
+      return;
+    }
+    cursor.insertAdjacentText("beforebegin", fullText[i]);
+    i++;
+  }, speed);
 }

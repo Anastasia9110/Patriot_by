@@ -2129,7 +2129,7 @@ body {
 .lida-morning__white {
   position: absolute;
   inset: 0;
-  z-index: 10;
+  z-index: 20;
   background: #fff;
   opacity: 0;
   transition: opacity 2s ease;
@@ -2148,7 +2148,7 @@ body {
 
 /* Портрет */
 .lida-morning__portrait {
-  display: none;
+  display: none !important;
 }
 .lida-morning__portrait.is-visible { opacity: 1; }
 
@@ -2163,6 +2163,7 @@ body {
   min-height: 4em;
   margin-bottom: 6vh;
   white-space: pre-wrap;
+  text-align: center;
 }
 .lida-morning__credits .cursor {
   display: inline-block;
@@ -2189,7 +2190,6 @@ body {
 }
 .lida-morning__whisper.is-visible { opacity: 0.85; }
 
-/* Кнопка «ЗАКОНЧИТЬ ИСТОРИЮ» */
 .lida-morning__btn {
   padding: 18px 60px;
   border: 1px solid rgba(0, 0, 0, 0.65);
@@ -2204,16 +2204,9 @@ body {
   transition: opacity 1.5s ease, background 0.3s ease, color 0.3s ease;
   pointer-events: none;
 }
-.lida-morning__btn.is-visible {
-  opacity: 0.85;
-  pointer-events: auto;
-}
-.lida-morning__btn:hover {
-  opacity: 1;
-  background: #111;
-  color: #fff;
-}
-
+.lida-morning__btn.is-visible { opacity: 0.85; pointer-events: auto; }
+.lida-morning__btn:hover { opacity: 1; background: #111; color: #fff; }
+.lida-morning__btn.is-gone { opacity: 0; pointer-events: none; }
 /* Финальный монолог */
 .lida-morning__final {
   position: absolute;
