@@ -565,9 +565,12 @@
 
   .intro__title { white-space: normal; }
   .story-start__word {
-    font-size: clamp(2rem, 12vw, 3.5rem);
-    letter-spacing: 0.7em;
-    text-indent: 0.7em;
+    font-size: clamp(1.8rem, 8vw, 2.8rem); /* Уменьшили размер */
+    letter-spacing: 0.25em;                /* Уменьшили отступы между буквами */
+    text-indent: 0.25em;
+    white-space: normal;                   /* Разрешили перенос, если вдруг не влезет */
+    text-align: center;
+    padding: 0 10px;
   }
   .story-start__btn { padding: 14px 40px; margin-top: 6vh; }
   .exit-btn {
