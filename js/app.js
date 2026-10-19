@@ -4300,29 +4300,30 @@ export function playNadezhdaScene1(onDone) {
   stopAllAmbient(0);
   stopAllVoices();
 
-  startAmbient("train-wheels", "assets/audio/nadezhda/train-wheels.mp3", 0.35);
+  // Звук поезда и самолетов сделан значительно тише
+  startAmbient("train-wheels", "assets/audio/nadezhda/train-wheels.mp3", 0.12);
   startAmbient(
     "planes-distant",
     "assets/audio/nadezhda/planes-distant.mp3",
-    0.15,
+    0.06,
   );
 
+  // --- Блок 1: Воспоминание ---
   after(2000, () => {
     textEl.textContent = "Мне было десять.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
-    playVoiceSmart("nadezhda/01_1", V_MONO); // Ищет .m4a
+    playVoiceSmart("nadezhda/01_1", V_MONO);
   });
+
   after(6500, () => {
     textEl.classList.remove("is-visible");
     textEl.classList.add("is-fading");
-    inner.classList.remove("is-visible");
   });
 
-  after(8000, () => {
+  after(7500, () => {
     textEl.classList.remove("is-fading");
     textEl.textContent = "Детский дом в Могилёве. Нас эвакуировали.";
-    inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
     playVoiceSmart("nadezhda/01_2", V_MONO);
   });
@@ -4332,76 +4333,92 @@ export function playNadezhdaScene1(onDone) {
     trainWindows.classList.add("is-active");
   });
 
-  after(15000, () => {
+  after(12500, () => {
     textEl.classList.remove("is-visible");
     textEl.classList.add("is-fading");
-    inner.classList.remove("is-visible");
   });
 
-  after(16500, () => {
+  after(14000, () => {
     textEl.classList.remove("is-fading");
-    textEl.textContent = "За Смоленском поезд разбомбили.";
-    inner.classList.add("is-visible");
+    textEl.textContent = "В вагоне было тесно и душно. Все молчали.";
     textEl.classList.add("is-visible");
     playVoiceSmart("nadezhda/01_3", V_MONO);
   });
-  after(21500, () => {
+
+  after(18500, () => {
+    textEl.textContent = "За Смоленском поезд разбомбили.";
+    playVoiceSmart("nadezhda/01_4", V_MONO);
+  });
+
+  after(24000, () => {
     textEl.classList.remove("is-visible");
     textEl.classList.add("is-fading");
     inner.classList.remove("is-visible");
   });
 
-  after(23000, () => {
+  // --- Блок 2: Бомбежка ---
+  after(25500, () => {
     flash.classList.add("is-active");
-    playOnce("explosion", "assets/audio/nadezhda/explosion.mp3", 0.9);
-    stopAmbient("train-wheels", 200);
-    stopAmbient("planes-distant", 200);
+    playOnce("explosion", "assets/audio/nadezhda/explosion.mp3", 0.8);
+
+    // Резко обрываем тихие фоновые звуки
+    stopAmbient("train-wheels", 150);
+    stopAmbient("planes-distant", 150);
+
     trainWindows.classList.remove("is-active");
     bombing.classList.add("is-active");
   });
 
-  after(23400, () => {
+  after(26000, () => {
     flash.classList.remove("is-active");
   });
 
-  after(25000, () => {
+  after(27000, () => {
     textEl.classList.remove("is-fading");
     textEl.textContent = "Я не помню, как выжила.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
-    playVoiceSmart("nadezhda/01_4", V_MONO);
+    playVoiceSmart("nadezhda/01_5", V_MONO);
   });
-  after(29500, () => {
+
+  after(32000, () => {
     textEl.classList.remove("is-visible");
     textEl.classList.add("is-fading");
     inner.classList.remove("is-visible");
   });
 
-  after(31000, () => {
+  // --- Блок 3: Тишина ---
+  after(33500, () => {
     bombing.classList.remove("is-active");
     alone.classList.add("is-active");
-    startAmbient("aftermath", "assets/audio/nadezhda/aftermath.mp3", 0.2);
+    startAmbient("aftermath", "assets/audio/nadezhda/aftermath.mp3", 0.15);
   });
 
-  after(32500, () => {
+  after(35000, () => {
     textEl.classList.remove("is-fading");
     textEl.textContent = "Помню только — стало тихо. И я одна.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
-    playVoiceSmart("nadezhda/01_5", V_MONO);
+    playVoiceSmart("nadezhda/01_6", V_MONO);
   });
-  after(40000, () => {
+
+  after(41000, () => {
+    textEl.textContent = "Совсем одна.";
+    playVoiceSmart("nadezhda/01_7", V_MONO);
+  });
+
+  after(45000, () => {
     textEl.classList.remove("is-visible");
     textEl.classList.add("is-fading");
     inner.classList.remove("is-visible");
   });
 
-  after(43000, () => {
+  after(48000, () => {
     fade.classList.add("is-active");
   });
 
-  after(46000, () => {
-    stopAllAmbient(800);
+  after(51000, () => {
+    stopAllAmbient(1000);
     stopAllVoices();
     el.classList.remove("is-active");
     setTimeout(() => {
@@ -4410,7 +4427,6 @@ export function playNadezhdaScene1(onDone) {
     }, 1500);
   });
 }
-
 /* ============================================================
    НАДЕЖДА — СЦЕНА 2. ВИТЕБСК. ПОДВАЛ
    ============================================================ */
