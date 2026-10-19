@@ -156,6 +156,13 @@
   justify-items: start; /* Изменено с center на start, чтобы карточки прижимались к левому краю своих колонок */
   align-items: start;
 }
+/* Центрируем третью карточку (Надежда) */
+.menu__grid > .card:nth-child(3) {
+  grid-column: 1 / -1;         /* Заставляет карточку занять всю ширину сетки */
+  justify-self: center;        /* Ставит её ровно по центру */
+  width: calc(50% - 2vw);      /* Делает её точно такого же размера, как верхние */
+  max-width: 400px;            /* Ограничение, чтобы на огромных экранах не была гигантской */
+}
 
 
 
@@ -560,4 +567,21 @@
   .about-item.is-open .about-item__tip {
     transform: translateY(0);
   }
+    .menu__grid > .card:nth-child(3) {
+    width: min(70vw, 320px);
+    max-width: none;
+  }
+}
+/* Чтобы длинные почты переносились на новую строку, а не вылезали за рамки */
+.about-item__tip p {
+  word-wrap: break-word;       /* Перенос длинных слов */
+  overflow-wrap: break-word;
+}
+.about-item__tip a {
+  color: #b11226;              /* Цвет ссылок как у акцентов */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.about-item__tip a:hover {
+  color: #fff;                 /* Подсветка при наведении */
 }
