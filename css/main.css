@@ -473,7 +473,6 @@ body {
     radial-gradient(ellipse at 35% 80%, rgba(20, 18, 15, 0.9) 0%, transparent 60%),
     linear-gradient(180deg,
       rgba(14, 12, 10, 0.82) 0%, rgba(22, 20, 17, 0.72) 50%, rgba(10, 10, 10, 0.85) 100%);
-  filter: blur(0.8px);
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 120' preserveAspectRatio='none'%3E%3Cpath d='M6,8 L70,3 L150,10 L250,4 L340,11 L450,3 L550,8 L670,2 L760,9 L860,4 L940,11 L985,5 L997,7 L998,48 L993,62 L996,95 L990,117 L905,113 L800,118 L695,112 L590,117 L480,113 L370,118 L265,112 L170,117 L80,113 L10,117 L4,92 L7,62 L2,32 Z' fill='white'/%3E%3C/svg%3E");
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 120' preserveAspectRatio='none'%3E%3Cpath d='M6,8 L70,3 L150,10 L250,4 L340,11 L450,3 L550,8 L670,2 L760,9 L860,4 L940,11 L985,5 L997,7 L998,48 L993,62 L996,95 L990,117 L905,113 L800,118 L695,112 L590,117 L480,113 L370,118 L265,112 L170,117 L80,113 L10,117 L4,92 L7,62 L2,32 Z' fill='white'/%3E%3C/svg%3E");
   -webkit-mask-size: 100% 100%;
@@ -544,7 +543,6 @@ body {
     0 0 12px rgba(0, 0, 0, 0.95),
     0 0 4px rgba(0, 0, 0, 1),
     0 1px 1px rgba(0, 0, 0, 0.85);
-  filter: blur(0.35px);
   opacity: 0;
   transform: translateY(6px);
   transition: opacity 1.6s ease, transform 1.6s ease;
@@ -3096,4 +3094,14 @@ body {
   .nadezhda-final__name { font-size: 1.8rem; }
   .nadezhda-final__desc { font-size: 1rem; }
   .nadezhda-final__btn { margin-top: 5vh; padding: 14px 40px; }
+}
+/* ============================================================
+   ФИНАЛЬНОЕ ИСПРАВЛЕНИЕ ЧЕТКОСТИ ТЕКСТА
+   ============================================================ */
+.title-bar__text, 
+.title-bar__inner {
+  filter: none !important;
+  -webkit-filter: none !important;
+  -webkit-font-smoothing: antialiased !important;
+  text-rendering: optimizeLegibility !important;
 }
