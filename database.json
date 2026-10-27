@@ -1,0 +1,28 @@
+{
+  "stories": [
+    {
+      "id": "zina",
+      "name": "ЗИНА ПОРТНОВА",
+      "years": "1926–1944",
+      "image": "assets/images/menu/card-zina.jpg"
+    },
+    {
+      "id": "lida",
+      "name": "ЛИДА ВАШКЕВИЧ",
+      "years": "1932–2023",
+      "image": "assets/images/menu/card-lida.jpg"
+    },
+    {
+      "id": "nadezhda",
+      "name": "НАДЕЖДА БОГДАНОВА",
+      "years": "1931–1991",
+      "image": "assets/images/menu/card-nadezhda.jpg"
+    },
+    {
+      "id": "marat",
+      "name": "МАРАТ КАЗЕЙ",
+      "years": "1929–1944",
+      "image": "assets/images/menu/card-marat.jpg"
+    }
+  ]
+}

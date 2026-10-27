@@ -35,6 +35,13 @@ import {
   playNadezhdaScene10,
   playNadezhdaScene11,
   playNadezhdaScene12,
+  playMaratScene0,
+  // playMaratScene2,
+  // playMaratScene3,
+  // playMaratScene4,
+  // playMaratScene5,
+  // playMaratScene6,
+  // playMaratScene7,
 } from "./app.js";
 import { initMenu, backToMenu } from "./menu.js";
 
@@ -43,19 +50,17 @@ import { initMenu, backToMenu } from "./menu.js";
    ============================================================ */
 function startZinaStory() {
   runPreloader(() => {
-    playScene0(() => {
-      playScene1(() => {
-        playScene2(() => {
-          playScene3(() => {
-            playScene4(() => {
-              playScene5(() => {
-                playScene6(() => {
-                  playScene7(() => {
-                    playScene8(() => {
-                      playScene9(() => {
-                        playScene10(() => {
+    playScene1(() => {
+      playScene2(() => {
+        playScene3(() => {
+          playScene4(() => {
+            playScene5(() => {
+              playScene6(() => {
+                playScene7(() => {
+                  playScene8(() => {
+                    playScene9(() => {
+                      playScene10(() => {
 
-                        });
                       });
                     });
                   });
@@ -126,6 +131,26 @@ function startNadezhdaStory() {
     });
   });
 }
+
+function startMaratStory() {
+  playMaratScene0(() => {
+//     playMaratScene1(() => {
+//       playMaratScene2(() => {
+//         playMaratScene3(() => {
+//           playMaratScene4(() => {
+//             playMaratScene5(() => {
+//               playMaratScene6(() => {
+//                 playMaratScene7(() => {
+//                   backToMenu(); // Возврат в меню
+//                 });
+//               });
+//             });
+//           });
+//         });
+//       });
+//     });
+  });
+}
 /* ============================================================
    ИНИЦИАЛИЗАЦИЯ МЕНЮ
    ============================================================ */
@@ -133,4 +158,5 @@ initMenu((story) => {
   if (story === "zina") startZinaStory();
   if (story === "lida") startLidaStory();
   if (story === "nadezhda") startNadezhdaStory();
+  if (story === "marat") startMaratStory();
 });

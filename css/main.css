@@ -473,7 +473,6 @@ body {
     radial-gradient(ellipse at 35% 80%, rgba(20, 18, 15, 0.9) 0%, transparent 60%),
     linear-gradient(180deg,
       rgba(14, 12, 10, 0.82) 0%, rgba(22, 20, 17, 0.72) 50%, rgba(10, 10, 10, 0.85) 100%);
-  filter: blur(0.8px);
   -webkit-mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 120' preserveAspectRatio='none'%3E%3Cpath d='M6,8 L70,3 L150,10 L250,4 L340,11 L450,3 L550,8 L670,2 L760,9 L860,4 L940,11 L985,5 L997,7 L998,48 L993,62 L996,95 L990,117 L905,113 L800,118 L695,112 L590,117 L480,113 L370,118 L265,112 L170,117 L80,113 L10,117 L4,92 L7,62 L2,32 Z' fill='white'/%3E%3C/svg%3E");
   mask-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 120' preserveAspectRatio='none'%3E%3Cpath d='M6,8 L70,3 L150,10 L250,4 L340,11 L450,3 L550,8 L670,2 L760,9 L860,4 L940,11 L985,5 L997,7 L998,48 L993,62 L996,95 L990,117 L905,113 L800,118 L695,112 L590,117 L480,113 L370,118 L265,112 L170,117 L80,113 L10,117 L4,92 L7,62 L2,32 Z' fill='white'/%3E%3C/svg%3E");
   -webkit-mask-size: 100% 100%;
@@ -544,7 +543,6 @@ body {
     0 0 12px rgba(0, 0, 0, 0.95),
     0 0 4px rgba(0, 0, 0, 1),
     0 1px 1px rgba(0, 0, 0, 0.85);
-  filter: blur(0.35px);
   opacity: 0;
   transform: translateY(6px);
   transition: opacity 1.6s ease, transform 1.6s ease;
@@ -2129,7 +2127,7 @@ body {
 .lida-morning__white {
   position: absolute;
   inset: 0;
-  z-index: 10;
+  z-index: 20;
   background: #fff;
   opacity: 0;
   transition: opacity 2s ease;
@@ -2148,7 +2146,7 @@ body {
 
 /* Портрет */
 .lida-morning__portrait {
-  display: none;
+  display: none !important;
 }
 .lida-morning__portrait.is-visible { opacity: 1; }
 
@@ -2163,6 +2161,7 @@ body {
   min-height: 4em;
   margin-bottom: 6vh;
   white-space: pre-wrap;
+  text-align: center;
 }
 .lida-morning__credits .cursor {
   display: inline-block;
@@ -2189,7 +2188,6 @@ body {
 }
 .lida-morning__whisper.is-visible { opacity: 0.85; }
 
-/* Кнопка «ЗАКОНЧИТЬ ИСТОРИЮ» */
 .lida-morning__btn {
   padding: 18px 60px;
   border: 1px solid rgba(0, 0, 0, 0.65);
@@ -2204,16 +2202,9 @@ body {
   transition: opacity 1.5s ease, background 0.3s ease, color 0.3s ease;
   pointer-events: none;
 }
-.lida-morning__btn.is-visible {
-  opacity: 0.85;
-  pointer-events: auto;
-}
-.lida-morning__btn:hover {
-  opacity: 1;
-  background: #111;
-  color: #fff;
-}
-
+.lida-morning__btn.is-visible { opacity: 0.85; pointer-events: auto; }
+.lida-morning__btn:hover { opacity: 1; background: #111; color: #fff; }
+.lida-morning__btn.is-gone { opacity: 0; pointer-events: none; }
 /* Финальный монолог */
 .lida-morning__final {
   position: absolute;
@@ -3098,9 +3089,147 @@ body {
 .nadezhda-final__btn.is-visible { opacity: 0.85; pointer-events: auto; }
 .nadezhda-final__btn:hover { opacity: 1; background: #fff; color: #000; border-color: #fff; }
 .nadezhda-final__btn.is-gone { opacity: 0; pointer-events: none; }
+/* ============================================================
+   МАРАТ — СЦЕНА 0. ЧЁРНЫЙ. ИМЯ.
+   ============================================================ */
+.scene--marat-intro {
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Звезда (сделана через SVG в фоне, чтобы не грузить картинку) */
+.marat-intro__star {
+  position: absolute;
+  top: 65%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: clamp(80px, 15vw, 120px);
+  height: clamp(80px, 15vw, 120px);
+  background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>') no-repeat center;
+  background-size: contain;
+  opacity: 0;
+  transition: opacity 3s ease;
+  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+}
+.marat-intro__star.is-visible {
+  opacity: 1;
+}
+
+/* Буквы */
+.marat-intro__word {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  gap: 0.5em;
+  z-index: 2;
+}
+.marat-intro__word span {
+  font-family: "Special Elite", "Neucha", serif;
+  font-size: clamp(3rem, 8vw, 7rem);
+  color: #fff;
+  text-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+.marat-intro__word span.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Затемнение */
+.marat-intro__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 10;
+  pointer-events: none;
+  transition: opacity 2.5s ease;
+}
+.marat-intro__fade.is-active {
+  opacity: 1;
+}
+/* ============================================================
+   МАРАТ — СЦЕНА 1. ДОМ. ВОЙНА
+   ============================================================ */
+.scene--marat-home {
+  background: #000;
+  display: block;
+}
+
+.marat-home__layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.75) contrast(1.15);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 2.5s ease;
+  will-change: opacity;
+}
+.marat-home__layer.is-active { opacity: 1; }
+
+.marat-home__layer--summer { background-image: url("../assets/images/marat/scene01-summer.jpg"); }
+.marat-home__layer--sky    { background-image: url("../assets/images/marat/scene01-sky.jpg"); }
+.marat-home__layer--panic  { background-image: url("../assets/images/marat/scene01-panic.jpg"); }
+.marat-home__layer--winter { background-image: url("../assets/images/marat/scene01-winter-ruins.jpg"); }
+.marat-home__layer--hang   { background-image: url("../assets/images/marat/scene01-mother-hang.jpg"); filter: grayscale(1) brightness(0.5) contrast(1.3); }
+
+.marat-home__flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+.marat-home__flash.is-active { opacity: 1; }
+
+.marat-home__fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 30;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.marat-home__fade.is-active { opacity: 1; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 @media (max-width: 700px) {
   .nadezhda-final__name { font-size: 1.8rem; }
   .nadezhda-final__desc { font-size: 1rem; }
   .nadezhda-final__btn { margin-top: 5vh; padding: 14px 40px; }
+}
+/* ============================================================
+   ФИНАЛЬНОЕ ИСПРАВЛЕНИЕ ЧЕТКОСТИ ТЕКСТА
+   ============================================================ */
+.title-bar__text, 
+.title-bar__inner {
+  filter: none !important;
+  -webkit-filter: none !important;
+  -webkit-font-smoothing: antialiased !important;
+  text-rendering: optimizeLegibility !important;
 }

@@ -2501,14 +2501,13 @@ export function playLidaScene3(onDone) {
 
   after(80500, () => btn.classList.add("is-visible"));
 
-  btn.addEventListener("click", () => {
+ btn.addEventListener("click", () => {
     btn.classList.remove("is-visible");
     btn.classList.add("is-gone");
     motherClosed.classList.remove("is-active");
     motherTalk.classList.remove("is-active");
     hands.classList.add("is-active");
 
-    // 👇 ЗДЕСЬ ЗВУЧИТ "БУДЬ ОСТОРОЖНА" И "Я ВСЕГДА ОСТОРОЖНА" (ЕДИНСТВЕННЫЙ РАЗ)
     after(1500, () => {
       textEl.classList.remove("is-fading");
       textEl.textContent = "— Будь осторожна.";
@@ -2516,6 +2515,7 @@ export function playLidaScene3(onDone) {
       textEl.classList.add("is-visible");
       playVoice("assets/audio/lida/mom_3.mp3", 1.0);
     });
+    
     after(5500, () => {
       textEl.textContent = "— Я всегда осторожна.";
       playVoice("assets/audio/lida/lida_14.mp3", 1.0);
@@ -2549,7 +2549,9 @@ export function playLidaScene3(onDone) {
       });
     };
     btn.addEventListener("click", onLeaveClick, { once: true });
-  });
+    
+  }, { once: true }); // 👈 ВОТ ЭТА ПРИПИСКА РЕШИТ ПРОБЛЕМУ
+  
 }
 
 /* ============================================================
@@ -4120,6 +4122,7 @@ export function playLidaScene10(onDone) {
     textEl.textContent = "— Ничего. Просто… помните. Это всё, что нужно.";
     playVoice("assets/audio/lida/lida_61.mp3", 1.0);
   });
+  // 1. Убираем диалог и показываем финальный экран
   after(98000, () => {
     textEl.classList.remove("is-visible");
     textEl.classList.add("is-fading");
@@ -4129,10 +4132,10 @@ export function playLidaScene10(onDone) {
   after(101000, () => {
     colleague.classList.remove("is-active");
     white.classList.add("is-active");
-    portrait.classList.add("is-visible");
   });
 
-  after(104000, () => {
+  // 2. Печатаем имя и регалии
+  after(103000, () => {
     typeText(
       credits,
       "Лидия Михайловна Вашкевич.\n1932–2023.\nПионер-герой. Связная. Учительница.",
@@ -4143,54 +4146,54 @@ export function playLidaScene10(onDone) {
           whisper.classList.add("is-visible");
         });
         after(6000, () => {
-          whisper.textContent =
-            "Ей было десять, когда она начала бороться.\nЕй было тринадцать, когда война закончилась.";
+          whisper.textContent = "Ей было десять, когда она начала бороться.\nЕй было тринадцать, когда война закончилась.";
         });
-        after(12000, () => btn.classList.add("is-visible"));
-      },
+        after(11000, () => {
+          btn.textContent = "ПОМНИТЬ"; // Меняем текст кнопки
+          btn.classList.add("is-visible");
+        });
+      }
     );
   });
 
-  btn.addEventListener(
-    "click",
-    () => {
-      btn.classList.remove("is-visible");
-      btn.classList.add("is-gone");
-      white.classList.remove("is-active");
-      finalBox.classList.add("is-visible");
+  // 3. Клик по кнопке и показ трёх абзацев
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    btn.classList.add("is-gone");
+    white.classList.remove("is-active");
+    finalBox.classList.add("is-visible");
 
-      after(500, () => {
-        p1.textContent =
-          "История Лиды Вашкевич — это история о девочке, которая не испугалась. О чёрной сумке, которую она пронесла через всю войну. О памяти, которую она сохранила для нас.";
-        p1.classList.add("is-visible");
-        playVoice("assets/audio/lida/история_лиды_вашкевич.mp3", 1.0);
-      });
-      after(12000, () => {
-        p2.textContent =
-          "Я — Лида. Лидия Михайловна Вашкевич. Пионер-герой. Связная. Учительница.";
-        p2.classList.add("is-visible");
-      });
-      after(21000, () => {
-        p3.textContent = "Я не жалею. Я была счастлива.";
-        p3.classList.add("is-visible");
-      });
+    after(500, () => {
+      p1.textContent = "История Лиды Вашкевич — это история о девочке, которая не испугалась. О чёрной сумке, которую она пронесла через всю войну. О памяти, которую она сохранила для нас.";
+      p1.classList.add("is-visible");
+      playVoice("assets/audio/lida/история_лиды_вашкевич.mp3", 1.0);
+    });
 
-      after(30000, () => {
-        finalBox.style.transition = "opacity 4s ease";
-        finalBox.style.opacity = "0";
-      });
-      after(35000, () => {
-        stopAllAmbient(1200);
-        stopAllVoices();
-        el.classList.remove("is-active");
-        setTimeout(() => {
-          el.remove();
-          onDone && onDone();
-        }, 2000);
-      });
-    },
-    { once: true },
-  );
+    after(12000, () => {
+      p2.textContent = "Я — Лида. Лидия Михайловна Вашкевич. Пионер-герой. Связная. Учительница.";
+      p2.classList.add("is-visible");
+    });
+
+    after(21000, () => {
+      p3.textContent = "Я не жалею. Я была счастлива.";
+      p3.classList.add("is-visible");
+    });
+
+    after(30000, () => {
+      finalBox.style.transition = "opacity 4s ease";
+      finalBox.style.opacity = "0";
+    });
+
+    after(35000, () => {
+      stopAllAmbient(1200);
+      stopAllVoices();
+      el.classList.remove("is-active");
+      setTimeout(() => {
+        el.remove();
+        onDone && onDone();
+      }, 2000);
+    });
+  }, { once: true });
 }
 
 /* ============================================================
@@ -6128,4 +6131,243 @@ export function playNadezhdaScene12(onDone) {
     },
     { once: true },
   );
+}
+/* ============================================================
+   ПЕЧАТАЮЩИЙ ТЕКСТ
+   ============================================================ */
+function typeText(node, fullText, speed, onDone) {
+  if (!node) return;
+  node.textContent = "";
+  let i = 0;
+
+  const cursor = document.createElement("span");
+  cursor.className = "cursor";
+  node.appendChild(cursor);
+
+  const timer = setInterval(() => {
+    if (i >= fullText.length) {
+      clearInterval(timer);
+      cursor.remove();
+      onDone && onDone();
+      return;
+    }
+    cursor.insertAdjacentText("beforebegin", fullText[i]);
+    i++;
+  }, speed);
+}
+/* ============================================================
+   МАРАТ — СЦЕНА 0. ЧЁРНЫЙ. ИМЯ.
+   ============================================================ */
+function buildMaratIntro() {
+  const el = document.createElement("section");
+  el.className = "scene scene--marat-intro";
+  el.innerHTML = `
+    <div class="marat-intro__star" id="maratStar"></div>
+    <div class="marat-intro__word" id="maratIntroWord">
+      <span>М</span><span>А</span><span>Р</span><span>А</span><span>Т</span>
+    </div>
+    <div class="marat-intro__fade" id="maratIntroFade"></div>
+  `;
+  return el;
+}
+
+export function playMaratScene0(onDone) {
+  const el = buildMaratIntro();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const star = el.querySelector("#maratStar");
+  const letters = el.querySelectorAll("#maratIntroWord span");
+  const fade = el.querySelector("#maratIntroFade");
+
+  stopAllAmbient(0);
+  stopAllVoices();
+
+  // Появление звезды и начало голоса
+  after(1000, () => {
+    star.classList.add("is-visible");
+    playVoiceSmart("marat/voice_0", V_MONO);
+  });
+
+  // Появление букв по очереди
+  letters.forEach((letter, i) => {
+    after(2000 + i * 350, () => {
+      letter.classList.add("is-visible");
+    });
+  });
+
+  // Начало затемнения
+  after(9000, () => {
+    letters.forEach((l) => l.classList.remove("is-visible"));
+    star.classList.remove("is-visible");
+    fade.classList.add("is-active");
+  });
+
+  // Переход к Сцене 1
+  after(11500, () => {
+    el.classList.remove("is-active");
+    setTimeout(() => {
+      el.remove();
+      onDone && onDone();
+    }, 1500);
+  });
+}
+/* ============================================================
+   МАРАТ — СЦЕНА 1. ДОМ. ВОЙНА (ПОДРОБНАЯ)
+   ============================================================ */
+function buildMaratHome() {
+  const el = document.createElement("section");
+  el.className = "scene scene--marat-home";
+  el.innerHTML = `
+    <div class="marat-home__layer marat-home__layer--summer is-active" id="mhSummer"></div>
+    <div class="marat-home__layer marat-home__layer--sky"             id="mhSky"></div>
+    <div class="marat-home__layer marat-home__layer--panic"           id="mhPanic"></div>
+    <div class="marat-home__layer marat-home__layer--winter"          id="mhWinter"></div>
+    <div class="marat-home__layer marat-home__layer--hang"            id="mhHang"></div>
+    
+    <div class="marat-home__flash" id="mhFlash"></div>
+
+    <button class="marat-btn" id="mhBtn1">ПЕРЕЖИТЬ ВОЙНУ</button>
+    <button class="marat-btn" id="mhBtn2">УЙТИ В ЛЕС</button>
+
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="mhTitleInner">
+        <p class="title-bar__text" id="mhTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+    <div class="marat-home__fade" id="mhFade"></div>
+  `;
+  return el;
+}
+
+export function playMaratScene1(onDone) {
+  const el = buildMaratHome();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const summer = el.querySelector("#mhSummer");
+  const sky = el.querySelector("#mhSky");
+  const panic = el.querySelector("#mhPanic");
+  const winter = el.querySelector("#mhWinter");
+  const hang = el.querySelector("#mhHang");
+  const flash = el.querySelector("#mhFlash");
+  const btn1 = el.querySelector("#mhBtn1");
+  const btn2 = el.querySelector("#mhBtn2");
+  const fade = el.querySelector("#mhFade");
+  const inner = el.querySelector("#mhTitleInner");
+  const textEl = el.querySelector("#mhTitleText");
+
+  startAmbient("summer-birds", "assets/audio/marat/forest-summer.mp3", 0.2);
+
+  /* --- ЧАСТЬ 1: МИРНЫЙ ДЕНЬ --- */
+  after(1000, () => {
+    textEl.textContent = "22 июня 1941 года. Утро. Марат и его младшая сестра Ада играют во дворе.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    playVoiceSmart("marat/voice_1a", V_MONO); // Можно использовать фоновый голос
+  });
+
+  after(5000, () => {
+    playVoiceSmart("marat/voice_1", V_OTHER); // "Смотри, самолеты!"
+  });
+
+  /* --- ЧАСТЬ 2: САМОЛЕТЫ --- */
+  after(8000, () => {
+    summer.classList.remove("is-active");
+    sky.classList.add("is-active");
+    stopAmbient("summer-birds", 1000);
+    
+    playOnce("planes", "assets/audio/marat/planes.mp3", 0.6);
+    textEl.textContent = "— Это не красивые. Это война. Иди в дом! Быстрее!";
+  });
+
+  /* --- ЧАСТЬ 3: ПАНИКА --- */
+  after(13000, () => {
+    sky.classList.remove("is-active");
+    panic.classList.add("is-active");
+    textEl.textContent = "Война пришла в каждый дом. Деревня опустела. Мужчины ушли на фронт, а те, кто остался, прятались.";
+  });
+
+  after(19000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  after(20500, () => {
+    panic.classList.remove("is-active");
+    winter.classList.add("is-active");
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "Зима 1942 года. Мама Марата, Анна, прятала в доме раненых партизан. Немцы узнали.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+  });
+
+  /* --- ЧАСТЬ 4: КАЗНЬ МАТЕРИ --- */
+  after(27000, () => {
+    playOnce("snow-wind", "assets/audio/marat/night-wind.mp3", 0.4); // Завывание ветра
+    winter.classList.remove("is-active");
+    hang.classList.add("is-active");
+    textEl.textContent = "В ноябре 1942 года Анну Казей схватили. Её повесили в Минске за связь с партизанами.";
+  });
+
+  after(34000, () => {
+    textEl.textContent = "«Маму убили немцы. Повесили за связь с партизанами. Мне было двенадцать. Я остался один с сестрой. И я знал, что немцам я это не прощу».";
+    playVoiceSmart("marat/voice_2", V_MONO);
+  });
+
+  after(42000, () => {
+    btn1.classList.add("is-visible");
+  });
+
+  /* --- КНОПКА 1: ПЕРЕЖИТЬ ВОЙНУ --- */
+  btn1.addEventListener("click", () => {
+    btn1.classList.remove("is-visible");
+    btn1.classList.add("is-gone");
+    flash.classList.add("is-active");
+    
+    setTimeout(() => flash.classList.remove("is-active"), 500);
+
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+
+    after(1500, () => {
+      textEl.classList.remove("is-fading");
+      textEl.textContent = "Марат вынес больную Аду из леса. Отдал её в детский дом. Он пообещал вернуться. Но сам ушел в лес.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+    });
+
+    after(7000, () => {
+      textEl.textContent = "— Ада, собирайся. Мы уходим в лес. К партизанам.";
+      playVoiceSmart("marat/voice_3", V_MONO);
+    });
+
+    after(12000, () => {
+      btn2.classList.add("is-visible");
+    });
+  }, { once: true });
+
+  /* --- КНОПКА 2: УЙТИ В ЛЕС --- */
+  btn2.addEventListener("click", () => {
+    btn2.classList.remove("is-visible");
+    btn2.classList.add("is-gone");
+    fade.classList.add("is-active");
+
+    after(2500, () => {
+      stopAllAmbient(800);
+      el.classList.remove("is-active");
+      setTimeout(() => {
+        el.remove();
+        onDone && onDone();
+      }, 2000);
+    });
+  }, { once: true });
 }
