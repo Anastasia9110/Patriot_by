@@ -2501,57 +2501,59 @@ export function playLidaScene3(onDone) {
 
   after(80500, () => btn.classList.add("is-visible"));
 
- btn.addEventListener("click", () => {
-    btn.classList.remove("is-visible");
-    btn.classList.add("is-gone");
-    motherClosed.classList.remove("is-active");
-    motherTalk.classList.remove("is-active");
-    hands.classList.add("is-active");
-
-    after(1500, () => {
-      textEl.classList.remove("is-fading");
-      textEl.textContent = "— Будь осторожна.";
-      inner.classList.add("is-visible");
-      textEl.classList.add("is-visible");
-      playVoice("assets/audio/lida/mom_3.mp3", 1.0);
-    });
-    
-    after(5500, () => {
-      textEl.textContent = "— Я всегда осторожна.";
-      playVoice("assets/audio/lida/lida_14.mp3", 1.0);
-    });
-
-    after(10000, () => {
-      textEl.classList.remove("is-visible");
-      textEl.classList.add("is-fading");
-      inner.classList.remove("is-visible");
-    });
-
-    after(12000, () => {
-      btn.textContent = "ВЫЙТИ ИЗ ДОМА";
-      btn.classList.remove("is-gone");
-      btn.classList.add("is-visible");
-    });
-
-    const onLeaveClick = () => {
-      btn.removeEventListener("click", onLeaveClick);
+  btn.addEventListener(
+    "click",
+    () => {
       btn.classList.remove("is-visible");
       btn.classList.add("is-gone");
-      fade.classList.add("is-active");
+      motherClosed.classList.remove("is-active");
+      motherTalk.classList.remove("is-active");
+      hands.classList.add("is-active");
 
-      after(2500, () => {
-        stopAmbient("home", 800);
-        el.classList.remove("is-active");
-        setTimeout(() => {
-          el.remove();
-          onDone && onDone();
-        }, 1500);
+      after(1500, () => {
+        textEl.classList.remove("is-fading");
+        textEl.textContent = "— Будь осторожна.";
+        inner.classList.add("is-visible");
+        textEl.classList.add("is-visible");
+        playVoice("assets/audio/lida/mom_3.mp3", 1.0);
       });
-    };
-    btn.addEventListener("click", onLeaveClick, { once: true });
-    
-  }, { once: true }); // 👈 ВОТ ЭТА ПРИПИСКА РЕШИТ ПРОБЛЕМУ
-  
+
+      after(5500, () => {
+        textEl.textContent = "— Я всегда осторожна.";
+        playVoice("assets/audio/lida/lida_14.mp3", 1.0);
+      });
+
+      after(10000, () => {
+        textEl.classList.remove("is-visible");
+        textEl.classList.add("is-fading");
+        inner.classList.remove("is-visible");
+      });
+
+      after(12000, () => {
+        btn.textContent = "ВЫЙТИ ИЗ ДОМА";
+        btn.classList.remove("is-gone");
+        btn.classList.add("is-visible");
+      });
+
+      const onLeaveClick = () => {
+        btn.removeEventListener("click", onLeaveClick);
+        btn.classList.remove("is-visible");
+        btn.classList.add("is-gone");
+        fade.classList.add("is-active");
+
+        after(2500, () => {
+          stopAmbient("home", 800);
+          el.classList.remove("is-active");
+          setTimeout(() => {
+            el.remove();
+            onDone && onDone();
+          }, 1500);
+        });
+      };
+      btn.addEventListener("click", onLeaveClick, { once: true });
+    },
+    { once: true },
+  ); // 👈 ВОТ ЭТА ПРИПИСКА РЕШИТ ПРОБЛЕМУ
 }
 
 /* ============================================================
@@ -4146,54 +4148,61 @@ export function playLidaScene10(onDone) {
           whisper.classList.add("is-visible");
         });
         after(6000, () => {
-          whisper.textContent = "Ей было десять, когда она начала бороться.\nЕй было тринадцать, когда война закончилась.";
+          whisper.textContent =
+            "Ей было десять, когда она начала бороться.\nЕй было тринадцать, когда война закончилась.";
         });
         after(11000, () => {
           btn.textContent = "ПОМНИТЬ"; // Меняем текст кнопки
           btn.classList.add("is-visible");
         });
-      }
+      },
     );
   });
 
   // 3. Клик по кнопке и показ трёх абзацев
-  btn.addEventListener("click", () => {
-    btn.classList.remove("is-visible");
-    btn.classList.add("is-gone");
-    white.classList.remove("is-active");
-    finalBox.classList.add("is-visible");
+  btn.addEventListener(
+    "click",
+    () => {
+      btn.classList.remove("is-visible");
+      btn.classList.add("is-gone");
+      white.classList.remove("is-active");
+      finalBox.classList.add("is-visible");
 
-    after(500, () => {
-      p1.textContent = "История Лиды Вашкевич — это история о девочке, которая не испугалась. О чёрной сумке, которую она пронесла через всю войну. О памяти, которую она сохранила для нас.";
-      p1.classList.add("is-visible");
-      playVoice("assets/audio/lida/история_лиды_вашкевич.mp3", 1.0);
-    });
+      after(500, () => {
+        p1.textContent =
+          "История Лиды Вашкевич — это история о девочке, которая не испугалась. О чёрной сумке, которую она пронесла через всю войну. О памяти, которую она сохранила для нас.";
+        p1.classList.add("is-visible");
+        playVoice("assets/audio/lida/история_лиды_вашкевич.mp3", 1.0);
+      });
 
-    after(12000, () => {
-      p2.textContent = "Я — Лида. Лидия Михайловна Вашкевич. Пионер-герой. Связная. Учительница.";
-      p2.classList.add("is-visible");
-    });
+      after(12000, () => {
+        p2.textContent =
+          "Я — Лида. Лидия Михайловна Вашкевич. Пионер-герой. Связная. Учительница.";
+        p2.classList.add("is-visible");
+      });
 
-    after(21000, () => {
-      p3.textContent = "Я не жалею. Я была счастлива.";
-      p3.classList.add("is-visible");
-    });
+      after(21000, () => {
+        p3.textContent = "Я не жалею. Я была счастлива.";
+        p3.classList.add("is-visible");
+      });
 
-    after(30000, () => {
-      finalBox.style.transition = "opacity 4s ease";
-      finalBox.style.opacity = "0";
-    });
+      after(30000, () => {
+        finalBox.style.transition = "opacity 4s ease";
+        finalBox.style.opacity = "0";
+      });
 
-    after(35000, () => {
-      stopAllAmbient(1200);
-      stopAllVoices();
-      el.classList.remove("is-active");
-      setTimeout(() => {
-        el.remove();
-        onDone && onDone();
-      }, 2000);
-    });
-  }, { once: true });
+      after(35000, () => {
+        stopAllAmbient(1200);
+        stopAllVoices();
+        el.classList.remove("is-active");
+        setTimeout(() => {
+          el.remove();
+          onDone && onDone();
+        }, 2000);
+      });
+    },
+    { once: true },
+  );
 }
 
 /* ============================================================
@@ -4258,6 +4267,7 @@ export function playNadezhdaScene0(onDone) {
 
 /* ============================================================
    НАДЕЖДА — СЦЕНА 1. ЭВАКУАЦИЯ. ПОЕЗД
+   Тайминги от длительности аудио + fallback + мин. время на текст.
    ============================================================ */
 function buildNadezhdaTrain() {
   const el = document.createElement("section");
@@ -4285,7 +4295,24 @@ function buildNadezhdaTrain() {
   return el;
 }
 
-export function playNadezhdaScene1(onDone) {
+function getAudioDuration(src) {
+  return new Promise((resolve) => {
+    const a = new Audio();
+    a.preload = "metadata";
+    a.src = src;
+    const done = (v) => resolve(v);
+    a.addEventListener("loadedmetadata", () => done(a.duration || 0), {
+      once: true,
+    });
+    a.addEventListener("error", () => done(0), { once: true });
+    // страховка, если браузер вообще молчит
+    setTimeout(() => done(a.duration || 0), 3000);
+  });
+}
+
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+export async function playNadezhdaScene1(onDone) {
   const el = buildNadezhdaTrain();
   app.appendChild(el);
   void el.offsetWidth;
@@ -4302,133 +4329,137 @@ export function playNadezhdaScene1(onDone) {
 
   stopAllAmbient(0);
   stopAllVoices();
-
-  // Звук поезда и самолетов сделан значительно тише
-  startAmbient("train-wheels", "assets/audio/nadezhda/train-wheels.mp3", 0.12);
+  startAmbient("train-wheels", "assets/audio/nadezhda/train-wheels.mp3", 0.2);
   startAmbient(
     "planes-distant",
     "assets/audio/nadezhda/planes-distant.mp3",
     0.06,
   );
 
-  // --- Блок 1: Воспоминание ---
-  after(2000, () => {
-    textEl.textContent = "Мне было десять.";
+  // ---- 1. Длительности реплик ----
+  const VOICES = {
+    v1: "assets/audio/nadezhda/01_1.mp3",
+    v2: "assets/audio/nadezhda/01_2.mp3",
+    v3: "assets/audio/nadezhda/01_3.mp3",
+    v4: "assets/audio/nadezhda/01_4.mp3",
+    v5: "assets/audio/nadezhda/01_5.mp3",
+    v6: "assets/audio/nadezhda/01_6.mp3",
+    v7: "assets/audio/nadezhda/01_7.mp3",
+  };
+
+  // fallback-длительности (сек) — на случай, если mp3 не прочитался.
+  // ПОДСТАВЬТЕ РЕАЛЬНЫЕ, если знаете. Пока — «разумные» значения.
+  const FALLBACK = {
+    v1: 2.8,
+    v2: 4.0,
+    v3: 3.8,
+    v4: 3.4,
+    v5: 3.2,
+    v6: 4.0,
+    v7: 1.8,
+  };
+
+  const D = {};
+  const results = await Promise.all(
+    Object.entries(VOICES).map(async ([k, src]) => [
+      k,
+      await getAudioDuration(src),
+    ]),
+  );
+  results.forEach(([k, dur]) => {
+    // если 0 / NaN / меньше 0.5с — считаем, что не прочиталось
+    D[k] = dur && dur > 0.5 ? dur : FALLBACK[k];
+    if (!dur)
+      console.warn(
+        `[Nadezhda] Не удалось прочитать длительность ${VOICES[k]} — fallback ${FALLBACK[k]}s`,
+      );
+  });
+  console.log("[Nadezhda] Длительности реплик:", D);
+
+  // ---- 2. Параметры темпа (можете крутить) ----
+  const GAP = 1200; // пауза между репликами, мс
+  const HOLD_AFTER = 1200; // сколько текст висит ПОСЛЕ окончания озвучки
+  const MIN_TEXT_TIME = 2500; // минимальное время показа текста, мс
+  const TEXT_FADE = 700; // длительность CSS-затухания, мс
+  const START_DELAY = 2500; // пауза перед первой репликой
+
+  async function say(text, voiceKey, voiceId) {
+    textEl.classList.remove("is-fading");
+    textEl.textContent = text;
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
-    playVoiceSmart("nadezhda/01_1", V_MONO);
-  });
+    playVoiceSmart(voiceId, V_MONO);
 
-  after(6500, () => {
-    textEl.classList.remove("is-visible");
-    textEl.classList.add("is-fading");
-  });
+    const audioMs = Math.max(D[voiceKey] * 1000, 0);
+    const holdMs = Math.max(audioMs + HOLD_AFTER, MIN_TEXT_TIME);
+    await wait(holdMs);
+  }
 
-  after(7500, () => {
-    textEl.classList.remove("is-fading");
-    textEl.textContent = "Детский дом в Могилёве. Нас эвакуировали.";
-    textEl.classList.add("is-visible");
-    playVoiceSmart("nadezhda/01_2", V_MONO);
-  });
-
-  after(12000, () => {
-    trainNight.classList.remove("is-active");
-    trainWindows.classList.add("is-active");
-  });
-
-  after(12500, () => {
-    textEl.classList.remove("is-visible");
-    textEl.classList.add("is-fading");
-  });
-
-  after(14000, () => {
-    textEl.classList.remove("is-fading");
-    textEl.textContent = "В вагоне было тесно и душно. Все молчали.";
-    textEl.classList.add("is-visible");
-    playVoiceSmart("nadezhda/01_3", V_MONO);
-  });
-
-  after(18500, () => {
-    textEl.textContent = "За Смоленском поезд разбомбили.";
-    playVoiceSmart("nadezhda/01_4", V_MONO);
-  });
-
-  after(24000, () => {
+  async function hideText() {
     textEl.classList.remove("is-visible");
     textEl.classList.add("is-fading");
     inner.classList.remove("is-visible");
-  });
+    await wait(TEXT_FADE);
+  }
 
-  // --- Блок 2: Бомбежка ---
-  after(25500, () => {
-    flash.classList.add("is-active");
-    playOnce("explosion", "assets/audio/nadezhda/explosion.mp3", 0.8);
+  // ---- 3. Блок 1: воспоминание ----
+  await wait(START_DELAY);
 
-    // Резко обрываем тихие фоновые звуки
-    stopAmbient("train-wheels", 150);
-    stopAmbient("planes-distant", 150);
+  await say("Мне было десять.", "v1", "nadezhda/01_1");
+  await hideText();
+  await wait(GAP);
 
-    trainWindows.classList.remove("is-active");
-    bombing.classList.add("is-active");
-  });
+  trainNight.classList.remove("is-active");
+  trainWindows.classList.add("is-active");
 
-  after(26000, () => {
-    flash.classList.remove("is-active");
-  });
+  await say("Детский дом в Могилёве. Нас эвакуировали.", "v2", "nadezhda/01_2");
+  await hideText();
+  await wait(GAP);
 
-  after(27000, () => {
-    textEl.classList.remove("is-fading");
-    textEl.textContent = "Я не помню, как выжила.";
-    inner.classList.add("is-visible");
-    textEl.classList.add("is-visible");
-    playVoiceSmart("nadezhda/01_5", V_MONO);
-  });
+  await say("В вагоне было тесно и душно. Все молчали.", "v3", "nadezhda/01_3");
+  await wait(GAP);
 
-  after(32000, () => {
-    textEl.classList.remove("is-visible");
-    textEl.classList.add("is-fading");
-    inner.classList.remove("is-visible");
-  });
+  await say("За Смоленском поезд разбомбили.", "v4", "nadezhda/01_4");
+  await hideText();
 
-  // --- Блок 3: Тишина ---
-  after(33500, () => {
-    bombing.classList.remove("is-active");
-    alone.classList.add("is-active");
-    startAmbient("aftermath", "assets/audio/nadezhda/aftermath.mp3", 0.15);
-  });
+  // ---- 4. Блок 2: бомбёжка ----
+  flash.classList.add("is-active");
+  playOnce("explosion", "assets/audio/nadezhda/explosion.mp3", 0.8);
+  stopAmbient("train-wheels", 150);
+  stopAmbient("planes-distant", 150);
+  trainWindows.classList.remove("is-active");
+  bombing.classList.add("is-active");
 
-  after(35000, () => {
-    textEl.classList.remove("is-fading");
-    textEl.textContent = "Помню только — стало тихо. И я одна.";
-    inner.classList.add("is-visible");
-    textEl.classList.add("is-visible");
-    playVoiceSmart("nadezhda/01_6", V_MONO);
-  });
+  await wait(700);
+  flash.classList.remove("is-active");
+  await wait(1200);
 
-  after(41000, () => {
-    textEl.textContent = "Совсем одна.";
-    playVoiceSmart("nadezhda/01_7", V_MONO);
-  });
+  await say("Я не помню, как выжила.", "v5", "nadezhda/01_5");
+  await hideText();
 
-  after(45000, () => {
-    textEl.classList.remove("is-visible");
-    textEl.classList.add("is-fading");
-    inner.classList.remove("is-visible");
-  });
+  // ---- 5. Блок 3: тишина ----
+  bombing.classList.remove("is-active");
+  alone.classList.add("is-active");
+  startAmbient("aftermath", "assets/audio/nadezhda/aftermath.mp3", 0.15);
 
-  after(48000, () => {
-    fade.classList.add("is-active");
-  });
+  await wait(1200);
 
-  after(51000, () => {
-    stopAllAmbient(1000);
-    stopAllVoices();
-    el.classList.remove("is-active");
-    setTimeout(() => {
-      el.remove();
-      onDone && onDone();
-    }, 1500);
-  });
+  await say("Помню только — стало тихо. И я одна.", "v6", "nadezhda/01_6");
+  await wait(GAP);
+  await say("Совсем одна.", "v7", "nadezhda/01_7");
+  await hideText();
+
+  // ---- 6. Финал ----
+  await wait(2500);
+  fade.classList.add("is-active");
+
+  await wait(3500);
+  stopAllAmbient(1000);
+  stopAllVoices();
+  el.classList.remove("is-active");
+  await wait(1500);
+  el.remove();
+  onDone && onDone();
 }
 /* ============================================================
    НАДЕЖДА — СЦЕНА 2. ВИТЕБСК. ПОДВАЛ
@@ -5047,9 +5078,11 @@ export function playNadezhdaScene5(onDone) {
       textEl.textContent = "Первый флаг — на вокзале.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("nadezhda/05_10", V_MONO);
     } else if (flagStep === 2) {
       btnAction.textContent = "ПОВЕСИТЬ ТРЕТИЙ";
       textEl.textContent = "Второй — на училище.";
+      playVoiceSmart("nadezhda/05_11", V_MONO);
     } else if (flagStep === 3) {
       btnAction.classList.remove("is-visible");
       btnAction.classList.add("is-gone");
@@ -5059,6 +5092,9 @@ export function playNadezhdaScene5(onDone) {
 
       textEl.textContent =
         "Третий — на фабрике. 7 ноября 1941 года. Они справились.";
+
+      // ДОБАВЛЕНА ОЗВУЧКА
+      playVoiceSmart("nadezhda/05_12", V_MONO);
 
       after(6000, () => {
         done.classList.remove("is-active");
@@ -5093,6 +5129,7 @@ export function playNadezhdaScene5(onDone) {
         textEl.textContent = "Они бежали. Но их окружили.";
         inner.classList.add("is-visible");
         textEl.classList.add("is-visible");
+        playVoiceSmart("nadezhda/05_13", V_MONO);
       });
 
       after(6000, () => {
@@ -5114,7 +5151,6 @@ export function playNadezhdaScene5(onDone) {
     { once: true },
   );
 }
-
 /* ============================================================
    НАДЕЖДА — СЦЕНА 6. РАССТРЕЛ. ЯМА
    ============================================================ */
@@ -5212,10 +5248,12 @@ export function playNadezhdaScene6(onDone) {
     textEl.textContent = "Ваня погиб. Надежда упала за мгновение до выстрела.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("nadezhda/06_07", V_MONO); // ДОБАВЛЕНО
   });
 
   after(40000, () => {
     textEl.textContent = "Партизаны нашли её живой. Она выжила. Первый раз.";
+    playVoiceSmart("nadezhda/06_08", V_MONO); // ДОБАВЛЕНО
   });
 
   after(46000, () => {
@@ -5383,6 +5421,7 @@ export function playNadezhdaScene7(onDone) {
         textEl.textContent = "Он выжил. И запомнил её навсегда.";
         inner.classList.add("is-visible");
         textEl.classList.add("is-visible");
+        playVoiceSmart("nadezhda/07_12", V_MONO);
       });
 
       after(33000, () => {
@@ -5551,9 +5590,11 @@ export function playNadezhdaScene8(onDone) {
         textEl.textContent = "В феврале 1943-го они взорвали мост в Карасёво.";
         inner.classList.add("is-visible");
         textEl.classList.add("is-visible");
+        playVoiceSmart("nadezhda/08_12", V_MONO); // ДОБАВЛЕНО
       });
       after(26000, () => {
         textEl.textContent = "Они справились. Но их схватили.";
+        playVoiceSmart("nadezhda/08_13", V_MONO); // ДОБАВЛЕНО
       });
       after(33000, () => {
         textEl.classList.remove("is-visible");
@@ -5745,15 +5786,18 @@ export function playNadezhdaScene9(onDone) {
         textEl.textContent = "Её пытали. Обливали ледяной водой на морозе.";
         inner.classList.add("is-visible");
         textEl.classList.add("is-visible");
+        playVoiceSmart("nadezhda/09_07", V_MONO); // ДОБАВЛЕНО
       });
 
       after(14000, () => {
         textEl.textContent =
           "Бросали на раскалённую печь. Выжгли звезду на спине.";
+        playVoiceSmart("nadezhda/09_08", V_MONO); // ДОБАВЛЕНО
       });
 
       after(21000, () => {
         textEl.textContent = "Она не сказала ничего.";
+        playVoiceSmart("nadezhda/09_09", V_MONO); // ДОБАВЛЕНО
       });
 
       after(28000, () => {
@@ -5879,17 +5923,20 @@ export function playNadezhdaScene10(onDone) {
       textEl.textContent = "Её выбросили на мороз. Решили — не выживет.";
       inner.classList.add("is-visible");
       textEl.classList.add("is-visible");
+      playVoiceSmart("nadezhda/10_08", V_MONO); // ДОБАВЛЕНО
     } else if (clicks === 2) {
       btn.textContent = btnTexts[1];
       textEl.textContent =
         "Её нашли жители деревни Заналючки. Выхаживали долго.";
       hands.classList.remove("is-active");
       house.classList.add("is-active");
+      playVoiceSmart("nadezhda/10_09", V_MONO); // ДОБАВЛЕНО
     } else if (clicks === 3) {
       btn.textContent = btnTexts[2];
-      textEl.textContent = "Она выжила. Но почти ослепла.";
+      nt = "Она выжила. Но почти ослепла.";
       house.classList.remove("is-active");
       eyes.classList.add("is-active");
+      playVoiceSmart("nadezhda/10_10", V_MONO); // ДОБАВЛЕНО
     }
 
     if (clicks > requiredClicks) {
@@ -5967,10 +6014,12 @@ export function playNadezhdaScene11(onDone) {
       "После войны она жила в Витебске. Никому не говорила, что воевала.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
+    playVoiceSmart("nadezhda/11_05", V_MONO); // ДОБАВЛЕНО
   });
 
   after(9000, () => {
     textEl.textContent = "Считала себя обычной.";
+    playVoiceSmart("nadezhda/11_06", V_MONO); // ДОБАВЛЕНО
   });
 
   after(14000, () => {
@@ -6004,6 +6053,7 @@ export function playNadezhdaScene11(onDone) {
           "Но однажды услышала по радио, как её командир сказал:";
         inner.classList.add("is-visible");
         textEl.classList.add("is-visible");
+        playVoiceSmart("nadezhda/11_07", V_MONO); // ДОБАВЛЕНО
       });
 
       after(6000, () => {
@@ -6105,6 +6155,7 @@ export function playNadezhdaScene12(onDone) {
   });
 
   after(2500, () => {
+    playVoiceSmart("nadezhda/12_01", V_MONO);
     typeText(
       desc,
       "Разведчица. Дважды казнена.\nВыжила. Не сказала ни слова.",
