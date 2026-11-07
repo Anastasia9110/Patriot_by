@@ -35,6 +35,7 @@ import {
   playNadezhdaScene10,
   playNadezhdaScene11,
   playNadezhdaScene12,
+  playMaratScene,
 } from "./app.js";
 import { initMenu, backToMenu } from "./menu.js";
 
@@ -126,6 +127,11 @@ function startNadezhdaStory() {
     });
   });
 }
+function startMaratStory() {
+    playMaratScene(() => {
+    backToMenu();
+  });
+}
 /* ============================================================
    ИНИЦИАЛИЗАЦИЯ МЕНЮ
    ============================================================ */
@@ -133,4 +139,5 @@ initMenu((story) => {
   if (story === "zina") startZinaStory();
   if (story === "lida") startLidaStory();
   if (story === "nadezhda") startNadezhdaStory();
+  if (story === "marat") startMaratStory();
 });

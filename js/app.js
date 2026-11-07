@@ -6206,3 +6206,103 @@ function typeText(node, fullText, speed, onDone) {
     i++;
   }, speed);
 }
+/* ============================================================
+   СЦЕНА МАРАТА КАЗЕЯ
+   ============================================================ */
+function buildMaratScene() {
+  const el = document.createElement("section");
+  el.className = "scene scene--marat";
+  el.innerHTML = `
+    <div class="marat-layer marat-layer--forest is-active" id="maratLayer1"></div>
+    <div class="marat-layer marat-layer--run" id="maratLayer2"></div>
+    <div class="marat-layer marat-layer--last" id="maratLayer3"></div>
+    
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="maratTitleInner">
+        <p class="title-bar__text" id="maratTitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+  `;
+  return el;
+}
+
+export function playMaratScene(onDone) {
+  const el = buildMaratScene();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const layer1 = el.querySelector("#maratLayer1");
+  const layer2 = el.querySelector("#maratLayer2");
+  const layer3 = el.querySelector("#maratLayer3");
+  const inner  = el.querySelector("#maratTitleInner");
+  const textEl = el.querySelector("#maratTitleText");
+
+  // --- Сцена 1: Лес ---
+  startAmbient("marat-forest", "assets/audio/marat_forest.mp3", 0.4);
+
+  after(1000, () => {
+    textEl.textContent = "Марат Казей ушёл в партизанский отряд в 12 лет.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // Если у тебя есть озвучка, раскомментируй строчку ниже и поменяй название файла:
+    // playVoiceSmart("m_01", V_MONO);
+  });
+
+  after(8000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  // --- Сцена 2: Бег ---
+  after(9500, () => {
+    layer1.classList.remove("is-active");
+    layer2.classList.add("is-active");
+    textEl.classList.remove("is-fading");
+    
+    textEl.textContent = "Он был разведчиком. Ходил в тыл врага.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoiceSmart("m_02", V_MONO);
+  });
+
+  after(17000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  // --- Сцена 3: Последний бой ---
+  after(18500, () => {
+    layer2.classList.remove("is-active");
+    layer3.classList.add("is-active");
+    stopAmbient("marat-forest", 1000);
+    // startAmbient("marat-explosion", "assets/audio/explosion.mp3", 0.8);
+
+    textEl.classList.remove("is-fading");
+    textEl.textContent = "В мае 1944-го его окружили. Он подпустил их и подорвал гранатой.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    // playVoiceSmart("m_03", V_MONO);
+  });
+
+  after(26000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+  });
+
+  // --- Конец сцены ---
+  after(28000, () => {
+    el.classList.remove("is-active");
+    setTimeout(() => {
+      el.remove();
+      onDone && onDone();
+    }, 2000);
+  });
+}
