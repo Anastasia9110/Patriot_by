@@ -35,14 +35,13 @@
     <div class="flash" id="flash"></div>
 
     <!-- МЕНЮ ВЫБОРА ИСТОРИЙ -->
-<!-- МЕНЮ ВЫБОРА ИСТОРИЙ -->
-<section class="menu" id="menu">
+    <!-- МЕНЮ ВЫБОРА ИСТОРИЙ -->
+    <section class="menu" id="menu">
       <!-- Затемнение фона (отдельно от about-wrap) -->
       <div class="menu__dim" id="menuDim"></div>
 
       <header class="menu__header">
         <div class="about-wrap" id="aboutWrap">
-
           <div class="menu__brand" id="brandBtn">ДЕТИ-ВОЙНЫ</div>
 
           <aside class="about-panel" id="aboutPanel">
@@ -52,66 +51,91 @@
               <li class="about-item">
                 <div class="about-item__label">О нас</div>
                 <div class="about-item__tip">
-                  <p>Проект создан студенческой командой как дань памяти детям, чьё детство украла война.</p>
+                  <p>
+                    Проект создан студенческой командой как дань памяти детям,
+                    чьё детство украла война.
+                  </p>
                 </div>
               </li>
 
               <li class="about-item">
                 <div class="about-item__label">Суть проекта</div>
                 <div class="about-item__tip">
-                  <p>Каждая история — интерактивный мультимедийный рассказ о реальном ребёнке-герое. Мы бережно реконструируем события по документам и свидетельствам.</p>
+                  <p>
+                    Каждая история — интерактивный мультимедийный рассказ о
+                    реальном ребёнке-герое. Мы бережно реконструируем события по
+                    документам и свидетельствам.
+                  </p>
                 </div>
               </li>
 
               <li class="about-item">
                 <div class="about-item__label">Источники</div>
                 <div class="about-item__tip">
-                  <p>Материалы собраны из открытых архивов, книг и публикаций.</p>
+                  <p>
+                    Материалы собраны из открытых архивов, книг и публикаций.
+                  </p>
                 </div>
               </li>
 
               <li class="about-item">
                 <div class="about-item__label">Контакты</div>
                 <div class="about-item__tip">
-                  <p>Связаться с нами:<br>
-                    <a href="mailto:anastasia_antonchik@mail.ru"><em>anastasia_antonchik@mail.ru</em></a><br>
-                    <a href="mailto:violetta.pleshachkova@gmail.com"><em>violetta.pleshachkova@gmail.com</em></a>
+                  <p>
+                    Связаться с нами:<br />
+                    <a href="mailto:anastasia_antonchik@mail.ru"
+                      ><em>anastasia_antonchik@mail.ru</em></a
+                    ><br />
+                    <a href="mailto:violetta.pleshachkova@gmail.com"
+                      ><em>violetta.pleshachkova@gmail.com</em></a
+                    >
                   </p>
                 </div>
               </li>
             </ul>
           </aside>
-
         </div>
       </header>
 
-  <div class="menu__grid">
-    <button class="card is-available" id="cardZina" data-story="zina">
-      <div
-        class="card__photo"
-        style="background-image: url('assets/images/menu/card-zina.jpg')"
-      ></div>
-      <div class="card__line"></div>
-      <div class="card__name">ЗИНА ПОРТНОВА</div>
-      <div class="card__years">1926–1944</div>
-    </button>
+      <div class="menu__grid">
+        <button class="card is-available" id="cardZina" data-story="zina">
+          <div
+            class="card__photo"
+            style="
+              background-image: url(&quot;assets/images/menu/card-zina.jpg&quot;);
+            "
+          ></div>
+          <div class="card__line"></div>
+          <div class="card__name">ЗИНА ПОРТНОВА</div>
+          <div class="card__years">1926–1944</div>
+        </button>
 
-    <button class="card is-available" id="cardLida" data-story="lida">
-      <div
-        class="card__photo"
-        style="background-image: url('assets/images/menu/card-lida.jpg')"></div>
-      <div class="card__line"></div>
-      <div class="card__name">ЛИДА ВАШКЕВИЧ</div>
-      <div class="card__years">1932–2023</div>
-    </button>
-    <button class="card is-available" id="cardNadezhda" data-story="nadezhda">
-      <div
-          class="card__photo"
-          style="background-image: url('assets/images/menu/card-nadezhda.jpg')"></div>
-        <div class="card__line"></div>
-        <div class="card__name">НАДЕЖДА БОГДАНОВА</div>
-        <div class="card__years">1931–1991</div>
-    </button>
+        <button class="card is-available" id="cardLida" data-story="lida">
+          <div
+            class="card__photo"
+            style="
+              background-image: url(&quot;assets/images/menu/card-lida.jpg&quot;);
+            "
+          ></div>
+          <div class="card__line"></div>
+          <div class="card__name">ЛИДА ВАШКЕВИЧ</div>
+          <div class="card__years">1932–1989</div>
+        </button>
+        <button
+          class="card is-available"
+          id="cardNadezhda"
+          data-story="nadezhda"
+        >
+          <div
+            class="card__photo"
+            style="
+              background-image: url(&quot;assets/images/menu/card-nadezhda.jpg&quot;);
+            "
+          ></div>
+          <div class="card__line"></div>
+          <div class="card__name">НАДЕЖДА БОГДАНОВА</div>
+          <div class="card__years">1931–1991</div>
+        </button>
     <button class="card is-available" id="cardMarat" data-story="marat">
       <div
         class="card__photo"
@@ -121,11 +145,11 @@
       <div class="card__name">МАРАТ КАЗЕЙ</div>
       <div class="card__years">1929–1944</div>
     </button>
-  </div>
-  <footer class="menu__footer">
-    <p>Сохраним память вместе</p>
-  </footer>
-</section>
+      </div>
+      <footer class="menu__footer">
+        <p>Сохраним память вместе</p>
+      </footer>
+    </section>
 
     <!-- СТАРТОВЫЙ ЭКРАН ИСТОРИИ (без кнопки) -->
     <section class="story-start" id="storyStart">
