@@ -6207,22 +6207,97 @@ function typeText(node, fullText, speed, onDone) {
   }, speed);
 }
 /* ============================================================
-   СЦЕНА МАРАТА КАЗЕЯ
+   СЦЕНА 0 МАРАТА — ЧЁРНЫЙ ЭКРАН. ЗВЕЗДА. ИМЯ.
    ============================================================ */
-function buildMaratScene() {
+function buildMaratIntro() {
   const el = document.createElement("section");
-  el.className = "scene scene--marat";
+  el.className = "scene scene--marat-intro";
   el.innerHTML = `
-    <div class="marat-layer marat-layer--forest is-active" id="maratLayer1"></div>
-    <div class="marat-layer marat-layer--run" id="maratLayer2"></div>
-    <div class="marat-layer marat-layer--last" id="maratLayer3"></div>
+    <img class="marat-intro__accent" id="maratIntroAccent"
+         src="assets/images/marat/marat-star.png" alt="">
+
+    <div class="marat-intro__word" id="maratIntroWord">
+      <span>М</span><span>А</span><span>Р</span><span>А</span><span>Т</span>
+    </div>
+
+    <div class="marat-intro__fade" id="maratIntroFade"></div>
+  `;
+  return el;
+}
+
+export function playMaratScene0(onDone) {
+  const el = buildMaratIntro();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const accent = el.querySelector("#maratIntroAccent");
+  const letters = el.querySelectorAll("#maratIntroWord span");
+  const fade = el.querySelector("#maratIntroFade");
+
+  stopAllAmbient(0);
+  stopAllVoices();
+
+
+  // 1. Появление атрибута (звезды)
+  after(300, () => {
+    accent.classList.add("is-visible");
+  });
+
+  // 2. Появление букв по очереди
+  letters.forEach((letter, i) => {
+    after(1200 + i * 300, () => {
+      letter.classList.add("is-visible");
+    });
+  });
+
+  // 3. Голос за кадром (появляется, когда все буквы уже вышли)
+  after(3000, () => {
+    playVoiceSmart("m0_01", V_MONO);
+  });
+
+  // 4. Затухание
+  after(8000, () => {
+    accent.classList.remove("is-visible");
+    letters.forEach((l) => l.classList.remove("is-visible"));
+  });
+
+  after(8500, () => {
+    fade.classList.add("is-active");
+    stopAmbient("marat-forest-echo", 1000);
+  });
+
+  // 5. Конец сцены и переход к Сцене 1
+  after(10000, () => {
+    el.classList.remove("is-active");
+    setTimeout(() => {
+      el.remove();
+      onDone && onDone();
+    }, 1500);
+  });
+}
+/* ============================================================
+   СЦЕНА 1 МАРАТА — ДОМ. ВОЙНА (100% РАБОЧИЙ ВАРИАНТ)
+   ============================================================ */
+function buildMaratScene1() {
+  const el = document.createElement("section");
+  el.className = "scene scene--marat-1";
+  el.innerHTML = `
+    <div class="marat1-layer marat1-layer--bg1 is-active" id="maratBg1"></div>
+    <div class="marat1-layer marat1-layer--bg2"           id="maratBg2"></div>
+    <div class="marat1-layer marat1-layer--bg3"           id="maratBg3"></div>
+    <div class="marat1-layer marat1-layer--bg4"           id="maratBg4"></div>
+    <div class="marat1-layer marat1-layer--bg5"           id="maratBg5"></div>
+
+    <!-- Кнопка сразу в HTML, но скрыта через CSS -->
+    <button class="marat-btn" id="marat1Btn">ПЕРЕЖИТЬ ВОЙНУ</button>
     
     <div class="road-grain"></div>
     <div class="road-vignette"></div>
 
     <div class="title-bar">
-      <div class="title-bar__inner" id="maratTitleInner">
-        <p class="title-bar__text" id="maratTitleText"></p>
+      <div class="title-bar__inner" id="marat1TitleInner">
+        <p class="title-bar__text" id="marat1TitleText"></p>
         <span class="title-bar__bottom-line"></span>
       </div>
     </div>
@@ -6230,79 +6305,743 @@ function buildMaratScene() {
   return el;
 }
 
-export function playMaratScene(onDone) {
-  const el = buildMaratScene();
+export function playMaratScene1(onDone) {
+  const el = buildMaratScene1();
   app.appendChild(el);
   void el.offsetWidth;
   el.classList.add("is-active");
 
-  const layer1 = el.querySelector("#maratLayer1");
-  const layer2 = el.querySelector("#maratLayer2");
-  const layer3 = el.querySelector("#maratLayer3");
-  const inner  = el.querySelector("#maratTitleInner");
-  const textEl = el.querySelector("#maratTitleText");
+  const bg1 = el.querySelector("#maratBg1");
+  const bg2 = el.querySelector("#maratBg2");
+  const bg3 = el.querySelector("#maratBg3");
+  const bg4 = el.querySelector("#maratBg4");
+  const bg5 = el.querySelector("#maratBg5");
+  const fade = el.querySelector("#marat1Fade");
 
-  // --- Сцена 1: Лес ---
-  startAmbient("marat-forest", "assets/audio/marat_forest.mp3", 0.4);
+  const btn = el.querySelector("#marat1Btn");
+  const inner = el.querySelector("#marat1TitleInner");
+  const textEl = el.querySelector("#marat1TitleText");
+
+  // 1. Включаем звук мирной деревни
+  startAmbient("marat-village", "assets/audio/marat/marat_village.mp3", 0.3);
+
+  // Кадр 1
+  after(1000, () => {
+    textEl.textContent = "— Марат! Смотри, самолёты! Красивые!";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+  });
+
+  // Кадр 2
+  after(6000, () => {
+    bg1.classList.remove("is-active");
+    bg2.classList.add("is-active"); 
+    textEl.textContent = "— Это не красивые. Это война. Иди в дом! Быстрее!";
+    
+    // Выключаем деревню, включаем звук самолетов
+    stopAmbient("marat-village", 1000);
+    playOnce("marat-planes", "assets/audio/marat/marat_planes.mp3", 0.8);
+  });
+
+  // Кадр 3
+  after(11000, () => {
+    bg2.classList.remove("is-active");
+    bg3.classList.add("is-active"); 
+    textEl.textContent = "22 июня 1941 года. Война пришла в каждый дом. В том числе — в дом Марата Казея.";
+  });
+
+  // Кадр 4 (Ночь) + Показ кнопки
+  after(16000, () => {
+    bg3.classList.remove("is-active");
+    bg4.classList.add("is-active");
+    
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+    
+    btn.textContent = "ПЕРЕЖИТЬ ВОЙНУ";
+    btn.classList.add("is-visible"); 
+  });
+
+  // КЛИК ПО КНОПКЕ
+  btn.addEventListener("click", () => {
+    // 1. СРАЗУ прячем кнопку, чтобы она не висела
+    btn.classList.remove("is-visible");
+    
+    // 2. Переход на зиму
+    bg4.classList.remove("is-active");
+    bg5.classList.add("is-active");
+
+    // Включаем зимний ветер
+    startAmbient("marat-winter", "assets/audio/marat/marat_winter_wind.mp3", 0.4);
+
+    // 3. Показываем текст
+    after(500, () => {
+      textEl.textContent = "«Маму убили немцы... Мне было двенадцать. Я остался один с сестрой. И я знал, что немцам я это не прощу».";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      textEl.classList.remove("is-fading");
+    });
+
+    // 4. ТОЛЬКО когда текст закончится (через 10 секунд), показываем новую кнопку
+    after(10000, () => {
+      textEl.classList.remove("is-visible");
+      textEl.classList.add("is-fading");
+      inner.classList.remove("is-visible");
+      
+      // Меняем текст и ПОКАЗЫВАЕМ кнопку
+      btn.textContent = "УЙТИ В ЛЕС";
+      btn.classList.add("is-visible"); // Возвращаем класс видимости
+    });
+  }, { once: true });
+
+  // Второй клик (выход из сцены)
+  setTimeout(() => {
+    btn.addEventListener("click", () => {
+      if (btn.textContent === "УЙТИ В ЛЕС") {
+        btn.classList.remove("is-visible");
+        fade.classList.add("is-active");
+        
+        // Выключаем зимний ветер
+        stopAmbient("marat-winter", 1000);
+
+        setTimeout(() => {
+          el.classList.remove("is-active");
+          el.remove();
+          if (onDone) onDone(); // Возврат в меню
+        }, 2000);
+      }
+    });
+  }, 17000);
+}
+/* ============================================================
+   СЦЕНА 2 МАРАТА — ОТРЯД (6 КАРТИНОК, ОБЩИЙ ПЛАН В КОНЦЕ)
+   ============================================================ */
+function buildMaratScene2() {
+  const el = document.createElement("section");
+  el.className = "scene scene--marat-2";
+  el.innerHTML = `
+    <div class="marat2-layer marat2-layer--camp"      id="marat2Camp"></div>
+    <div class="marat2-layer marat2-layer--commander is-active" id="marat2Commander"></div>
+    <div class="marat2-layer marat2-layer--boy"            id="marat2Boy"></div>
+    <div class="marat2-layer marat2-layer--accepted"       id="marat2Accepted"></div>
+
+    <button class="marat-btn" id="marat2Btn">БРАТЬ ЗАДАНИЯ</button>
+    
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="marat2TitleInner">
+        <p class="title-bar__text" id="marat2TitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+    <div class="marat2-fade" id="marat2Fade"></div>
+  `;
+  return el;
+}
+
+export function playMaratScene2(onDone) {
+  const el = buildMaratScene2();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const camp = el.querySelector("#marat2Camp");
+  const commander = el.querySelector("#marat2Commander");
+  const boy = el.querySelector("#marat2Boy");
+  const accepted = el.querySelector("#marat2Accepted");
+  const fade = el.querySelector("#marat2Fade");
+
+  const btn = el.querySelector("#marat2Btn");
+  const inner = el.querySelector("#marat2TitleInner");
+  const textEl = el.querySelector("#marat2TitleText");
+
+  startAmbient("marat-fire", "assets/audio/marat/marat_fire.mp3", 0.4);
+  startAmbient("marat-wind", "assets/audio/marat/marat_wind.mp3", 0.2);
+
+  // 1. Начинаем с командира (крупный план) - он говорит
+  after(1000, () => {
+    textEl.textContent = "— Марат, мы не берем детей. Тебе тринадцать. Иди в детдом.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    commander.style.backgroundImage = 'url("../assets/images/marat/marat-commander-open.jpg")';
+  });
+
+  // 2. Марат отвечает (камера на Марата)
+  after(6500, () => {
+    commander.style.backgroundImage = 'url("../assets/images/marat/marat-commander-closed.jpg")';
+    commander.classList.remove("is-active");
+    
+    boy.classList.add("is-active");
+    textEl.textContent = "— У меня нет дома. И нет детства. Есть только лес. И желание бить врага.";
+    boy.style.backgroundImage = 'url("../assets/images/marat/marat-boy-open.jpg")';
+  });
+
+  // 3. Командир спрашивает (камера на командира)
+  after(13000, () => {
+    boy.style.backgroundImage = 'url("../assets/images/marat/marat-boy-closed.jpg")';
+    boy.classList.remove("is-active");
+
+    commander.classList.add("is-active");
+    textEl.textContent = "— Ты понимаешь, что в лесу — смерть?";
+    commander.style.backgroundImage = 'url("../assets/images/marat/marat-commander-open.jpg")';
+  });
+
+  // 4. Марат отвечает (камера на Марата)
+  after(18000, () => {
+    commander.style.backgroundImage = 'url("../assets/images/marat/marat-commander-closed.jpg")';
+    commander.classList.remove("is-active");
+
+    boy.classList.add("is-active");
+    textEl.textContent = "— Я понимаю, что в лесу — борьба. А мне это и надо.";
+    boy.style.backgroundImage = 'url("../assets/images/marat/marat-boy-open.jpg")';
+  });
+
+  // 5. Пауза (Марат закрывает рот)
+  after(24000, () => {
+    boy.style.backgroundImage = 'url("../assets/images/marat/marat-boy-closed.jpg")';
+    textEl.textContent = "Пауза. Командир смотрит на него. Потом — кивает.";
+  });
+
+  // Показ кнопки
+  after(29000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+    
+    btn.classList.add("is-visible"); 
+  });
+
+  // Клик по кнопке (переход на ОБЩИЙ ПЛАН)
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    
+    boy.classList.remove("is-active");
+    camp.classList.add("is-active"); // Показываем общий план с партизанами
+    
+    stopAmbient("marat-fire", 1000);
+    stopAmbient("marat-wind", 1000);
+
+    after(500, () => {
+      textEl.textContent = "Марата зачислили в отряд имени 25-летия Октября. Он стал разведчиком. Ходил в разведку. Участвовал в боях. Изучал оружие.";
+      inner.classList.add("is-visible");
+      textEl.classList.add("is-visible");
+      textEl.classList.remove("is-fading");
+    });
+
+    after(10000, () => {
+      btn.textContent = "ДАЛЬШЕ";
+      btn.classList.add("is-visible");
+    });
+  }, { once: true });
+
+  // Выход из сцены
+  setTimeout(() => {
+    btn.addEventListener("click", () => {
+      if (btn.textContent === "ДАЛЬШЕ") {
+        btn.classList.remove("is-visible");
+        fade.classList.add("is-active");
+        
+        setTimeout(() => {
+          el.classList.remove("is-active");
+          el.remove();
+          if (onDone) onDone();
+        }, 2000);
+      }
+    });
+  }, 29000);
+}
+/* ============================================================
+   СЦЕНА 3 МАРАТА — СЕСТРА (ДИАЛОГ У ДЕТДОМА)
+   ============================================================ */
+function buildMaratScene3() {
+  const el = document.createElement("section");
+  el.className = "scene scene--marat-3";
+  el.innerHTML = `
+    <div class="marat3-layer marat3-layer--dugout is-active" id="marat3Dugout"></div>
+    <div class="marat3-layer marat3-layer--carry"            id="marat3Carry"></div>
+    <div class="marat3-layer marat3-layer--orphanage"        id="marat3Orphanage"></div>
+    
+    <!-- Персонажи крупным планом (в лесу) -->
+    <div class="marat3-layer marat3-layer--ada"              id="marat3Ada"></div>
+    <div class="marat3-layer marat3-layer--boy"              id="marat3Boy"></div>
+
+    <!-- Персонажи крупным планом (у детдома) -->
+    <div class="marat3-layer marat3-layer--ada-orphanage"    id="marat3AdaOrphanage"></div>
+    <div class="marat3-layer marat3-layer--boy-orphanage"    id="marat3BoyOrphanage"></div>
+
+    <button class="marat-btn" id="marat3Btn">ВЕРНУТЬСЯ В СТРОЙ</button>
+    
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="marat3TitleInner">
+        <p class="title-bar__text" id="marat3TitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+    <div class="marat3-fade" id="marat3Fade"></div>
+  `;
+  return el;
+}
+
+export function playMaratScene3(onDone) {
+  const el = buildMaratScene3();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const dugout = el.querySelector("#marat3Dugout");
+  const carry = el.querySelector("#marat3Carry");
+  const orphanage = el.querySelector("#marat3Orphanage");
+  const ada = el.querySelector("#marat3Ada");
+  const boy = el.querySelector("#marat3Boy");
+  const adaOrphanage = el.querySelector("#marat3AdaOrphanage");
+  const boyOrphanage = el.querySelector("#marat3BoyOrphanage");
+  const fade = el.querySelector("#marat3Fade");
+
+  const btn = el.querySelector("#marat3Btn");
+  const inner = el.querySelector("#marat3TitleInner");
+  const textEl = el.querySelector("#marat3TitleText");
+
+  startAmbient("marat-fire", "assets/audio/marat/marat_fire.mp3", 0.3);
+
+  // 1. Ада говорит (в землянке)
+  after(1000, () => {
+    dugout.classList.remove("is-active");
+    ada.classList.add("is-active");
+    textEl.textContent = "— Марат, я боюсь. Тут стреляют. Я хочу к маме.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+    ada.style.backgroundImage = 'url("../assets/images/marat/marat3-ada-open.jpg")';
+  });
+
+  // 2. Марат отвечает (в землянке)
+  after(6000, () => {
+    ada.style.backgroundImage = 'url("../assets/images/marat/marat3-ada-closed.jpg")';
+    ada.classList.remove("is-active");
+    
+    boy.classList.add("is-active");
+    textEl.textContent = "— Мамы больше нет, Ада. Теперь я твой папа и твоя мама. Поняла? Я тебя не брошу.";
+    boy.style.backgroundImage = 'url("../assets/images/marat/marat3-boy-open.jpg")';
+  });
+
+  // 3. Общий план
+  after(13000, () => {
+    boy.style.backgroundImage = 'url("../assets/images/marat/marat3-boy-closed.jpg")';
+    boy.classList.remove("is-active");
+    
+    dugout.classList.add("is-active");
+    textEl.textContent = "В 1943 году Ада заболела. Марат вынес её на руках из леса.";
+    
+    stopAmbient("marat-fire", 1000);
+    startAmbient("marat-wind", "assets/audio/marat/marat_wind.mp3", 0.4);
+  });
+
+  // 4. Марат несет Аду
+  after(19000, () => {
+    dugout.classList.remove("is-active");
+    carry.classList.add("is-active");
+    textEl.textContent = "Он передал её в детский дом в Гомеле. Но сам остался в отряде.";
+  });
+
+  // 5. Диалог в детдоме (Ада) - ИСПОЛЬЗУЕМ НОВЫЕ КАРТИНКИ
+  after(25000, () => {
+    carry.classList.remove("is-active");
+    adaOrphanage.classList.add("is-active"); // Показываем Аду у детдома
+    textEl.textContent = "— Марат, а ты придешь за мной?";
+    // Включаем открытый рот (у детдома)
+    adaOrphanage.style.backgroundImage = 'url("../assets/images/marat/marat3-ada-orphanage-open.jpg")';
+  });
+
+  // 6. Диалог в детдоме (Марат) - ИСПОЛЬЗУЕМ НОВЫЕ КАРТИНКИ
+  after(30000, () => {
+    // Возвращаем Аде закрытый рот (можно использовать базовый или сделать отдельный)
+    adaOrphanage.style.backgroundImage = 'url("../assets/images/marat/marat3-ada-orphanage-closed.jpg")';
+    adaOrphanage.classList.remove("is-active");
+
+    boyOrphanage.classList.add("is-active"); // Показываем Марата у детдома
+    textEl.textContent = "— Я приду. Я всегда приду. Обещаю.";
+    boyOrphanage.style.backgroundImage = 'url("../assets/images/marat/marat3-boy-orphanage-open.jpg")';
+  });
+
+  // 7. Финал (прощание)
+  after(35000, () => {
+    boyOrphanage.style.backgroundImage = 'url("../assets/images/marat/marat3-boy-orphanage-closed.jpg")';
+    boyOrphanage.classList.remove("is-active");
+
+    orphanage.classList.add("is-active"); // Показываем общий план детдома
+    
+    stopAmbient("marat-wind", 1000);
+    startAmbient("marat-sad", "assets/audio/marat/marat_sad.mp3", 0.5);
+
+    textEl.textContent = "Марат уходит. Оборачивается. Ада машет ему вслед. Это их последняя встреча.";
+  });
+
+  // Показ кнопки
+  after(42000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+    
+    btn.classList.add("is-visible"); 
+  });
+
+  // Клик по кнопке
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    fade.classList.add("is-active");
+    
+    stopAmbient("marat-sad", 1000);
+
+    setTimeout(() => {
+      el.classList.remove("is-active");
+      el.remove();
+      if (onDone) onDone();
+    }, 2000);
+  }, { once: true });
+}
+/* ============================================================
+   СЦЕНА 4 МАРАТА — НАЗАД В ЛЕС (МОНОЛОГ)
+   ============================================================ */
+function buildMaratScene4() {
+  const el = document.createElement("section");
+  el.className = "scene scene--marat-4";
+  el.innerHTML = `
+    <div class="marat4-layer marat4-layer--forest is-active" id="marat4Forest"></div>
+    <div class="marat4-layer marat4-layer--camp"             id="marat4Camp"></div>
+
+    <button class="marat-btn" id="marat4Btn">ВЕРНУТЬСЯ В СТРОЙ</button>
+    
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="marat4TitleInner">
+        <p class="title-bar__text" id="marat4TitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+    <div class="marat4-fade" id="marat4Fade"></div>
+  `;
+  return el;
+}
+
+export function playMaratScene4(onDone) {
+  const el = buildMaratScene4();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const forest = el.querySelector("#marat4Forest");
+  const camp = el.querySelector("#marat4Camp");
+  const fade = el.querySelector("#marat4Fade");
+
+  const btn = el.querySelector("#marat4Btn");
+  const inner = el.querySelector("#marat4TitleInner");
+  const textEl = el.querySelector("#marat4TitleText");
+
+  // Фоновый звук: зимний ветер и хруст снега
+  startAmbient("marat-wind", "assets/audio/marat/marat_wind.mp3", 0.4);
+  startAmbient("marat-steps", "assets/audio/marat/marat_snow_steps.mp3", 0.3);
+
+  // 1. Марат идет по лесу
+  after(1000, () => {
+    textEl.textContent = "«Она вырастет. Без меня. Но она вырастет».";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+  });
+
+  after(7000, () => {
+    textEl.textContent = "«А я… я должен вернуться».";
+  });
+
+  // 2. Марат видит лагерь вдалеке
+  after(13000, () => {
+    forest.classList.remove("is-active");
+    camp.classList.add("is-active");
+    textEl.textContent = "«Там еще есть, за кого бороться. За всех детей».";
+  });
+
+  // Показ кнопки
+  after(19000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+    
+    btn.classList.add("is-visible"); 
+  });
+
+  // Клик по кнопке
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    fade.classList.add("is-active");
+    
+    // Выключаем звуки
+    stopAmbient("marat-wind", 1000);
+    stopAmbient("marat-steps", 1000);
+
+    setTimeout(() => {
+      el.classList.remove("is-active");
+      el.remove();
+      if (onDone) onDone();
+    }, 2000);
+  }, { once: true });
+}
+/* ============================================================
+   СЦЕНА 5 МАРАТА — ДЕРЕВНЯ. ЗАДАНИЕ (С ДИАЛОГОМ)
+   ============================================================ */
+function buildMaratScene5() {
+  const el = document.createElement("section");
+  el.className = "scene scene--marat-5";
+  el.innerHTML = `
+    <div class="marat5-layer marat5-layer--village is-active" id="marat5Village"></div>
+    <div class="marat5-layer marat5-layer--house"           id="marat5House"></div>
+    <div class="marat5-layer marat5-layer--ambush"          id="marat5Ambush"></div>
+    
+    <!-- Крупные планы персонажей -->
+    <div class="marat5-layer marat5-layer--larin"           id="marat5Larin"></div>
+    <div class="marat5-layer marat5-layer--boy"             id="marat5Boy"></div>
+
+    <button class="marat-btn" id="marat5Btn">ПРИГОТОВИТЬСЯ К БОЮ</button>
+    
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="marat5TitleInner">
+        <p class="title-bar__text" id="marat5TitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+    <div class="marat5-fade" id="marat5Fade"></div>
+  `;
+  return el;
+}
+
+export function playMaratScene5(onDone) {
+  const el = buildMaratScene5();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const village = el.querySelector("#marat5Village");
+  const house = el.querySelector("#marat5House");
+  const ambush = el.querySelector("#marat5Ambush");
+  const larin = el.querySelector("#marat5Larin");
+  const boy = el.querySelector("#marat5Boy");
+  const fade = el.querySelector("#marat5Fade");
+
+  const btn = el.querySelector("#marat5Btn");
+  const inner = el.querySelector("#marat5TitleInner");
+  const textEl = el.querySelector("#marat5TitleText");
+
+  startAmbient("marat-wind", "assets/audio/marat/marat_wind.mp3", 0.2);
+
+  // 1. Идут по деревне
+  after(1000, () => {
+    textEl.textContent = "Май 1944 года. Разведка. Проверка связи с местными. Они не знали, что деревня окружена.";
+    inner.classList.add("is-visible");
+    textEl.classList.add("is-visible");
+  });
+
+  // 2. Подходят к дому (камера на Ларина)
+  after(7000, () => {
+    village.classList.remove("is-active");
+    house.classList.add("is-active");
+    larin.classList.add("is-active");
+    
+    textEl.textContent = "— Заходим к связному. Проверяем. Выходим. Без шума.";
+    
+    // Открываем рот Ларину
+    larin.style.backgroundImage = 'url("../assets/images/marat/marat5-larin-open.jpg")';
+  });
+
+  // 3. Марат отвечает (камера на Марата)
+  after(12000, () => {
+    larin.style.backgroundImage = 'url("../assets/images/marat/marat5-larin-closed.jpg")';
+    larin.classList.remove("is-active");
+
+    boy.classList.add("is-active");
+    textEl.textContent = "— Понял.";
+    boy.style.backgroundImage = 'url("../assets/images/marat/marat5-boy-open.jpg")';
+  });
+
+  // 4. Засада!
+  after(16000, () => {
+    boy.style.backgroundImage = 'url("../assets/images/marat/marat5-boy-closed.jpg")';
+    boy.classList.remove("is-active");
+    
+    house.classList.remove("is-active");
+    ambush.classList.add("is-active");
+    
+    playOnce("marat-dog", "assets/audio/marat/marat_dog.mp3", 0.8);
+    stopAmbient("marat-wind", 500);
+
+    textEl.textContent = "Резко — собачий лай. Немецкая речь. — Засада! В овраг! Марат, пригнись!";
+  });
+
+  // Показ кнопки
+  after(23000, () => {
+    textEl.classList.remove("is-visible");
+    textEl.classList.add("is-fading");
+    inner.classList.remove("is-visible");
+    
+    btn.classList.add("is-visible"); 
+  });
+
+  // Клик по кнопке
+  btn.addEventListener("click", () => {
+    btn.classList.remove("is-visible");
+    fade.classList.add("is-active");
+    
+    setTimeout(() => {
+      el.classList.remove("is-active");
+      el.remove();
+      if (onDone) onDone();
+    }, 2000);
+  }, { once: true });
+}
+/* ============================================================
+   СЦЕНА 6 МАРАТА — БОЙ. ОДИН + ФИНАЛ (КАК У НАДЕЖДЫ)
+   ============================================================ */
+function buildMaratScene6() {
+  const el = document.createElement("section");
+  el.className = "scene scene--marat-6";
+  el.innerHTML = `
+    <div class="marat6-layer marat6-layer--ambush is-active" id="marat6Ambush"></div>
+    <div class="marat6-layer marat6-layer--face-shot"        id="marat6FaceShot"></div>
+    <div class="marat6-layer marat6-layer--face-wounded"     id="marat6FaceWounded"></div>
+    <div class="marat6-layer marat6-layer--face-grenade"     id="marat6FaceGrenade"></div>
+    
+    <div class="marat6-flash" id="marat6Flash"></div>
+
+    <button class="marat-btn" id="marat6BtnShoot">СТРЕЛЯТЬ</button>
+    <button class="marat-btn" id="marat6BtnBlow">ПОДОРВАТЬ СЕБЯ</button>
+    
+    <!-- Финальный белый экран (как у Надежды) -->
+    <div class="marat6-final" id="marat6Final">
+      <div class="marat6-final__content">
+        <h1 class="marat6-final__name">МАРАТ КАЗЕЙ</h1>
+        <p class="marat6-final__years">1929–1944</p>
+        <p class="marat6-final__desc" id="marat6FinalDesc"></p>
+        <button class="marat6-final__btn" id="marat6FinalBtn">ПОМНИТЬ</button>
+      </div>
+    </div>
+    
+    <div class="road-grain"></div>
+    <div class="road-vignette"></div>
+
+    <div class="title-bar">
+      <div class="title-bar__inner" id="marat6TitleInner">
+        <p class="title-bar__text" id="marat6TitleText"></p>
+        <span class="title-bar__bottom-line"></span>
+      </div>
+    </div>
+    <div class="marat6-fade" id="marat6Fade"></div>
+  `;
+  return el;
+}
+
+export function playMaratScene6(onDone) {
+  const el = buildMaratScene6();
+  app.appendChild(el);
+  void el.offsetWidth;
+  el.classList.add("is-active");
+
+  const ambush = el.querySelector("#marat6Ambush");
+  const faceShot = el.querySelector("#marat6FaceShot");
+  const faceWounded = el.querySelector("#marat6FaceWounded");
+  const faceGrenade = el.querySelector("#marat6FaceGrenade");
+  const flash = el.querySelector("#marat6Flash");
+  const finalBox = el.querySelector("#marat6Final");
+  const finalDesc = el.querySelector("#marat6FinalDesc");
+  const finalBtn = el.querySelector("#marat6FinalBtn");
+  const fade = el.querySelector("#marat6Fade");
+
+  const btnShoot = el.querySelector("#marat6BtnShoot");
+  const btnBlow = el.querySelector("#marat6BtnBlow");
+  const inner = el.querySelector("#marat6TitleInner");
+  const textEl = el.querySelector("#marat6TitleText");
+
+  startAmbient("marat-battle", "assets/audio/marat/marat_battle.mp3", 0.3);
 
   after(1000, () => {
-    textEl.textContent = "Марат Казей ушёл в партизанский отряд в 12 лет.";
+    textEl.textContent = "Ларин погиб. Марат остался один. Он был ранен в руку. Истекал кровью. Но продолжал стрелять.";
     inner.classList.add("is-visible");
     textEl.classList.add("is-visible");
-    // Если у тебя есть озвучка, раскомментируй строчку ниже и поменяй название файла:
-    // playVoiceSmart("m_01", V_MONO);
   });
 
-  after(8000, () => {
-    textEl.classList.remove("is-visible");
-    textEl.classList.add("is-fading");
-    inner.classList.remove("is-visible");
+  after(6000, () => {
+    btnShoot.classList.add("is-visible");
   });
 
-  // --- Сцена 2: Бег ---
-  after(9500, () => {
-    layer1.classList.remove("is-active");
-    layer2.classList.add("is-active");
-    textEl.classList.remove("is-fading");
-    
-    textEl.textContent = "Он был разведчиком. Ходил в тыл врага.";
-    inner.classList.add("is-visible");
-    textEl.classList.add("is-visible");
-    // playVoiceSmart("m_02", V_MONO);
+  let clickCount = 0;
+
+  btnShoot.addEventListener("click", () => {
+    clickCount++;
+    playOnce("marat-shot", "assets/audio/marat/marat_shot.mp3", 0.8);
+
+    if (clickCount === 1) {
+      textEl.textContent = "«Мама. Прости. Я стараюсь».";
+      ambush.classList.remove("is-active");
+      faceShot.classList.add("is-active");
+    } else if (clickCount === 2) {
+      textEl.textContent = "«Еще один. Еще…»";
+      faceShot.classList.remove("is-active");
+      faceWounded.classList.add("is-active");
+    } else if (clickCount === 3) {
+      textEl.textContent = "«Патроны… Последний магазин…»";
+      btnShoot.classList.remove("is-visible");
+      
+      after(3000, () => {
+        faceWounded.classList.remove("is-active");
+        faceGrenade.classList.add("is-active");
+        textEl.textContent = "Немец: «Рус! Сдавайся! Живым будешь!»";
+        
+        after(4000, () => {
+          textEl.textContent = "Марат: «Я не рус. Я — белорус. И я не сдаюсь».";
+          btnBlow.classList.add("is-visible");
+        });
+      });
+    }
   });
 
-  after(17000, () => {
-    textEl.classList.remove("is-visible");
-    textEl.classList.add("is-fading");
-    inner.classList.remove("is-visible");
-  });
+  // ВЗРЫВ И ПЕРЕХОД К ФИНАЛУ
+  btnBlow.addEventListener("click", () => {
+    btnBlow.classList.remove("is-visible");
+    flash.classList.add("is-active"); // Белая вспышка
+    playOnce("marat-explosion", "assets/audio/marat/marat_explosion.mp3", 1.0);
+    stopAmbient("marat-battle", 500);
 
-  // --- Сцена 3: Последний бой ---
-  after(18500, () => {
-    layer2.classList.remove("is-active");
-    layer3.classList.add("is-active");
-    stopAmbient("marat-forest", 1000);
-    // startAmbient("marat-explosion", "assets/audio/explosion.mp3", 0.8);
-
-    textEl.classList.remove("is-fading");
-    textEl.textContent = "В мае 1944-го его окружили. Он подпустил их и подорвал гранатой.";
-    inner.classList.add("is-visible");
-    textEl.classList.add("is-visible");
-    // playVoiceSmart("m_03", V_MONO);
-  });
-
-  after(26000, () => {
-    textEl.classList.remove("is-visible");
-    textEl.classList.add("is-fading");
-    inner.classList.remove("is-visible");
-  });
-
-  // --- Конец сцены ---
-  after(28000, () => {
-    el.classList.remove("is-active");
     setTimeout(() => {
+      faceGrenade.classList.remove("is-active");
+      textEl.classList.remove("is-visible");
+      inner.classList.remove("is-visible");
+    }, 1000);
+
+    // Через 2 секунды показываем финальный экран
+    after(2000, () => {
+      finalBox.classList.add("is-active");
+      typeText(finalDesc, "Герой Советского Союза.\nПосмертно.\nЕму было четырнадцать. Он не сдался.", 60, () => {
+        after(2000, () => {
+          finalBtn.classList.add("is-visible");
+        });
+      });
+    });
+  }, { once: true });
+
+  // КНОПКА "ПОМНИТЬ" (возврат в меню)
+  finalBtn.addEventListener("click", () => {
+    finalBtn.classList.remove("is-visible");
+    fade.classList.add("is-active");
+    setTimeout(() => {
+      el.classList.remove("is-active");
       el.remove();
-      onDone && onDone();
+      if (onDone) onDone(); // Возврат в меню
     }, 2000);
-  });
+  }, { once: true });
 }

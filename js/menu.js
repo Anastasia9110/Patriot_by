@@ -27,6 +27,7 @@ export function initMenu(onStorySelected) {
   const cardZina     = document.getElementById("cardZina");
   const cardLida     = document.getElementById("cardLida");
   const cardNadezhda = document.getElementById("cardNadezhda");
+  const cardMarat = document.getElementById("cardMarat");
   const storyStart   = document.getElementById("storyStart");
 
   /* ============================================================
@@ -111,6 +112,23 @@ export function initMenu(onStorySelected) {
       onStoryStart && onStoryStart("nadezhda");
     }, 1400);
   });
+  /* ============================================================
+   КЛИК ПО КАРТОЧКЕ МАРАТА (без титула)
+   ============================================================ */
+cardMarat.addEventListener("click", () => {
+  unlockAudio();
+  if (cardMarat.classList.contains("is-soon")) return;
+
+  flash.classList.add("is-active");
+  setTimeout(() => menuEl.classList.remove("is-active"), 400);
+  setTimeout(() => flash.classList.remove("is-active"), 1200);
+
+  setTimeout(() => {
+    menuEl.style.display = "none";
+    exitBtn.classList.add("is-visible");
+    onStoryStart && onStoryStart("marat");
+  }, 1400);
+});
   /* ============================================================
      ПАНЕЛЬ «О ПРОЕКТЕ» — получаем элементы
      ============================================================ */

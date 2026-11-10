@@ -35,7 +35,13 @@ import {
   playNadezhdaScene10,
   playNadezhdaScene11,
   playNadezhdaScene12,
-  playMaratScene,
+  playMaratScene0,
+  playMaratScene1,
+  playMaratScene2,
+  playMaratScene3,
+  playMaratScene4,
+  playMaratScene5,
+  playMaratScene6,
 } from "./app.js";
 import { initMenu, backToMenu } from "./menu.js";
 
@@ -128,9 +134,21 @@ function startNadezhdaStory() {
   });
 }
 function startMaratStory() {
-    playMaratScene(() => {
-    backToMenu();
-  });
+    // playMaratScene0(() => {
+    //   playMaratScene1(() => {
+    //     playMaratScene2(() => {
+    //       playMaratScene3(() => {
+            // playMaratScene4(() => {
+              // playMaratScene5(() => {
+                playMaratScene6(() => {
+                backToMenu();
+              });
+            // });
+          // });
+  //       });
+  //     });
+  //   });
+  // });
 }
 /* ============================================================
    ИНИЦИАЛИЗАЦИЯ МЕНЮ

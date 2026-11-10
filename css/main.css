@@ -3106,38 +3106,443 @@ body {
   text-rendering: optimizeLegibility !important;
 }
 /* ============================================================
-   СЦЕНА МАРАТА
+   СЦЕНА 0 МАРАТА (ЗАСТАВКА)
    ============================================================ */
-.scene--marat {
+.scene--marat-intro {
+  position: fixed;
+  inset: 0;
+  background: #050505; /* Глубокий черный */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  z-index: 10000;
+}
+
+/* Звезда */
+.marat-intro__accent {
+  width: clamp(150px, 20vw, 300px);
+  height: auto;
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 3s ease, transform 3s ease;
+  margin-bottom: 5vh;
+  /* Легкое свечение вокруг звезды (красное, как на других фото) */
+  filter: drop-shadow(0 0 30px rgba(177, 18, 38, 0.4));
+}
+.marat-intro__accent.is-visible {
+  opacity: 0.9;
+  transform: scale(1);
+}
+
+/* Буквы */
+.marat-intro__word {
+  display: flex;
+  gap: 0.5em; /* Расстояние между буквами */
+}
+
+.marat-intro__word span {
+  font-family: "Special Elite", "Neucha", serif;
+  font-size: clamp(2rem, 6vw, 4rem);
+  color: #e8e4d6;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 1.5s ease, transform 1.5s ease;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+}
+
+.marat-intro__word span.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Белая вспышка в конце */
+.marat-intro__fade {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+
+.marat-intro__fade.is-active {
+  opacity: 1;
+}
+
+/* ============================================================
+   СЦЕНА 1 МАРАТА (СМЕНА КАДРОВ)
+   ============================================================ */
+.scene--marat-1 {
   background: #0a0a0a;
   display: block;
 }
 
-.marat-layer {
+.marat1-layer {
   position: absolute;
   inset: 0;
   background-size: cover;
   background-position: center;
-  filter: grayscale(1) brightness(0.8) contrast(1.1);
+  filter: grayscale(1) brightness(0.85) contrast(1.1);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 2.5s ease; /* Медленное растворение */
+  will-change: opacity, transform;
+}
+
+.marat1-layer.is-active {
+  opacity: 1;
+  /* Легкий эффект приближения камеры, чтобы кадр "жил" */
+  animation: maratZoom 20s ease-in-out infinite alternate;
+}
+
+@keyframes maratZoom {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.05); }
+}
+
+/* ПУТИ К НОВОЙ ПАПКЕ marat */
+.marat1-layer--bg1 { background-image: url("../assets/images/marat/marat-summer.jpg"); }
+.marat1-layer--bg2 { background-image: url("../assets/images/marat/marat-plane.jpg"); }
+.marat1-layer--bg3 { background-image: url("../assets/images/marat/marat-panic.jpg"); }
+.marat1-layer--bg4 { background-image: url("../assets/images/marat/marat-night.jpg"); }
+.marat1-layer--bg5 { background-image: url("../assets/images/marat/marat-winter.jpg"); }
+/* ============================================================
+   КНОПКА ДЛЯ МАРАТА
+   ============================================================ */
+.marat-btn {
+  position: absolute;
+  left: 50%;
+  bottom: 24%;              /* Располагаем внизу, как у Лиды */
+  transform: translateX(-50%);
+  z-index: 999;             /* ВАЖНО: чтобы кнопка была поверх всех картинок */
+  padding: 16px 44px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(0, 0, 0, 0.55);
+  color: #f2ede0;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
+  cursor: pointer;
+  opacity: 0;               /* Изначально прозрачная */
+  pointer-events: none;     /* Изначально не кликается */
+  transition: opacity 0.8s ease, background 0.3s ease, color 0.3s ease;
+}
+
+/* Когда появляется */
+.marat-btn.is-visible { 
+  opacity: 0.9; 
+  pointer-events: auto; 
+}
+
+/* При наведении */
+.marat-btn:hover { 
+  opacity: 1; 
+  background: #fff; 
+  color: #000; 
+}
+
+/* Когда исчезает */
+.marat-btn.is-gone { 
+  opacity: 0; 
+  pointer-events: none; 
+}
+/* ============================================================
+   СЦЕНА 2 МАРАТА (СМЕНА КАДРОВ JPG)
+   ============================================================ */
+.scene--marat-2 {
+  background: #0a0a0a;
+  display: block;
+}
+
+/* Слои для фонов */
+.marat2-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.85) contrast(1.1);
   z-index: 1;
   opacity: 0;
   transition: opacity 2s ease;
-  will-change: opacity;
 }
-
-.marat-layer.is-active {
+.marat2-layer.is-active {
   opacity: 1;
 }
 
-/* Сюда положи свои картинки для Марата */
-.marat-layer--forest {
-  background-image: url("../assets/images/marat-forest.jpg");
+/* Пути к твоим картинкам */
+.marat2-layer--camp { background-image: url("../assets/images/marat/marat2-camp.jpg"); }
+.marat2-layer--commander { background-image: url("../assets/images/marat/marat-commander-closed.jpg"); }
+.marat2-layer--boy { background-image: url("../assets/images/marat/marat-boy-closed.jpg"); }
+.marat2-layer--accepted { background-image: url("../assets/images/marat/marat2-accepted.jpg"); }
+
+/* Затемнение */
+.marat2-fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.marat2-fade.is-active {
+  opacity: 1;
+}
+/* ============================================================
+   СЦЕНА 3 МАРАТА (СЕСТРА)
+   ============================================================ */
+.scene--marat-3 {
+  background: #0a0a0a;
+  display: block;
 }
 
-.marat-layer--run {
-  background-image: url("../assets/images/marat-run.jpg");
+.marat3-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.85) contrast(1.1);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+.marat3-layer.is-active {
+  opacity: 1;
 }
 
-.marat-layer--last {
-  background-image: url("../assets/images/marat-last.jpg");
+/* Пути к фонам */
+.marat3-layer--dugout { background-image: url("../assets/images/marat/marat3-dugout.jpg"); }
+.marat3-layer--carry { background-image: url("../assets/images/marat/marat3-carry.jpg"); }
+.marat3-layer--orphanage { background-image: url("../assets/images/marat/marat3-orphanage.jpg"); }
+
+/* Пути к персонажам (по умолчанию закрытый рот) */
+.marat3-layer--ada { background-image: url("../assets/images/marat/marat3-ada-closed.jpg"); }
+.marat3-layer--boy { background-image: url("../assets/images/marat/marat3-boy-closed.jpg"); }
+/* Пути к персонажам у детдома */
+.marat3-layer--ada-orphanage { background-image: url("../assets/images/marat/marat3-ada-orphanage-closed.jpg"); }
+.marat3-layer--boy-orphanage { background-image: url("../assets/images/marat/marat3-boy-orphanage-closed.jpg"); }
+/* Затемнение */
+.marat3-fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.marat3-fade.is-active {
+  opacity: 1;
+}
+/* ============================================================
+   СЦЕНА 4 МАРАТА (НАЗАД В ЛЕС)
+   ============================================================ */
+.scene--marat-4 {
+  background: #0a0a0a;
+  display: block;
+}
+
+.marat4-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.7) contrast(1.2); /* Сделаем чуть темнее для ночи */
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+.marat4-layer.is-active {
+  opacity: 1;
+}
+
+/* Пути к картинкам */
+.marat4-layer--forest { background-image: url("../assets/images/marat/marat4-forest-night.jpg"); }
+.marat4-layer--camp { background-image: url("../assets/images/marat/marat4-forest-camp.jpg"); }
+
+.marat4-fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.marat4-fade.is-active {
+  opacity: 1;
+}
+/* ============================================================
+   СЦЕНА 5 МАРАТА (ДЕРЕВНЯ)
+   ============================================================ */
+.scene--marat-5 {
+  background: #0a0a0a;
+  display: block;
+}
+
+.marat5-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.8) contrast(1.15);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+.marat5-layer.is-active {
+  opacity: 1;
+}
+
+/* Пути к фонам */
+.marat5-layer--village { background-image: url("../assets/images/marat/marat5-village.jpg"); }
+.marat5-layer--house { background-image: url("../assets/images/marat/marat5-house.jpg"); }
+.marat5-layer--ambush { background-image: url("../assets/images/marat/marat5-ambush.jpg"); }
+
+/* Пути к крупным планам (закрытые рты по умолчанию) */
+.marat5-layer--larin { background-image: url("../assets/images/marat/marat5-larin-closed.jpg"); }
+.marat5-layer--boy { background-image: url("../assets/images/marat/marat5-boy-closed.jpg"); }
+
+.marat5-fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 20;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.marat5-fade.is-active {
+  opacity: 1;
+}
+/* ============================================================
+   СЦЕНА 6 МАРАТА (БОЙ + ФИНАЛ)
+   ============================================================ */
+.scene--marat-6 {
+  background: #0a0a0a;
+  display: block;
+}
+
+/* Слои с картинками */
+.marat6-layer {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1) brightness(0.75) contrast(1.2);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+.marat6-layer.is-active {
+  opacity: 1;
+}
+
+/* Пути к картинкам (замени .jpg, если у тебя другой формат) */
+.marat6-layer--ambush { background-image: url("../assets/images/marat/marat6-ambush.jpg"); }
+.marat6-layer--face-shot { background-image: url("../assets/images/marat/marat6-face-shot.jpg"); }
+.marat6-layer--face-wounded { background-image: url("../assets/images/marat/marat6-face-wounded.jpg"); }
+.marat6-layer--face-grenade { background-image: url("../assets/images/marat/marat6-face-grenade.jpg"); }
+
+/* Белая вспышка */
+.marat6-flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  z-index: 99;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.marat6-flash.is-active {
+  opacity: 1;
+}
+
+/* Финальный экран (как у Надежды) */
+.marat6-final {
+  position: absolute;
+  inset: 0;
+  z-index: 100;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.marat6-final.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.marat6-final__content {
+  text-align: center;
+  padding: 0 5vw;
+}
+
+.marat6-final__name {
+  font-family: "Special Elite", "Neucha", serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  letter-spacing: 0.15em;
+  color: #e8e4d6;
+  margin-bottom: 1.5vh;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+}
+
+.marat6-final__years {
+  font-family: "Special Elite", "Neucha", serif;
+  font-size: clamp(1.1rem, 1.7vw, 1.5rem);
+  letter-spacing: 0.3em;
+  color: #aaa;
+  margin-bottom: 5vh;
+}
+
+.marat6-final__desc {
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+  line-height: 1.7;
+  color: #ccc;
+  min-height: 4em;
+  white-space: pre-wrap;
+}
+
+.marat6-final__btn {
+  margin-top: 8vh;
+  padding: 18px 60px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: none;
+  color: #e8e4d6;
+  font-family: "Special Elite", "Neucha", monospace;
+  font-size: clamp(0.9rem, 1.4vw, 1.15rem);
+  letter-spacing: 0.5em;
+  text-indent: 0.5em;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 2s ease, background 0.3s ease, color 0.3s ease;
+}
+.marat6-final__btn.is-visible {
+  opacity: 0.85;
+  pointer-events: auto;
+}
+.marat6-final__btn:hover {
+  opacity: 1;
+  background: #fff;
+  color: #000;
+}
+
+.marat6-fade {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  opacity: 0;
+  z-index: 200;
+  pointer-events: none;
+  transition: opacity 2s ease;
+}
+.marat6-fade.is-active {
+  opacity: 1;
 }

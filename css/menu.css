@@ -177,7 +177,7 @@
   width: 100%;
   aspect-ratio: 3 / 4;
   background-size: cover;
-  background-position: center;
+  background-position: center; /* <--- ВОТ ЭТА СТРОЧКА */
   filter: grayscale(1) brightness(0.7) contrast(1.15);
   transition: filter 0.6s ease, transform 0.6s ease;
   border: 1px solid rgba(232, 228, 214, 0.15);
