@@ -134,21 +134,21 @@ function startNadezhdaStory() {
   });
 }
 function startMaratStory() {
-    // playMaratScene0(() => {
-    //   playMaratScene1(() => {
-    //     playMaratScene2(() => {
-    //       playMaratScene3(() => {
-            // playMaratScene4(() => {
-              // playMaratScene5(() => {
+    playMaratScene0(() => {
+      playMaratScene1(() => {
+        playMaratScene2(() => {
+          playMaratScene3(() => {
+            playMaratScene4(() => {
+              playMaratScene5(() => {
                 playMaratScene6(() => {
                 backToMenu();
               });
-            // });
-          // });
-  //       });
-  //     });
-  //   });
-  // });
+            });
+          });
+        });
+      });
+    });
+  });
 }
 /* ============================================================
    ИНИЦИАЛИЗАЦИЯ МЕНЮ
