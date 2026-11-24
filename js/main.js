@@ -157,5 +157,4 @@ initMenu((story) => {
   if (story === "zina") startZinaStory();
   if (story === "lida") startLidaStory();
   if (story === "nadezhda") startNadezhdaStory();
-  if (story === "marat") startMaratStory();
 });
