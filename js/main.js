@@ -35,7 +35,6 @@ import {
   playNadezhdaScene10,
   playNadezhdaScene11,
   playNadezhdaScene12,
-<<<<<<< HEAD
   playMaratScene0,
   playMaratScene1,
   playMaratScene2,
@@ -43,8 +42,6 @@ import {
   playMaratScene4,
   playMaratScene5,
   playMaratScene6,
-=======
->>>>>>> parent of 2efd831 (марат меню)
 } from "./app.js";
 import { initMenu, backToMenu } from "./menu.js";
 
@@ -136,7 +133,7 @@ function startNadezhdaStory() {
     });
   });
 }
-<<<<<<< HEAD
+
 function startMaratStory() {
     playMaratScene0(() => {
       playMaratScene1(() => {
@@ -154,8 +151,7 @@ function startMaratStory() {
     });
   });
 }
-=======
->>>>>>> parent of 2efd831 (марат меню)
+
 /* ============================================================
    ИНИЦИАЛИЗАЦИЯ МЕНЮ
    ============================================================ */
